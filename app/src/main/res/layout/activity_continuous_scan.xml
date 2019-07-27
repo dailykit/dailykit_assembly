@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true">
+
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/ingredient_packing_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="1/4/14"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ingredient_item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:maxLines="1"
+                    android:gravity="center"
+                    android:text="- Dal Makhni"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    app:srcCompat="@drawable/ic_serving" />
+
+                <TextView
+                    android:id="@+id/ingredient_serving"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:text="4"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/scan_help_text"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="10sp" />
+            <Button
+                android:id="@+id/pause_scan"
+                android:layout_width="100dp"
+                android:layout_height="25dp"
+                android:background="@drawable/round_circle_grey"
+                android:padding="3dp"
+                android:text="@string/pause_scan"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:onClick="pause"
+                android:layout_gravity="center"
+                android:textSize="10sp"
+                android:textColor="#ffffff"/>
+            <Button
+                android:id="@+id/resume_scan"
+                android:layout_width="100dp"
+                android:layout_height="25dp"
+                android:background="@drawable/round_circle_grey"
+                android:padding="3dp"
+                android:text="@string/resume_scan"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:onClick="resume"
+                android:layout_gravity="center"
+                android:textSize="10sp"
+                android:visibility="gone"
+                android:textColor="#ffffff"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/barcodePreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_marginBottom="-10dp"
+        app:cardElevation="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/extreme_black">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_transparent_button"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:weightSum="6">
+
+                    <org.dailykit.CustomView.FuturaMediumTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:alpha="0.4"
+                        android:text="@string/ingredient"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+                    <org.dailykit.CustomView.FuturaMediumTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:alpha="0.4"
+                        android:text="@string/processing"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+                    <org.dailykit.CustomView.FuturaMediumTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:alpha="0.4"
+                        android:paddingLeft="5dp"
+                        android:text="@string/weight"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+                    <org.dailykit.CustomView.FuturaMediumTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:alpha="0.4"
+                        android:paddingLeft="10dp"
+                        android:text="@string/options"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/ingredient_detail_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fadeScrollbars="false"
+                    android:focusable="true"
+                    android:scrollbars="none">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+
+</LinearLayout>

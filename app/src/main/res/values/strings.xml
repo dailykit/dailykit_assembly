@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Dailykit Mobile</string>
+    <string name="title_activity_login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_button">Login</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_menu">Menu</string>
+    <string name="title_scan">Scan</string>
+    <string name="title_order">Order</string>
+    <string name="title_label">Label</string>
+    <string name="scan_now">Scan Now</string>
+    <string name="order_id">Order ID</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="weight">Weight</string>
+    <string name="options">Options</string>
+    <string name="processing">Processing</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="partial_packing">Partial Packing</string>
+    <string name="scan_help_text">Use Volume Rocker to Enable/Disable Flash</string>
+    <string name="pause_scan">Pause Scan</string>
+    <string name="resume_scan">Resume Scan</string>
+    <string name="rapid_scanning">Rapid Scanning</string>
+    <string name="back">Back</string>
+    <string name="scanned_successfully">Scanned Successfully</string>
+    <string name="scanning_in_progress">Scanning In-Progress</string>
+
+</resources>

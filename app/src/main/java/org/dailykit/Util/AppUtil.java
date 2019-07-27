@@ -1,0 +1,15 @@
+package org.dailykit.Util;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+/**
+ * Created by Danish Rafique on 29-01-2019.
+ */
+public class AppUtil {
+
+    public static SharedPreferences getAppPreferences(Context context){
+        return context.getSharedPreferences(Constants.SETTINGS_APP_SETTINGS, Context.MODE_PRIVATE);
+    }
+
+}
