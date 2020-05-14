@@ -1,8 +1,8 @@
-package org.dailykit.Fragment;
+package org.dailykit.fragment;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import org.dailykit.R;
-import org.dailykit.Util.SoftwareConfig;
+import org.dailykit.util.SoftwareConfig;
 
 public class MenuFragment extends Fragment {
 

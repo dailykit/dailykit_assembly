@@ -1,19 +1,21 @@
-package org.dailykit.Activity;
+package org.dailykit.activity;
 
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 
-import org.dailykit.Callback.SplashListener;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
 import org.dailykit.R;
-import org.dailykit.ViewModel.SplashViewModel;
+import org.dailykit.listener.SplashListener;
+import org.dailykit.viewmodel.SplashViewModel;
 
 public class SplashActivity extends AppCompatActivity implements SplashListener {
 
     SplashViewModel splashViewModel;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +33,14 @@ public class SplashActivity extends AppCompatActivity implements SplashListener 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent=new Intent(SplashActivity.this,LoginActivity.class);
+                if(splashViewModel.isUserLoggedIn()){
+                    intent=new Intent(SplashActivity.this,DashboardActivity.class);
+                }
+                else{
+                    intent=new Intent(SplashActivity.this,RealmActivity.class);
+                }
                 startActivity(intent);
-                finish();
+                SplashActivity.this.finish();
             }
         }, 1000);
     }

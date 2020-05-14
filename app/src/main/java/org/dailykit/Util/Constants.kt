@@ -1,4 +1,4 @@
-package org.dailykit.Util
+package org.dailykit.util
 
 /**
  * Created by Danish Rafique on 29-01-2019.
@@ -31,7 +31,9 @@ object Constants {
     const val SELECTED_ITEM_ENTITY = "SELECTED_ITEM_ENTITY"
     const val SELECTED_ITEM_ID = "SELECTED_ITEM_ID"
     const val INGREDIENT_FOUND = "INGREDIENT_FOUND"
-
+    const val REALM_NAME = "REALM_NAME"
+    const val CLIENT_ID = "CLIENT_ID"
+    const val USER_ACCESS_MODEL = "USER_ACCESS_MODEL"
 
 }
 

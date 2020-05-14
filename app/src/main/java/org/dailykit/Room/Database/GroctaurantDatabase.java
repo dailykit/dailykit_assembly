@@ -1,26 +1,26 @@
-package org.dailykit.Room.Database;
+package org.dailykit.room.database;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
 
-import org.dailykit.Room.Converter.IngredientConverter;
-import org.dailykit.Room.Converter.IngredientDetailConverter;
-import org.dailykit.Room.Converter.ItemConverter;
-import org.dailykit.Room.DAO.IngredientDao;
-import org.dailykit.Room.DAO.IngredientDetailDao;
-import org.dailykit.Room.DAO.ItemDao;
-import org.dailykit.Room.DAO.OrderDao;
-import org.dailykit.Room.DAO.TabDao;
-import org.dailykit.Room.Entity.IngredientDetailEntity;
-import org.dailykit.Room.Entity.IngredientEntity;
-import org.dailykit.Room.Entity.ItemEntity;
-import org.dailykit.Room.Entity.OrderEntity;
-import org.dailykit.Room.Entity.TabEntity;
+import org.dailykit.room.converter.IngredientConverter;
+import org.dailykit.room.converter.IngredientDetailConverter;
+import org.dailykit.room.converter.ItemConverter;
+import org.dailykit.room.dao.IngredientDao;
+import org.dailykit.room.dao.IngredientDetailDao;
+import org.dailykit.room.dao.ItemDao;
+import org.dailykit.room.dao.OrderDao;
+import org.dailykit.room.dao.TabDao;
+import org.dailykit.room.entity.IngredientDetailEntity;
+import org.dailykit.room.entity.IngredientEntity;
+import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.room.entity.OrderEntity;
+import org.dailykit.room.entity.TabEntity;
 
 
 /**

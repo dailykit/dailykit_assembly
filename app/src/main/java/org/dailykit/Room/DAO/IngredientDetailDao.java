@@ -1,13 +1,13 @@
-package org.dailykit.Room.DAO;
+package org.dailykit.room.dao;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
 
-import org.dailykit.Room.Entity.IngredientDetailEntity;
+import org.dailykit.room.entity.IngredientDetailEntity;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.dailykit.Callback;
+package org.dailykit.listener;
 
 public interface ScanListener {
 

@@ -1,26 +1,26 @@
-package org.dailykit.Activity;
+package org.dailykit.activity;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import org.dailykit.Callback.DashboardListener;
-import org.dailykit.Fragment.IngredientFragment;
-import org.dailykit.Fragment.LabelFragment;
-import org.dailykit.Fragment.MenuFragment;
-import org.dailykit.Fragment.NotificationFragment;
-import org.dailykit.Fragment.OrderFragment;
-import org.dailykit.Fragment.ScanFragment;
+import org.dailykit.listener.DashboardListener;
+import org.dailykit.fragment.IngredientFragment;
+import org.dailykit.fragment.LabelFragment;
+import org.dailykit.fragment.MenuFragment;
+import org.dailykit.fragment.NotificationFragment;
+import org.dailykit.fragment.OrderFragment;
+import org.dailykit.fragment.ScanFragment;
 import org.dailykit.R;
-import org.dailykit.Util.FragmentConstants;
-import org.dailykit.ViewModel.DashboardViewModel;
+import org.dailykit.util.FragmentConstants;
+import org.dailykit.viewmodel.DashboardViewModel;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardListener {
 

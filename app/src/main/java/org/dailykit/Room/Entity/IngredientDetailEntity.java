@@ -1,11 +1,11 @@
-package org.dailykit.Room.Entity;
+package org.dailykit.room.entity;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.annotation.NonNull;
 
-import org.dailykit.Model.IngredientDetailModel;
+import org.dailykit.model.IngredientDetailModel;
 
 import java.io.Serializable;
 

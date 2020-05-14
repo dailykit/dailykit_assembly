@@ -1,23 +1,23 @@
-package org.dailykit.Activity;
+package org.dailykit.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.zxing.Result;
 
-import org.dailykit.Callback.ScanListener;
-import org.dailykit.Util.AppUtil;
-import org.dailykit.Util.Constants;
-import org.dailykit.ViewModel.ScanViewModel;
+import org.dailykit.listener.ScanListener;
+import org.dailykit.util.AppUtil;
+import org.dailykit.util.Constants;
+import org.dailykit.viewmodel.ScanViewModel;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 

@@ -1,23 +1,23 @@
-package org.dailykit.Fragment;
+package org.dailykit.fragment;
 
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.dailykit.Activity.DashboardActivity;
-import org.dailykit.Adapter.OrderAdapter;
+import org.dailykit.activity.DashboardActivity;
+import org.dailykit.adapter.OrderAdapter;
 import org.dailykit.R;
-import org.dailykit.Room.Entity.OrderEntity;
-import org.dailykit.ViewModel.DashboardViewModel;
+import org.dailykit.room.entity.OrderEntity;
+import org.dailykit.viewmodel.DashboardViewModel;
 
 import java.util.List;
 

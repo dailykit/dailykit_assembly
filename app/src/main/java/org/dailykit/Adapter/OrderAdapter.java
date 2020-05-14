@@ -1,21 +1,21 @@
-package org.dailykit.Adapter;
+package org.dailykit.adapter;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.dailykit.R;
-import org.dailykit.Room.Database.GroctaurantDatabase;
-import org.dailykit.Room.Entity.ItemEntity;
-import org.dailykit.Room.Entity.OrderEntity;
-import org.dailykit.Util.AppUtil;
+import org.dailykit.room.database.GroctaurantDatabase;
+import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.room.entity.OrderEntity;
+import org.dailykit.util.AppUtil;
 
 import java.util.List;
 

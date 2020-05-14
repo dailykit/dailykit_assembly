@@ -1,25 +1,25 @@
-package org.dailykit.Fragment;
+package org.dailykit.fragment;
 
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import org.dailykit.Activity.DashboardActivity;
-import org.dailykit.Adapter.IngredientAdapter;
-import org.dailykit.Adapter.IngredientLowerTabAdapter;
-import org.dailykit.CustomView.FuturaBoldTextView;
+import org.dailykit.activity.DashboardActivity;
+import org.dailykit.adapter.IngredientAdapter;
+import org.dailykit.adapter.IngredientLowerTabAdapter;
+import org.dailykit.customview.FuturaBoldTextView;
 import org.dailykit.R;
-import org.dailykit.Room.Entity.ItemEntity;
-import org.dailykit.ViewModel.DashboardViewModel;
+import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.viewmodel.DashboardViewModel;
 
 
 public class IngredientFragment extends Fragment {

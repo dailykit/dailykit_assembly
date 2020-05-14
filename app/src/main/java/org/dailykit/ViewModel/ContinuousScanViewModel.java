@@ -1,27 +1,27 @@
-package org.dailykit.ViewModel;
+package org.dailykit.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.persistence.room.Room;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.room.Room;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.dailykit.Callback.ContinuousScanListener;
-import org.dailykit.Model.ScanIngredientDataModel;
-import org.dailykit.Model.ScanRequestModel;
-import org.dailykit.Model.StatusResponseModel;
-import org.dailykit.Retrofit.APIInterface;
-import org.dailykit.Retrofit.RetrofitClient;
-import org.dailykit.Room.Database.GroctaurantDatabase;
-import org.dailykit.Room.Entity.IngredientEntity;
-import org.dailykit.Room.Entity.ItemEntity;
-import org.dailykit.Util.AppUtil;
-import org.dailykit.Util.Constants;
+import org.dailykit.listener.ContinuousScanListener;
+import org.dailykit.model.ScanIngredientDataModel;
+import org.dailykit.model.ScanRequestModel;
+import org.dailykit.model.StatusResponseModel;
+import org.dailykit.retrofit.APIInterface;
+import org.dailykit.retrofit.RetrofitClient;
+import org.dailykit.room.database.GroctaurantDatabase;
+import org.dailykit.room.entity.IngredientEntity;
+import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.util.AppUtil;
+import org.dailykit.util.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;

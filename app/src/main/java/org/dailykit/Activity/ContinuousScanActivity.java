@@ -1,13 +1,13 @@
-package org.dailykit.Activity;
+package org.dailykit.activity;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,14 +23,14 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 
-import org.dailykit.Adapter.ContinuousScanIngredientAdapter;
-import org.dailykit.Callback.ContinuousScanListener;
+import org.dailykit.adapter.ContinuousScanIngredientAdapter;
+import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.R;
-import org.dailykit.Room.Entity.ItemEntity;
-import org.dailykit.Util.AppUtil;
-import org.dailykit.Util.Constants;
-import org.dailykit.ViewModel.ContinuousScanViewModel;
-import org.dailykit.ViewModel.DashboardViewModel;
+import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.util.AppUtil;
+import org.dailykit.util.Constants;
+import org.dailykit.viewmodel.ContinuousScanViewModel;
+import org.dailykit.viewmodel.DashboardViewModel;
 
 import java.util.Arrays;
 import java.util.Collection;

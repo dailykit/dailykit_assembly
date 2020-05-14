@@ -1,10 +1,10 @@
-package org.dailykit.CustomView;
+package org.dailykit.customview;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
-public class FuturaBoldTextView extends android.support.v7.widget.AppCompatTextView {
+public class FuturaBoldTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public FuturaBoldTextView(Context context) {
         super(context);

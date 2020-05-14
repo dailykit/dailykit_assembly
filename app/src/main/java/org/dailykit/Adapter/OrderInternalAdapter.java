@@ -1,9 +1,9 @@
-package org.dailykit.Adapter;
+package org.dailykit.adapter;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.SharedPreferences;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +12,16 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 
-import org.dailykit.Activity.DashboardActivity;
-import org.dailykit.CustomView.FuturaMediumTextView;
-import org.dailykit.CustomView.ScrollViewText;
+import org.dailykit.activity.DashboardActivity;
+import org.dailykit.customview.FuturaMediumTextView;
+import org.dailykit.customview.ScrollViewText;
 import org.dailykit.R;
-import org.dailykit.Room.Database.GroctaurantDatabase;
-import org.dailykit.Room.Entity.IngredientDetailEntity;
-import org.dailykit.Room.Entity.ItemEntity;
-import org.dailykit.Room.Entity.TabEntity;
-import org.dailykit.Util.AppUtil;
-import org.dailykit.Util.Constants;
+import org.dailykit.room.database.GroctaurantDatabase;
+import org.dailykit.room.entity.IngredientDetailEntity;
+import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.room.entity.TabEntity;
+import org.dailykit.util.AppUtil;
+import org.dailykit.util.Constants;
 
 import java.util.List;
 

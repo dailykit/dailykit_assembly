@@ -1,4 +1,4 @@
-package org.dailykit.Application;
+package org.dailykit.application;
 
 import android.app.Application;
 

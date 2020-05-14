@@ -1,4 +1,4 @@
-package org.dailykit.CustomView;
+package org.dailykit.customview;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 /**
  * Created by Danish Rafique on 15-11-2018.
  */
-public class FuturaMediumTextView extends android.support.v7.widget.AppCompatTextView {
+public class FuturaMediumTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public FuturaMediumTextView(Context context) {
         super(context);

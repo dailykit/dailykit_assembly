@@ -1,26 +1,28 @@
-package org.dailykit.ViewModel;
+package org.dailykit.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.persistence.room.Room;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.dailykit.Callback.SplashListener;
-import org.dailykit.Model.IngredientDetailModel;
-import org.dailykit.Model.IngredientModel;
-import org.dailykit.Model.ItemModel;
-import org.dailykit.Model.OrderModel;
-import org.dailykit.Model.OrderResponseModel;
-import org.dailykit.Retrofit.APIInterface;
-import org.dailykit.Retrofit.RetrofitClient;
-import org.dailykit.Room.Database.GroctaurantDatabase;
-import org.dailykit.Room.Entity.IngredientDetailEntity;
-import org.dailykit.Room.Entity.IngredientEntity;
-import org.dailykit.Room.Entity.ItemEntity;
-import org.dailykit.Room.Entity.OrderEntity;
-import org.dailykit.Util.AppUtil;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.room.Room;
+
+import org.dailykit.listener.SplashListener;
+import org.dailykit.model.IngredientDetailModel;
+import org.dailykit.model.IngredientModel;
+import org.dailykit.model.ItemModel;
+import org.dailykit.model.OrderModel;
+import org.dailykit.model.OrderResponseModel;
+import org.dailykit.retrofit.APIInterface;
+import org.dailykit.retrofit.RetrofitClient;
+import org.dailykit.room.database.GroctaurantDatabase;
+import org.dailykit.room.entity.IngredientDetailEntity;
+import org.dailykit.room.entity.IngredientEntity;
+import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.room.entity.OrderEntity;
+import org.dailykit.util.AppUtil;
+import org.dailykit.util.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -43,6 +45,10 @@ public class SplashViewModel extends AndroidViewModel {
         editor = sharedpreferences.edit();
         groctaurantDatabase = Room.databaseBuilder(application, GroctaurantDatabase.class, "Development").allowMainThreadQueries().build();
         apiInterface = RetrofitClient.getClient().getApi();
+    }
+
+    public boolean isUserLoggedIn(){
+        return sharedpreferences.getBoolean(Constants.IS_USER_LOGGED,false);
     }
 
     public void fetchOrderList(final SplashListener splashListener){

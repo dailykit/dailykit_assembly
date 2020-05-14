@@ -1,4 +1,4 @@
-package org.dailykit.Model
+package org.dailykit.model
 
 /**
  * Created by Danish Rafique on 11-04-2019.

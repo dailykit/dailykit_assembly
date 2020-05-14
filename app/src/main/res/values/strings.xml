@@ -28,5 +28,8 @@
     <string name="back">Back</string>
     <string name="scanned_successfully">Scanned Successfully</string>
     <string name="scanning_in_progress">Scanning In-Progress</string>
+    <string name="realm">Realm Name</string>
+    <string name="client_id">Client ID</string>
+    <string name="continue_">Continue</string>
 
 </resources>

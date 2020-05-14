@@ -1,11 +1,11 @@
-package org.dailykit.Room.Converter;
+package org.dailykit.room.converter;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.dailykit.Room.Entity.IngredientEntity;
+import org.dailykit.room.entity.IngredientEntity;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

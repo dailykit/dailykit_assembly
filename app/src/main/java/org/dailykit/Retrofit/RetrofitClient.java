@@ -1,6 +1,6 @@
-package org.dailykit.Retrofit;
+package org.dailykit.retrofit;
 
-import org.dailykit.Util.URLConstants;
+import org.dailykit.util.URLConstants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

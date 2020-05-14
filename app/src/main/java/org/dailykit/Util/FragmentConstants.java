@@ -1,4 +1,4 @@
-package org.dailykit.Util;
+package org.dailykit.util;
 
 public class FragmentConstants {
 

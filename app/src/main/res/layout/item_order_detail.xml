@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.5">
 
-                <org.dailykit.CustomView.FuturaMediumTextView
+                <org.dailykit.customview.FuturaMediumTextView
                     android:id="@+id/item_order_pending"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -73,7 +73,7 @@
                 android:layout_weight="0.5"
                 android:gravity="center">
 
-                <org.dailykit.CustomView.FuturaMediumTextView
+                <org.dailykit.customview.FuturaMediumTextView
                     android:id="@+id/item_order_serving"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -93,7 +93,7 @@
                 android:layout_marginLeft="5dp"
                 android:gravity="center">
 
-                <org.dailykit.CustomView.ScrollViewText
+                <org.dailykit.customview.ScrollViewText
                     android:id="@+id/item_order_name_marquee"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -112,7 +112,7 @@
                     android:textSize="12sp"
                     android:textStyle="bold"
                     />
-                <org.dailykit.CustomView.FuturaMediumTextView
+                <org.dailykit.customview.FuturaMediumTextView
                     android:id="@+id/item_order_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

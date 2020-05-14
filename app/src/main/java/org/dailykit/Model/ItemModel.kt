@@ -1,4 +1,4 @@
-package org.dailykit.Model
+package org.dailykit.model
 
 import com.google.gson.annotations.SerializedName
 

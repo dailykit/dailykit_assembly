@@ -27,37 +27,38 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_name"
+                android:id="@+id/realm_name"
                 android:layout_width="250dp"
+                android:inputType="text"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:hint="@string/username"/>
+                android:hint="@string/realm"/>
 
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
             android:layout_marginTop="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_password"
+                android:id="@+id/client_id"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
+                android:hint="@string/client_id"
+                android:inputType="text"
                 android:textSize="16sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/continue_button"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:background="@drawable/round_circle_grey"
             android:layout_marginTop="30dp"
             android:padding="5dp"
-            android:text="@string/login_button"
+            android:text="@string/continue_"
+            android:onClick="onClick"
             android:textSize="16sp"
             android:textColor="#ffffff"/>
 

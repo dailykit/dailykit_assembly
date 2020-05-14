@@ -52,7 +52,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2">
 
-                        <org.dailykit.CustomView.FuturaMediumTextView
+                        <org.dailykit.customview.FuturaMediumTextView
                             android:id="@+id/ingredient_title"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -70,7 +70,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="2">
 
-                        <org.dailykit.CustomView.FuturaMediumTextView
+                        <org.dailykit.customview.FuturaMediumTextView
                             android:id="@+id/ingredient_processing"
                             android:layout_width="127dp"
                             android:layout_height="match_parent"
@@ -87,7 +87,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1">
 
-                        <org.dailykit.CustomView.FuturaMediumTextView
+                        <org.dailykit.customview.FuturaMediumTextView
                             android:id="@+id/ingredient_weight"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -182,11 +182,11 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ingredient_full_detail_list"
                 android:layout_width="match_parent"
                 android:visibility="gone"
-                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
 
 </LinearLayout>

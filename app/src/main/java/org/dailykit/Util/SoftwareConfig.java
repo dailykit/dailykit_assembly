@@ -1,4 +1,4 @@
-package org.dailykit.Util;
+package org.dailykit.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;

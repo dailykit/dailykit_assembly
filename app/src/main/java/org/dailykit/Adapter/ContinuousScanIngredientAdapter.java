@@ -1,12 +1,12 @@
-package org.dailykit.Adapter;
+package org.dailykit.adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +18,17 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import org.dailykit.Activity.ContinuousScanActivity;
-import org.dailykit.Fragment.IngredientFragment;
+import org.dailykit.activity.ContinuousScanActivity;
+import org.dailykit.fragment.IngredientFragment;
 import org.dailykit.R;
-import org.dailykit.Room.Database.GroctaurantDatabase;
-import org.dailykit.Room.Database.GroctaurantExecutor;
-import org.dailykit.Room.Entity.IngredientDetailEntity;
-import org.dailykit.Room.Entity.IngredientEntity;
-import org.dailykit.Room.Entity.ItemEntity;
-import org.dailykit.Util.AppUtil;
-import org.dailykit.Util.Constants;
-import org.dailykit.Util.SoftwareConfig;
+import org.dailykit.room.database.GroctaurantDatabase;
+import org.dailykit.room.database.GroctaurantExecutor;
+import org.dailykit.room.entity.IngredientDetailEntity;
+import org.dailykit.room.entity.IngredientEntity;
+import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.util.AppUtil;
+import org.dailykit.util.Constants;
+import org.dailykit.util.SoftwareConfig;
 
 import java.util.List;
 
