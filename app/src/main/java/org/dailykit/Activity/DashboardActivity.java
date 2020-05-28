@@ -3,14 +3,21 @@ package org.dailykit.activity;
 import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.dailykit.MyQuery;
 import org.dailykit.listener.DashboardListener;
 import org.dailykit.fragment.IngredientFragment;
 import org.dailykit.fragment.LabelFragment;
@@ -19,8 +26,10 @@ import org.dailykit.fragment.NotificationFragment;
 import org.dailykit.fragment.OrderFragment;
 import org.dailykit.fragment.ScanFragment;
 import org.dailykit.R;
+import org.dailykit.network.Network;
 import org.dailykit.util.FragmentConstants;
 import org.dailykit.viewmodel.DashboardViewModel;
+import org.jetbrains.annotations.NotNull;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardListener {
 
@@ -35,6 +44,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
     LabelFragment labelFragment;
     NotificationFragment notificationFragment;
     IngredientFragment ingredientFragment;
+
+    private MyQuery cart;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -73,6 +84,7 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         dashboardViewModel= ViewModelProviders.of(this).get(DashboardViewModel.class);
+
         mTextMessage = (TextView) findViewById(R.id.message);
         myFragmentManager = getSupportFragmentManager();
         menuFragment=new MenuFragment();
@@ -87,7 +99,19 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_order);
+        cart = MyQuery.builder().build();
 
+        Network.getApolloClient().query(cart).enqueue(new ApolloCall.Callback<MyQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<MyQuery.Data> response) {
+                Log.e(TAG,"Response : "+response.data().toString());
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+                Log.e(TAG,"onFailure : "+e.toString());
+            }
+        });
     }
 
     @Override

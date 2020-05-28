@@ -10,17 +10,20 @@ import androidx.lifecycle.ViewModelProviders;
 
 import org.dailykit.R;
 import org.dailykit.listener.SplashListener;
+import org.dailykit.network.Network;
 import org.dailykit.viewmodel.SplashViewModel;
 
 public class SplashActivity extends AppCompatActivity implements SplashListener {
 
     SplashViewModel splashViewModel;
     Intent intent;
-
+    private Network network;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        network = new Network();
+        network.setApolloClient(this);
         splashViewModel= ViewModelProviders.of(this).get(SplashViewModel.class);
         //splashViewModel.fetchOrderList(this);
         moveToNextScreen();
