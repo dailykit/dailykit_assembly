@@ -1,6 +1,7 @@
 package org.dailykit.network
 
 import android.content.Context
+import android.provider.Settings.System.DATE_FORMAT
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Operation
 import com.apollographql.apollo.api.ResponseField
@@ -18,6 +19,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.dailykit.type.CustomType
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 private val GRAPHQL_ENDPOINT: String = "https://dailykitdatahub.herokuapp.com/v1/graphql"
@@ -48,7 +50,7 @@ class Network {
 
             override fun decode(value: CustomTypeValue<*>): String {
                 try {
-                    return ISO8601.parse(value.value.toString()).toString()
+                    return value.value.toString()
                 } catch (e: ParseException) {
                     throw RuntimeException(e)
                 }
@@ -60,14 +62,15 @@ class Network {
             }
         }
 
+
         val apolloSqlHelper = ApolloSqlHelper(context, SQL_CACHE_NAME)
         val normalizedCacheFactory = LruNormalizedCacheFactory(EvictionPolicy.NO_EVICTION)
             .chain(SqlNormalizedCacheFactory(apolloSqlHelper))
 
         val cacheKeyResolver: CacheKeyResolver = object : CacheKeyResolver() {
             override fun fromFieldRecordSet(field: ResponseField, recordSet: Map<String, Any>): CacheKey {
-                if (recordSet.containsKey("todos")) {
-                    val id = recordSet["todos"] as String
+                if (recordSet.containsKey("dailykit_assembly")) {
+                    val id = recordSet["dailykit_assembly"] as String
                     return CacheKey.from(id)
                 }
                 return CacheKey.NO_KEY
@@ -79,10 +82,11 @@ class Network {
         }
 
         apolloClient = ApolloClient.builder()
-            .serverUrl(GRAPHQL_ENDPOINT)
-            .okHttpClient(okHttpClient)
-            .normalizedCache(normalizedCacheFactory, cacheKeyResolver)
-            .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory(GRAPHQL_WEBSOCKET_ENDPOINT, okHttpClient))
-            .build()
+                .serverUrl(GRAPHQL_ENDPOINT)
+                .okHttpClient(okHttpClient)
+                .normalizedCache(normalizedCacheFactory, cacheKeyResolver)
+                .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory(GRAPHQL_WEBSOCKET_ENDPOINT, okHttpClient))
+                .addCustomTypeAdapter(CustomType.OID, dateCustomTypeAdapter)
+                .build()
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.ApolloSubscriptionCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.dailykit.MyQuery;
+import org.dailykit.MySubscription;
 import org.dailykit.listener.DashboardListener;
 import org.dailykit.fragment.IngredientFragment;
 import org.dailykit.fragment.LabelFragment;
@@ -44,6 +46,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
     LabelFragment labelFragment;
     NotificationFragment notificationFragment;
     IngredientFragment ingredientFragment;
+    private MySubscription mySubscription;
+    private ApolloSubscriptionCall<MySubscription.Data> apolloSubscriptionCall= null;
 
     private MyQuery cart;
 
@@ -112,6 +116,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
                 Log.e(TAG,"onFailure : "+e.toString());
             }
         });
+
+        subscribeOrders();
     }
 
     @Override
@@ -137,5 +143,50 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
 
     public void switchToOrderFragment(){
         switchFragments(orderFragment,FragmentConstants.ORDER);
+    }
+
+
+
+    public void subscribeOrders(){
+        mySubscription = MySubscription.builder().build();
+        apolloSubscriptionCall = Network.apolloClient.subscribe(mySubscription);
+        Log.e(TAG,"subscribeOrders");
+        apolloSubscriptionCall.execute(new ApolloSubscriptionCall.Callback<MySubscription.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<MySubscription.Data> response) {
+                Log.e(TAG,"Response : "+response.data().toString());
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+                Log.e(TAG,"onFailure : "+e.getLocalizedMessage());
+                Log.e(TAG,"onFailure : "+e.toString());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onCompleted() {
+                Log.e(TAG,"onCompleted");
+            }
+
+            @Override
+            public void onTerminated() {
+                Log.e(TAG,"onTerminated");
+            }
+
+            @Override
+            public void onConnected() {
+                Log.e(TAG,"onConnected");
+            }
+        });
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(null != apolloSubscriptionCall){
+            apolloSubscriptionCall.cancel();;
+        }
     }
 }

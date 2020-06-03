@@ -3,3 +3,32 @@ query MyQuery {
      addressId
    }
  }
+
+subscription MySubscription {
+    orders {
+        id
+        orderStatus
+        customer {
+            email
+        }
+        orderMealKitProducts {
+            assemblyStatus
+            assemblyStationId
+            simpleRecipeProduct {
+                simpleRecipe {
+                    name
+                }
+            }
+            orderSachets {
+                ingredientName
+                isAssembled
+                isLabelled
+                isPortioned
+                processingName
+                quantity
+                status
+                unit
+            }
+        }
+    }
+}
