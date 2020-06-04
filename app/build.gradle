@@ -31,7 +31,6 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
-
 dependencies {
     def roomVersion = '1.1.1'
     def archLifecycleVersion = '1.1.0'

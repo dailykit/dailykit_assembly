@@ -1,7 +1,6 @@
 package org.dailykit.network
 
 import android.content.Context
-import android.provider.Settings.System.DATE_FORMAT
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Operation
 import com.apollographql.apollo.api.ResponseField
@@ -18,12 +17,10 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.dailykit.type.CustomType
 import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
 
 
-private val GRAPHQL_ENDPOINT: String = "https://dailykitdatahub.herokuapp.com/v1/graphql"
-private val GRAPHQL_WEBSOCKET_ENDPOINT: String = "wss://dailykitdatahub.herokuapp.com/v1/graphql"
+private val GRAPHQL_ENDPOINT: String = "http://gdbro.dailykit.org/datahub/v1/graphql"
+private val GRAPHQL_WEBSOCKET_ENDPOINT: String = "ws://gdbro.dailykit.org/datahub/v1/graphql"
 
 private val SQL_CACHE_NAME = "dailykit_assembly"
 
@@ -45,9 +42,7 @@ class Network {
             }
             .build()
 
-        val dateCustomTypeAdapter = object : CustomTypeAdapter<String> {
-            var ISO8601 = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ")
-
+        val stringTypeAdapter = object : CustomTypeAdapter<String> {
             override fun decode(value: CustomTypeValue<*>): String {
                 try {
                     return value.value.toString()
@@ -59,6 +54,21 @@ class Network {
 
             override fun encode(value: String): CustomTypeValue<*> {
                 return CustomTypeValue.GraphQLString(value)
+            }
+        }
+
+        val numericTypeAdapter = object : CustomTypeAdapter<Int> {
+            override fun decode(value: CustomTypeValue<*>): Int {
+                try {
+                    return Integer.parseInt(value.value.toString())
+                } catch (e: ParseException) {
+                    throw RuntimeException(e)
+                }
+
+            }
+
+            override fun encode(value: Int): CustomTypeValue<*> {
+                return CustomTypeValue.GraphQLNumber(value)
             }
         }
 
@@ -86,7 +96,9 @@ class Network {
                 .okHttpClient(okHttpClient)
                 .normalizedCache(normalizedCacheFactory, cacheKeyResolver)
                 .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory(GRAPHQL_WEBSOCKET_ENDPOINT, okHttpClient))
-                .addCustomTypeAdapter(CustomType.OID, dateCustomTypeAdapter)
+                .addCustomTypeAdapter(CustomType.OID, stringTypeAdapter)
+                .addCustomTypeAdapter(CustomType.JSONB, stringTypeAdapter)
+                .addCustomTypeAdapter(CustomType.NUMERIC, numericTypeAdapter)
                 .build()
     }
 }
