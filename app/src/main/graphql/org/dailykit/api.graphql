@@ -9,17 +9,103 @@ subscription MySubscription {
         id
         orderStatus
         customer {
+            id
             email
         }
+        orderInventoryProducts{
+            id
+            quantity
+            assemblyStatus
+            inventoryProduct {
+                id
+                name
+                sachetItem {
+                    id
+                    unit
+                    unitSize
+                    onHand
+                    bulkItem {
+                        id
+                        processingName
+                        supplierItem {
+                            id
+                            name
+                            supplier {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+                supplierItem {
+                    id
+                    name
+                    unit
+                    unitSize
+                    supplier {
+                        id
+                        name
+                    }
+                    bulkItemAsShipped {
+                        id
+                        processingName
+                        onHand
+                    }
+                }
+            }
+            comboProduct {
+                id
+                name
+            }
+            comboProductComponent {
+                id
+                label
+            }
+            customizableProduct {
+                id
+                name
+            }
+        }
+        orderReadyToEatProducts {
+            id
+            assemblyStatus
+            comboProduct {
+                id
+                name
+            }
+            comboProductComponent {
+                id
+                label
+            }
+            customizableProduct {
+                id
+                name
+            }
+            simpleRecipeProduct {
+                id
+                name
+            }
+            simpleRecipeProductOption {
+                id
+                simpleRecipeYield {
+                    id
+                    yield
+                }
+            }
+        }
         orderMealKitProducts {
+            id
             assemblyStatus
             assemblyStationId
             simpleRecipeProduct {
+                id
                 simpleRecipe {
+                    id
                     name
                 }
             }
             orderSachets {
+                id
                 ingredientName
                 isAssembled
                 isLabelled

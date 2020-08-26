@@ -28,10 +28,13 @@ import org.dailykit.fragment.NotificationFragment;
 import org.dailykit.fragment.OrderFragment;
 import org.dailykit.fragment.ScanFragment;
 import org.dailykit.R;
+import org.dailykit.models.OrderModel;
 import org.dailykit.network.Network;
 import org.dailykit.util.FragmentConstants;
 import org.dailykit.viewmodel.DashboardViewModel;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity implements DashboardListener {
 
@@ -155,6 +158,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
             @Override
             public void onResponse(@NotNull Response<MySubscription.Data> response) {
                 Log.e(TAG,"Response : "+response.data().toString());
+                List<MySubscription.Order> orderModelList = response.data().orders();
+
             }
 
             @Override

@@ -19,8 +19,8 @@ import org.dailykit.type.CustomType
 import java.text.ParseException
 
 
-private val GRAPHQL_ENDPOINT: String = "http://gdbro.dailykit.org/datahub/v1/graphql"
-private val GRAPHQL_WEBSOCKET_ENDPOINT: String = "ws://gdbro.dailykit.org/datahub/v1/graphql"
+private val GRAPHQL_ENDPOINT: String = "https://gdbro.dailykit.org/datahub/v1/graphql"
+private val GRAPHQL_WEBSOCKET_ENDPOINT: String = "wss://gdbro.dailykit.org/datahub/v1/graphql"
 
 private val SQL_CACHE_NAME = "dailykit_assembly"
 
