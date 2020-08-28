@@ -29,6 +29,7 @@ import java.lang.reflect.Type;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class ContinuousScanViewModel extends AndroidViewModel {
 
@@ -85,7 +86,7 @@ public class ContinuousScanViewModel extends AndroidViewModel {
 
                     @Override
                     public void onFailure(@NotNull Call<StatusResponseModel> call, @NotNull Throwable t) {
-                        Log.e(TAG,"scanUpdate Failure : "+t.toString());
+                        Timber.e("scanUpdate Failure : "+t.toString());
 
                     }
                 }
@@ -102,7 +103,7 @@ public class ContinuousScanViewModel extends AndroidViewModel {
             ingredientEntity=getIngredientById(itemEntity.getItemIngredient().get(itemEntity.getSelectedPosition()).getIngredientId());
         }
 
-        Log.e(TAG,"Ingredient Entity Under Consideration at setIngredientDetailByItemEntity :"+ingredientEntity.toString());
+        Timber.e("Ingredient Entity Under Consideration at setIngredientDetailByItemEntity :"+ingredientEntity.toString());
         if(ingredientEntity.isScanned()){
             int leftToPack=groctaurantDatabase.ingredientDao().countIngredientScannedDao(itemEntity.getItemOrderId(),false);
             int nextIndex=0;
@@ -132,7 +133,7 @@ public class ContinuousScanViewModel extends AndroidViewModel {
     }
 
     public ItemEntity getCurrentItemEntity(){
-        Log.e(TAG,sharedpreferences.getString(Constants.SELECTED_ITEM_ID, ""));
+        Timber.e(sharedpreferences.getString(Constants.SELECTED_ITEM_ID, ""));
         return groctaurantDatabase.itemDao().loadItem(sharedpreferences.getString(Constants.SELECTED_ITEM_ID, ""));
     }
 

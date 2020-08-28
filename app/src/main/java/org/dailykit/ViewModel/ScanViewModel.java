@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class ScanViewModel extends AndroidViewModel {
 
@@ -43,7 +44,7 @@ public class ScanViewModel extends AndroidViewModel {
 
     public String getIngredientSlipName(ScanListener scanListener,String scanResult){
         String ingredientId=scanResult.substring(0,scanResult.indexOf("_"))+"website"+scanResult.substring(scanResult.indexOf("_"));
-        Log.e(TAG,"Ingredient Id :"+ingredientId);
+        Timber.e("Ingredient Id :"+ingredientId);
         updateScan(scanListener,ingredientId);
         return groctaurantDatabase.ingredientDao().getSlipNameFromIngredientId(ingredientId);
     }
@@ -65,7 +66,7 @@ public class ScanViewModel extends AndroidViewModel {
 
                     @Override
                     public void onFailure(@NotNull Call<StatusResponseModel> call, @NotNull Throwable t) {
-                        Log.e(TAG,"scanUpdate Failure : "+t.toString());
+                        Timber.e("scanUpdate Failure : "+t.toString());
 
                     }
                 }
@@ -79,7 +80,7 @@ public class ScanViewModel extends AndroidViewModel {
     public void setIngredientDetailByItemEntity(ScanListener scanListener){
         ItemEntity itemEntity=getCurrentItemEntity();
         IngredientEntity ingredientEntity=getIngredientById(itemEntity.getItemIngredient().get(itemEntity.getSelectedPosition()).getIngredientId());
-        Log.e(TAG,"Ingredient Entity Under Consideration at setIngredientDetailByItemEntity :"+ingredientEntity.toString());
+        Timber.e("Ingredient Entity Under Consideration at setIngredientDetailByItemEntity :"+ingredientEntity.toString());
         if(ingredientEntity.isScanned()){
             int leftToPack=groctaurantDatabase.ingredientDao().countIngredientScannedDao(itemEntity.getItemOrderId(),false);
             int nextIndex=0;

@@ -21,6 +21,8 @@ import org.dailykit.viewmodel.DashboardViewModel;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 
 public class OrderFragment extends Fragment{
 
@@ -48,7 +50,7 @@ public class OrderFragment extends Fragment{
         orderSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                dashboardViewModel.fetchOrderList(dashboardActivity);
+                //dashboardViewModel.fetchOrderList(dashboardActivity);
                 Toast.makeText(dashboardActivity, "Refreshing List", Toast.LENGTH_SHORT).show();
                 orderSwipeRefresh.setRefreshing(false);
             }
@@ -57,7 +59,7 @@ public class OrderFragment extends Fragment{
     }
 
     public void updateList(List<OrderEntity> orderEntityList){
-        Log.e(TAG,"Order List Count : "+orderEntityList.size());
+        Timber.e("Order List Count : "+orderEntityList.size());
         orderRecyclerView.setHasFixedSize(true);
         orderScreenAdapter = new OrderAdapter(getActivity(), orderEntityList);
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

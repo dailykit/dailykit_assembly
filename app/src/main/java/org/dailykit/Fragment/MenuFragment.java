@@ -13,6 +13,8 @@ import android.widget.Toast;
 import org.dailykit.R;
 import org.dailykit.util.SoftwareConfig;
 
+import timber.log.Timber;
+
 public class MenuFragment extends Fragment {
 
     private SoftwareConfig softwareConfig;
@@ -39,7 +41,7 @@ public class MenuFragment extends Fragment {
                 softwareConfig.enablePartialPacking(false);
                 Toast.makeText(getActivity(), "Partial Packing Disabled", Toast.LENGTH_SHORT).show();
             }
-            Log.e(TAG,"isPartialPackingEnabled : "+ String.valueOf(softwareConfig.isPartialPackingEnabled()));
+            Timber.e("isPartialPackingEnabled : "+ String.valueOf(softwareConfig.isPartialPackingEnabled()));
         });
 
         if (softwareConfig.isPartialPackingEnabled()) {
@@ -56,7 +58,7 @@ public class MenuFragment extends Fragment {
                 softwareConfig.enableRapidScanning(false);
                 Toast.makeText(getActivity(), "Rapid Scanning Disabled", Toast.LENGTH_SHORT).show();
             }
-            Log.e(TAG,"isRapidScanningEnabled : "+ String.valueOf(softwareConfig.isRapidScanningEnabled()));
+            Timber.e("isRapidScanningEnabled : "+ String.valueOf(softwareConfig.isRapidScanningEnabled()));
         });
 
         if (softwareConfig.isRapidScanningEnabled()) {

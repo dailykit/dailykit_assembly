@@ -19,8 +19,8 @@ import org.dailykit.type.CustomType
 import java.text.ParseException
 
 
-private val GRAPHQL_ENDPOINT: String = "https://gdbro.dailykit.org/datahub/v1/graphql"
-private val GRAPHQL_WEBSOCKET_ENDPOINT: String = "wss://gdbro.dailykit.org/datahub/v1/graphql"
+private val GRAPHQL_ENDPOINT: String = "https://test.dailykit.org/datahub/v1/graphql"
+private val GRAPHQL_WEBSOCKET_ENDPOINT: String = "wss://test.dailykit.org/datahub/v1/graphql"
 
 private val SQL_CACHE_NAME = "dailykit_assembly"
 
@@ -97,7 +97,7 @@ class Network {
                 .normalizedCache(normalizedCacheFactory, cacheKeyResolver)
                 .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory(GRAPHQL_WEBSOCKET_ENDPOINT, okHttpClient))
                 .addCustomTypeAdapter(CustomType.OID, stringTypeAdapter)
-                .addCustomTypeAdapter(CustomType.JSONB, stringTypeAdapter)
+                //.addCustomTypeAdapter(CustomType.JSONB, stringTypeAdapter)
                 .addCustomTypeAdapter(CustomType.NUMERIC, numericTypeAdapter)
                 .build()
     }

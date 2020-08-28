@@ -1,17 +1,7 @@
-query MyQuery {
-   cart {
-       id
-   }
- }
-
-subscription MySubscription {
+subscription OrderList {
     orders {
         id
         orderStatus
-        customer {
-            id
-            email
-        }
         orderInventoryProducts{
             id
             quantity
@@ -89,7 +79,6 @@ subscription MySubscription {
                 id
                 simpleRecipeYield {
                     id
-                    yield
                 }
             }
         }
@@ -101,7 +90,6 @@ subscription MySubscription {
                 id
                 simpleRecipe {
                     id
-                    name
                 }
             }
             orderSachets {

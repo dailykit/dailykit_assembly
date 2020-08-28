@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
-import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloSubscriptionCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -14,12 +13,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import org.dailykit.MyQuery;
-import org.dailykit.MySubscription;
+
+import org.dailykit.OrderListSubscription;
 import org.dailykit.listener.DashboardListener;
 import org.dailykit.fragment.IngredientFragment;
 import org.dailykit.fragment.LabelFragment;
@@ -28,7 +26,6 @@ import org.dailykit.fragment.NotificationFragment;
 import org.dailykit.fragment.OrderFragment;
 import org.dailykit.fragment.ScanFragment;
 import org.dailykit.R;
-import org.dailykit.models.OrderModel;
 import org.dailykit.network.Network;
 import org.dailykit.util.FragmentConstants;
 import org.dailykit.viewmodel.DashboardViewModel;
@@ -36,7 +33,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class DashboardActivity extends AppCompatActivity implements DashboardListener {
+import timber.log.Timber;
+
+public class DashboardActivity extends CustomAppCompatActivity implements DashboardListener {
 
     private TextView mTextMessage;
     DashboardViewModel dashboardViewModel;
@@ -49,10 +48,8 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
     LabelFragment labelFragment;
     NotificationFragment notificationFragment;
     IngredientFragment ingredientFragment;
-    private MySubscription mySubscription;
-    private ApolloSubscriptionCall<MySubscription.Data> apolloSubscriptionCall= null;
-
-    private MyQuery cart;
+    private OrderListSubscription orderListSubscription;
+    private ApolloSubscriptionCall<OrderListSubscription.Data> apolloSubscriptionCall= null;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -106,27 +103,13 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_order);
-        cart = MyQuery.builder().build();
-
-        Network.getApolloClient().query(cart).enqueue(new ApolloCall.Callback<MyQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<MyQuery.Data> response) {
-                Log.e(TAG,"Response : "+response.data().toString());
-            }
-
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                Log.e(TAG,"onFailure : "+e.toString());
-            }
-        });
-
         subscribeOrders();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        dashboardViewModel.fetchOrderList(this);
+       //dashboardViewModel.fetchOrderList(this);
         dashboardViewModel.showScanToast();
     }
 
@@ -151,37 +134,37 @@ public class DashboardActivity extends AppCompatActivity implements DashboardLis
 
 
     public void subscribeOrders(){
-        mySubscription = MySubscription.builder().build();
-        apolloSubscriptionCall = Network.apolloClient.subscribe(mySubscription);
-        Log.e(TAG,"subscribeOrders");
-        apolloSubscriptionCall.execute(new ApolloSubscriptionCall.Callback<MySubscription.Data>() {
+        orderListSubscription = OrderListSubscription.builder().build();
+        apolloSubscriptionCall = Network.apolloClient.subscribe(orderListSubscription);
+        Timber.e("subscribeOrders");
+        apolloSubscriptionCall.execute(new ApolloSubscriptionCall.Callback<OrderListSubscription.Data>() {
             @Override
-            public void onResponse(@NotNull Response<MySubscription.Data> response) {
-                Log.e(TAG,"Response : "+response.data().toString());
-                List<MySubscription.Order> orderModelList = response.data().orders();
+            public void onResponse(@NotNull Response<OrderListSubscription.Data> response) {
+                Timber.e("Response : "+response.data().toString());
+                List<OrderListSubscription.Order> orderModelList = response.data().orders();
 
             }
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
-                Log.e(TAG,"onFailure : "+e.getLocalizedMessage());
-                Log.e(TAG,"onFailure : "+e.toString());
+                Timber.e("onFailure : "+e.getLocalizedMessage());
+                Timber.e("onFailure : "+e.toString());
                 e.printStackTrace();
             }
 
             @Override
             public void onCompleted() {
-                Log.e(TAG,"onCompleted");
+                Timber.e("onCompleted");
             }
 
             @Override
             public void onTerminated() {
-                Log.e(TAG,"onTerminated");
+                Timber.e("onTerminated");
             }
 
             @Override
             public void onConnected() {
-                Log.e(TAG,"onConnected");
+                Timber.e("onConnected");
             }
         });
     }

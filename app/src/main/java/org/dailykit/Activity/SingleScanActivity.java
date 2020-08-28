@@ -32,7 +32,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class SingleScanActivity extends AppCompatActivity implements ContinuousScanListener {
+import timber.log.Timber;
+
+public class SingleScanActivity extends CustomAppCompatActivity implements ContinuousScanListener {
 
     private static final String TAG = SingleScanActivity.class.getSimpleName();
     private DecoratedBarcodeView barcodeView;
@@ -59,7 +61,7 @@ public class SingleScanActivity extends AppCompatActivity implements ContinuousS
             }
 
             lastText = result.getText();
-            Log.e(TAG,lastText);
+            Timber.e(lastText);
             slipName = continuousScanViewModel.getIngredientSlipName(singleScanActivity,lastText);
             editor.putString(Constants.INGREDIENT_FOUND, continuousScanViewModel.getIngredientSlipName(singleScanActivity,lastText));
             editor.commit();

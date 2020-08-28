@@ -36,6 +36,8 @@ import org.dailykit.util.SoftwareConfig;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 
 /**
  * Created by Danish Rafique on 15-10-2018.
@@ -87,11 +89,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
     @Override
     public void onBindViewHolder(final SingleItemRowHolder holder, final int position) {
         final IngredientEntity singleItem = ingredientEntityList.get(position);
-        //Log.e(TAG,"Packing Enabled : "+packingEnabled);
-        Log.e(TAG,"Ingredient Name : "+singleItem.getIngredientEntity().get(0).getIngredientName()+" IsPacked :"+singleItem.getIngredientEntity().get(0).isPacked());
-        //Log.e(TAG,"Adapter Selected Position : "+itemEntity.getSelectedPosition());
+        //Timber.e("Packing Enabled : "+packingEnabled);
+        Timber.e("Ingredient Name : "+singleItem.getIngredientEntity().get(0).getIngredientName()+" IsPacked :"+singleItem.getIngredientEntity().get(0).isPacked());
+        //Timber.e("Adapter Selected Position : "+itemEntity.getSelectedPosition());
         if (itemEntity.getSelectedPosition() == position && groctaurantDatabase.ingredientDao().isScanned(singleItem.getIngredientId()) && singleItem.getIngredientEntity().size() == 1) {
-            //Log.e(TAG,"Layout 1");
+            //Timber.e("Layout 1");
             holder.ingredientLayout.setBackgroundColor(activity.getResources().getColor(R.color.white));
             holder.ingredientTitle.setTextColor(activity.getResources().getColor(R.color.black));
             holder.ingredientWeight.setTextColor(activity.getResources().getColor(R.color.black));
@@ -103,7 +105,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
             holder.ingredientDelete.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_delete_black));
             holder.ingredientRepack.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_repack_black));
         } else if (itemEntity.getSelectedPosition() == position && groctaurantDatabase.ingredientDao().isScanned(singleItem.getIngredientId()) && singleItem.getIngredientEntity().size() > 1) {
-            //Log.e(TAG,"Layout 2");
+            //Timber.e("Layout 2");
             holder.ingredientInnerLayout.setBackgroundColor(activity.getResources().getColor(R.color.white));
             holder.ingredientTitle.setTextColor(activity.getResources().getColor(R.color.black));
             holder.ingredientWeight.setTextColor(activity.getResources().getColor(R.color.black));
@@ -115,7 +117,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
             holder.ingredientDelete.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_delete_black));
             holder.ingredientRepack.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_repack_black));
         } else {
-            //Log.e(TAG,"Layout 3");
+            //Timber.e("Layout 3");
             holder.ingredientLayout.setBackgroundColor(0x00000000);
             holder.ingredientTitle.setTextColor(activity.getResources().getColor(R.color.white));
             holder.ingredientWeight.setTextColor(activity.getResources().getColor(R.color.white));
@@ -165,12 +167,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
             } else {
                 holder.ingredientAlphaMainImage.setVisibility(View.GONE);
             }
-            //Log.e(TAG, "Packing Value : " + groctaurantDatabase.ingredientDetailDao().isPackedComplete(singleItem.getIngredientEntity().get(0).getIngredientDetailId()) + " " + singleItem.getIngredientEntity().get(0).isPackedComplete() + " " + singleItem.getIngredientEntity().get(0).getIngredientName());
+            //Timber.e( "Packing Value : " + groctaurantDatabase.ingredientDetailDao().isPackedComplete(singleItem.getIngredientEntity().get(0).getIngredientDetailId()) + " " + singleItem.getIngredientEntity().get(0).isPackedComplete() + " " + singleItem.getIngredientEntity().get(0).getIngredientName());
 
             //holder.ingredientFullDetailList.setVisibility(View.GONE);
             if (groctaurantDatabase.ingredientDao().isScanned(ingredientDetailEntityList.get(0).getIngredientId())) {
                 /*if(singleItem.getIngredientEntity().get(0).isPackedComplete()){*/
-                Log.e(TAG,singleItem.getSlipName()+" isScanned");
+                Timber.e(singleItem.getSlipName()+" isScanned");
                 holder.ingredientLayout.setBackgroundColor(activity.getResources().getColor(R.color.black));
                 holder.ingredientAlphaImage.setVisibility(View.GONE);
                 holder.ingredientAlphaMainImage.setVisibility(View.VISIBLE);
@@ -190,7 +192,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
             fullyPacked = true;
             double totalWeight = 0.0;
             for (IngredientDetailEntity ingredientDetailEntity : ingredientDetailEntityList) {
-                //Log.e(TAG,"IngredientDetailEntity Position : "+position+ " Value :"+ingredientDetailEntity.toString());
+                //Timber.e("IngredientDetailEntity Position : "+position+ " Value :"+ingredientDetailEntity.toString());
                 totalWeight=totalWeight+ingredientDetailEntity.getIngredientQuantity();
                 if (!ingredientDetailEntity.isPacked()) {
                     fullyPacked = false;
@@ -198,8 +200,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
             }
             holder.ingredientWeight.setText( totalWeight+ " gms");
             if (fullyPacked) {
-                //Log.e(TAG,"Fully Packed Item : "+singleItem.getSlipName());
-                Log.e(TAG,singleItem.getSlipName()+" Fully Packed Item ");
+                //Timber.e("Fully Packed Item : "+singleItem.getSlipName());
+                Timber.e(singleItem.getSlipName()+" Fully Packed Item ");
                 holder.ingredientAlphaImage.setVisibility(View.GONE);
                 holder.ingredientAlphaMainImage.setVisibility(View.VISIBLE);
             }
@@ -238,7 +240,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
                             editor.commit();
                         }
                         itemEntity.setSelectedPosition(position);
-                        Log.e(TAG,"ChangeIngredientList Called 1");
+                        Timber.e("ChangeIngredientList Called 1");
                         if(softwareConfig.isRapidScanningEnabled()){
                             Intent intent=new Intent(activity, ContinuousScanActivity.class);
                             activity.startActivity(intent);
@@ -261,7 +263,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
         holder.ingredientMoreOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Log.e(TAG, "More Options Clicked");
+                //Timber.e( "More Options Clicked");
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                         0,
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -296,7 +298,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
         holder.ingredientLessOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Log.e(TAG, "Less Options Clicked");
+                //Timber.e( "Less Options Clicked");
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
                         0,
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -339,7 +341,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
                             public void onClick(DialogInterface dialog, int which) {
                                 groctaurantDatabase.ingredientDao().isDeletedUpdate(singleItem.getIngredientId(),true);
                                 Toast.makeText(activity, "Ingredient Deleted Successfully", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG,"ChangeIngredientList Called 2");
+                                Timber.e("ChangeIngredientList Called 2");
                                 activity.updateIngredientList();
                             }
                         })
@@ -396,7 +398,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
                                 groctaurantDatabase.ingredientDao().isPackedCompleteUpdate(singleItem.getIngredientId(),false);
                                 groctaurantDatabase.ingredientDetailDao().isPackedUpdateByIngredientId(singleItem.getIngredientId(),false);
                                 Toast.makeText(activity, "Unpacked Ingredient", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG,"ChangeIngredientList Called 3");
+                                Timber.e("ChangeIngredientList Called 3");
                                 activity.updateIngredientList();
                             }
                         })
@@ -425,7 +427,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Si
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(activity, "Unpacked Ingredient", Toast.LENGTH_SHORT).show();
                                 ingredientFragment.updatePackingStatus(singleItem.getIngredientId());
-                                Log.e(TAG,"ChangeIngredientList Called 3");
+                                Timber.e("ChangeIngredientList Called 3");
                                 activity.updateIngredientList();
                             }
                         })

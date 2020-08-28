@@ -21,6 +21,8 @@ import org.dailykit.util.Constants;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 public class IngredientLowerTabAdapter extends RecyclerView.Adapter<IngredientLowerTabAdapter.SingleItemRowHolder> {
 
     public static final String TAG = "IngredientLowerTabAdapt";
@@ -60,7 +62,7 @@ public class IngredientLowerTabAdapter extends RecyclerView.Adapter<IngredientLo
             holder.llTabInactive.setVisibility(View.GONE);
             editor.putString(Constants.SELECTED_ITEM_ID, singleItem.getItemOrderId());
             editor.commit();
-            //Log.e(TAG,"ChangeIngredientList Called 5");
+            //Timber.e("ChangeIngredientList Called 5");
             //activity.changeIngredientList();
         } else {
             holder.llTabActive.setVisibility(View.GONE);
@@ -74,7 +76,7 @@ public class IngredientLowerTabAdapter extends RecyclerView.Adapter<IngredientLo
                 editor.putInt(Constants.ACTIVE_POSITION, position);
                 editor.commit();
                 updateList();
-                Log.e(TAG,"ChangeIngredientList Called 7");
+                Timber.e("ChangeIngredientList Called 7");
                 activity.updateIngredientList();
             }
         });

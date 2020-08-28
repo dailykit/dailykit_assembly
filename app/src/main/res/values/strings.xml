@@ -31,5 +31,5 @@
     <string name="realm">Realm Name</string>
     <string name="client_id">Client ID</string>
     <string name="continue_">Continue</string>
-
+    <string name="please_wait">Please Wait</string>
 </resources>

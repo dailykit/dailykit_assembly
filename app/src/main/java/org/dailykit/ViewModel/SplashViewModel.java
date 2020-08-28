@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class SplashViewModel extends AndroidViewModel {
 
@@ -58,7 +59,7 @@ public class SplashViewModel extends AndroidViewModel {
                     public void onResponse(@NotNull Call<OrderResponseModel> call, @NotNull Response<OrderResponseModel> response) {
                         if (response.isSuccessful() && response.code() < 300) {
                             if (response.body() != null) {
-                                Log.e(TAG,"fetchOrderList Response :"+response.body().toString());
+                                Timber.e("fetchOrderList Response :"+response.body().toString());
                                 OrderResponseModel orderResponseModel=response.body();
                                 for(OrderModel orderModel:orderResponseModel.getAllOrders()){
                                     OrderEntity orderEntity=new OrderEntity(orderModel);
@@ -92,7 +93,7 @@ public class SplashViewModel extends AndroidViewModel {
 
                     @Override
                     public void onFailure(@NotNull Call<OrderResponseModel> call, @NotNull Throwable t) {
-                        Log.e(TAG,"fetchOrderList Failure : "+t.toString());
+                        Timber.e("fetchOrderList Failure : "+t.toString());
                     }
                 }
         );

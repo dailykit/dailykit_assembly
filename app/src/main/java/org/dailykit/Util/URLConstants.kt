@@ -6,5 +6,4 @@ package org.dailykit.util
 object URLConstants {
 
     const val BASE_URL = "http://ec2-18-191-54-7.us-east-2.compute.amazonaws.com:8080/"
-
 }

@@ -27,6 +27,7 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class LoginViewModel extends AndroidViewModel {
 
@@ -52,16 +53,16 @@ public class LoginViewModel extends AndroidViewModel {
         fields.put("username",username);
         fields.put("password",password);
         fields.put("scope","openid");
-        Log.e(TAG,fields.toString());
-        Log.e(TAG,sharedpreferences.getString(Constants.REALM_NAME,""));
+        Timber.e(fields.toString());
+        Timber.e(sharedpreferences.getString(Constants.REALM_NAME,""));
         apiInterface.login(sharedpreferences.getString(Constants.REALM_NAME,""),fields).enqueue(
                 new Callback<LoginResponseModel>() {
                     @Override
                     public void onResponse(@NotNull Call<LoginResponseModel> call, @NotNull Response<LoginResponseModel> response) {
-                        Log.e(TAG,"Login Response Code :"+response.code());
+                        Timber.e("Login Response Code :"+response.code());
                         if (response.isSuccessful() && response.code() < 300) {
                             if (null != response.body()) {
-                                Log.e(TAG,"Login Response :"+response.body().toString());
+                                Timber.e("Login Response :"+response.body().toString());
                             }
                             editor.putString(Constants.USER_NAME,username);
                             editor.putBoolean(Constants.IS_USER_LOGGED,true);
@@ -70,22 +71,22 @@ public class LoginViewModel extends AndroidViewModel {
                             loginListener.moveToDashboard();
                         }
                         else if(response.code() == 401){
-                            Log.e(TAG, ErrorConstants.AUTHENTICATION_ERROR);
+                            Timber.e( ErrorConstants.AUTHENTICATION_ERROR);
                             Toast.makeText(getApplication(), ErrorConstants.AUTHENTICATION_ERROR, Toast.LENGTH_SHORT).show();
                             loginListener.dismissDialog();
                         }
                         else if(response.code() == 404){
-                            Log.e(TAG, ErrorConstants.NOT_FOUND);
+                            Timber.e( ErrorConstants.NOT_FOUND);
                             Toast.makeText(getApplication(), ErrorConstants.NOT_FOUND, Toast.LENGTH_SHORT).show();
                             loginListener.dismissDialog();
                         }
                         else if(response.code() == 504){
-                            Log.e(TAG,ErrorConstants.TIMEOUT_MESSAGE);
+                            Timber.e(ErrorConstants.TIMEOUT_MESSAGE);
                             Toast.makeText(getApplication(), ErrorConstants.TIMEOUT_MESSAGE, Toast.LENGTH_SHORT).show();
                             loginListener.dismissDialog();
                         }
                         else{
-                            Log.e(TAG, ErrorConstants.FAILURE_MESSAGE);
+                            Timber.e( ErrorConstants.FAILURE_MESSAGE);
                             Toast.makeText(getApplication(), ErrorConstants.FAILURE_MESSAGE, Toast.LENGTH_SHORT).show();
                             loginListener.dismissDialog();
                         }
@@ -93,7 +94,7 @@ public class LoginViewModel extends AndroidViewModel {
 
                     @Override
                     public void onFailure(@NotNull Call<LoginResponseModel> call, @NotNull Throwable t) {
-                        Log.e(TAG,"Login Failure : "+t.toString());
+                        Timber.e("Login Failure : "+t.toString());
                         Toast.makeText(getApplication(), ErrorConstants.SERVER_ERROR, Toast.LENGTH_SHORT).show();
                         loginListener.dismissDialog();
                     }

@@ -23,8 +23,9 @@ import org.dailykit.viewmodel.LoginViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
-public class LoginActivity extends AppCompatActivity implements LoginListener {
+public class LoginActivity extends CustomAppCompatActivity implements LoginListener {
 
     public static final int REQUEST_CAMERA = 1;
     private static final String TAG = "LoginActivity";
@@ -53,13 +54,13 @@ public class LoginActivity extends AppCompatActivity implements LoginListener {
             } else if (!marshMallowPermission.checkPermissionForExternalStorage()) {
                 requestPermission();
             } else {
-                Log.e(TAG, "Permission already granted");
+                Timber.e( "Permission already granted");
             }
         }
     }
 
     private void requestPermission() {
-        Log.e(TAG, "Requesting Permission");
+        Timber.e( "Requesting Permission");
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA);
     }
 

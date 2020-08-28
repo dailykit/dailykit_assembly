@@ -19,10 +19,6 @@ import org.dailykit.util.AppUtil;
 
 import java.util.List;
 
-
-/**
- * Created by Danish Rafique on 09-10-2018.
- */
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRowHolder> {
 
     public static final String TAG = "OrderAdapter";

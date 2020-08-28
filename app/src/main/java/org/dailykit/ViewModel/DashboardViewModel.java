@@ -33,6 +33,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Created by Danish Rafique on 11-04-2019.
@@ -64,7 +65,7 @@ public class DashboardViewModel extends AndroidViewModel {
                     public void onResponse(@NotNull Call<OrderResponseModel> call, @NotNull Response<OrderResponseModel> response) {
                         if (response.isSuccessful() && response.code() < 300) {
                             if (response.body() != null) {
-                                Log.e(TAG,"fetchOrderList Response :"+response.body().toString());
+                                Timber.e("fetchOrderList Response :"+response.body().toString());
                                 OrderResponseModel orderResponseModel=response.body();
                                 for(OrderModel orderModel:orderResponseModel.getAllOrders()){
                                     OrderEntity orderEntity=new OrderEntity(orderModel);
@@ -98,17 +99,17 @@ public class DashboardViewModel extends AndroidViewModel {
 
                     @Override
                     public void onFailure(@NotNull Call<OrderResponseModel> call, @NotNull Throwable t) {
-                        Log.e(TAG,"fetchOrderList Failure : "+t.toString());
+                        Timber.e("fetchOrderList Failure : "+t.toString());
                     }
                 }
         );
     }
 
     public void count(){
-        Log.e(TAG,"Order Count : "+groctaurantDatabase.orderDao().countOrder());
-        Log.e(TAG,"Item Count : "+groctaurantDatabase.itemDao().countItemDao());
-        Log.e(TAG,"Ingredient Count : "+groctaurantDatabase.ingredientDao().countIngredientDao());
-        Log.e(TAG,"Ingredient Detail Count : "+groctaurantDatabase.ingredientDetailDao().countIngredientDetailDao());
+        Timber.e("Order Count : "+groctaurantDatabase.orderDao().countOrder());
+        Timber.e("Item Count : "+groctaurantDatabase.itemDao().countItemDao());
+        Timber.e("Ingredient Count : "+groctaurantDatabase.ingredientDao().countIngredientDao());
+        Timber.e("Ingredient Detail Count : "+groctaurantDatabase.ingredientDetailDao().countIngredientDetailDao());
     }
 
     public List<OrderEntity> fetchOrderList(){
@@ -162,7 +163,7 @@ public class DashboardViewModel extends AndroidViewModel {
                     }
                     @Override
                     public void onFailure(@NotNull Call<StatusResponseModel> call, @NotNull Throwable t) {
-                        Log.e(TAG,"repackRequestModel Failure : "+t.toString());
+                        Timber.e("repackRequestModel Failure : "+t.toString());
 
                     }
                 }

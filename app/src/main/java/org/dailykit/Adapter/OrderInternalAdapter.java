@@ -122,7 +122,7 @@ public class OrderInternalAdapter extends RecyclerView.Adapter<OrderInternalAdap
             }
         });
 
-        //Log.e(TAG,"Id :"+sharedpreferences.getString(Constants.SELECTED_ITEM_ID,"")+" "+singleItem.getItemOrderId());
+        //Timber.e("Id :"+sharedpreferences.getString(Constants.SELECTED_ITEM_ID,"")+" "+singleItem.getItemOrderId());
 
         if(currentSelectedItem.equals(singleItem.getItemOrderId())){
             holder.imgOnline.setVisibility(View.VISIBLE);

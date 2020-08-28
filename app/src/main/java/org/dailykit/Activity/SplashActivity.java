@@ -13,7 +13,7 @@ import org.dailykit.listener.SplashListener;
 import org.dailykit.network.Network;
 import org.dailykit.viewmodel.SplashViewModel;
 
-public class SplashActivity extends AppCompatActivity implements SplashListener {
+public class SplashActivity extends CustomAppCompatActivity implements SplashListener {
 
     SplashViewModel splashViewModel;
     Intent intent;
@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity implements SplashListener 
                     intent=new Intent(SplashActivity.this,DashboardActivity.class);
                 }
                 else{
-                    intent=new Intent(SplashActivity.this,RealmActivity.class);
+                    intent=new Intent(SplashActivity.this,DashboardActivity.class);
                 }
                 startActivity(intent);
                 SplashActivity.this.finish();

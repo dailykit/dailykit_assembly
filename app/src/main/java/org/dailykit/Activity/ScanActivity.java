@@ -20,8 +20,9 @@ import org.dailykit.util.Constants;
 import org.dailykit.viewmodel.ScanViewModel;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import timber.log.Timber;
 
-public class ScanActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler, ScanListener {
+public class ScanActivity extends CustomAppCompatActivity implements ZXingScannerView.ResultHandler, ScanListener {
 
     public static final int REQUEST_CAMERA = 1;
     private ZXingScannerView scannerView;
@@ -59,8 +60,8 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void handleResult(Result result) {
         final String scanResult=result.getText();
-        Log.e(TAG,isScanning+" "+scanResult);
-        Log.e(TAG,"Found : "+scanResult);
+        Timber.e(isScanning+" "+scanResult);
+        Timber.e("Found : "+scanResult);
         scanViewModel.getIngredientSlipName(this,scanResult);
         editor.putString(Constants.INGREDIENT_FOUND, scanViewModel.getIngredientSlipName(this,scanResult));
         editor.commit();

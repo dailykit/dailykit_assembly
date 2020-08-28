@@ -27,6 +27,8 @@ import org.dailykit.util.Constants;
 
 import java.lang.reflect.Type;
 
+import timber.log.Timber;
+
 /**
  * Created by Danish Rafique on 16-10-2018.
  */
@@ -81,8 +83,8 @@ public class IngredientInternalAdapter extends RecyclerView.Adapter<IngredientIn
             editor.putString(Constants.SELECTED_INGREDIENT_ENTITY, new Gson().toJson(ingredientEntity.getIngredientEntity().get(0)));
             editor.commit();
         }
-        Log.e(TAG,"Selected : "+selectedIngredientDetailEntity.toString());
-        Log.e(TAG,"Current : "+singleItem.toString());
+        Timber.e("Selected : "+selectedIngredientDetailEntity.toString());
+        Timber.e("Current : "+singleItem.toString());
 
         if (isSelected && singleItem.getIngredientDetailId().equals(selectedIngredientDetailEntity.getIngredientDetailId())) {
 
@@ -100,13 +102,13 @@ public class IngredientInternalAdapter extends RecyclerView.Adapter<IngredientIn
         holder.ingredientInternalLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e(TAG, singleItem.getIngredientName());
+                Timber.e( singleItem.getIngredientName());
                 groctaurantDatabase.ingredientDao().setSelectedItem(ingredientEntity.getIngredientId(), position);
                 groctaurantDatabase.itemDao().setSelectedItem(itemEntity.getItemOrderId(), ingredientPosition);
                 editor.putString(Constants.SELECTED_INGREDIENT_ENTITY, new Gson().toJson(singleItem));
                 editor.commit();
                 itemEntity.setSelectedPosition(ingredientPosition);
-                Log.e(TAG,"ChangeIngredientList Called 4");
+                Timber.e("ChangeIngredientList Called 4");
                 activity.updateIngredientList();
             }
         });
