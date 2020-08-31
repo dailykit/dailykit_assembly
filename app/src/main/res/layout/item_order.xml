@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="@color/white"
             android:orientation="horizontal"
             android:weightSum="7">
 
@@ -48,6 +55,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_margin="5dp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_order_time" />
 
                 <TextView
@@ -55,7 +63,6 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="41 mins"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -63,25 +70,70 @@
 
 
         </LinearLayout>
-
-        <FrameLayout
+        <LinearLayout
+            android:id="@+id/inventory_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_transparent_button">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/order_internal_list"
+            android:orientation="vertical">
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fadeScrollbars="false"
-                android:focusable="true"
-                android:paddingBottom="5dp"
-                android:nestedScrollingEnabled="false"
-                android:paddingTop="5dp"
-                android:scrollbars="none">
-
-            </androidx.recyclerview.widget.RecyclerView>
-        </FrameLayout>
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:text="@string/inventory_product"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text"
+                android:alpha="0.5"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/inventory_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ready_to_eat_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:text="@string/ready_to_eat_product"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text"
+                android:alpha="0.5"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ready_to_eat_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/meal_kit_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:text="@string/mealkit_product"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text"
+                android:alpha="0.5"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/meal_kit_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
     </LinearLayout>
 
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

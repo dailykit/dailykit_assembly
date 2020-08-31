@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RealmActivity extends AppCompatActivity {
+public class RealmActivity extends CustomAppCompatActivity {
 
     @BindView(R.id.realm_name)
     TextInputEditText realmName;

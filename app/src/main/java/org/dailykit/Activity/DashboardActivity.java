@@ -109,13 +109,12 @@ public class DashboardActivity extends CustomAppCompatActivity implements Dashbo
     @Override
     protected void onResume() {
         super.onResume();
-       //dashboardViewModel.fetchOrderList(this);
         dashboardViewModel.showScanToast();
     }
 
     @Override
     public void updateList() {
-        orderFragment.updateList(dashboardViewModel.fetchOrderList());
+
     }
 
     @Override
@@ -134,32 +133,39 @@ public class DashboardActivity extends CustomAppCompatActivity implements Dashbo
 
 
     public void subscribeOrders(){
+        showDialog();
         orderListSubscription = OrderListSubscription.builder().build();
         apolloSubscriptionCall = Network.apolloClient.subscribe(orderListSubscription);
         Timber.e("subscribeOrders");
         apolloSubscriptionCall.execute(new ApolloSubscriptionCall.Callback<OrderListSubscription.Data>() {
             @Override
             public void onResponse(@NotNull Response<OrderListSubscription.Data> response) {
-                Timber.e("Response : "+response.data().toString());
-                List<OrderListSubscription.Order> orderModelList = response.data().orders();
-
+                dismissDialog();
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        orderFragment.updateList(response.data().orders());
+                    }
+                });
             }
 
             @Override
             public void onFailure(@NotNull ApolloException e) {
                 Timber.e("onFailure : "+e.getLocalizedMessage());
                 Timber.e("onFailure : "+e.toString());
+                dismissDialog();
                 e.printStackTrace();
             }
 
             @Override
             public void onCompleted() {
                 Timber.e("onCompleted");
+                dismissDialog();
             }
 
             @Override
             public void onTerminated() {
                 Timber.e("onTerminated");
+                dismissDialog();
             }
 
             @Override

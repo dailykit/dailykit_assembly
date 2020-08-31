@@ -1,64 +1,83 @@
 package org.dailykit.adapter;
 
 import android.app.Activity;
-import androidx.room.Room;
-import android.content.Context;
-import android.content.SharedPreferences;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
-import org.dailykit.room.database.GroctaurantDatabase;
-import org.dailykit.room.entity.ItemEntity;
-import org.dailykit.room.entity.OrderEntity;
-import org.dailykit.util.AppUtil;
+import org.dailykit.listener.OrderListener;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRowHolder> {
 
-    public static final String TAG = "OrderAdapter";
-    Context context;
-    SharedPreferences sharedpreferences;
-    SharedPreferences.Editor editor;
-    int currentPosition;
-    OrderInternalAdapter adapter;
-    private List<OrderEntity> allDetailModelArrayList;
+    private List<OrderListSubscription.Order> allDetailModelArrayList;
     private Activity activity;
-    GroctaurantDatabase groctaurantDatabase;
-    private List<ItemEntity> itemEntityList;
+    private OrderListener orderListener;
+    private InventoryProductAdapter inventoryProductAdapter;
+    private ReadyToEatProductAdapter readyToEatProductAdapter;
+    private MealKitProductAdapter mealKitProductAdapter;
 
-    public OrderAdapter(Activity activity, List<OrderEntity> allDetailModelArrayList) {
+    public OrderAdapter(Activity activity, OrderListener orderListener,List<OrderListSubscription.Order> allDetailModelArrayList) {
         this.allDetailModelArrayList = allDetailModelArrayList;
+        this.orderListener =  orderListener;
         this.activity = activity;
     }
 
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
         SingleItemRowHolder rowHolder = new SingleItemRowHolder(v);
-        sharedpreferences = AppUtil.getAppPreferences(activity);
-        editor = sharedpreferences.edit();
-        groctaurantDatabase = Room.databaseBuilder(activity, GroctaurantDatabase.class, "Development")
-                .allowMainThreadQueries()
-                .build();
         return rowHolder;
     }
 
     @Override
     public void onBindViewHolder(final SingleItemRowHolder holder, final int position) {
-        final OrderEntity singleItem = allDetailModelArrayList.get(position);
-        itemEntityList = groctaurantDatabase.itemDao().loadItemsByOrderId(singleItem.getOrderId());
-        adapter = new OrderInternalAdapter(activity, itemEntityList, position, singleItem.getOrderId());
-        holder.orderList.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        holder.orderList.setAdapter(adapter);
-        holder.orderName.setText(singleItem.getOrderId());
-        adapter.notifyDataSetChanged();
+        final OrderListSubscription.Order singleItem = allDetailModelArrayList.get(position);
 
+        holder.orderName.setText((String) singleItem.id());
+        if(singleItem.orderInventoryProducts().size() == 0){
+            holder.inventoryLayout.setVisibility(View.GONE);
+        }
+        else {
+            holder.inventoryLayout.setVisibility(View.VISIBLE);
+            inventoryProductAdapter = new InventoryProductAdapter(activity, orderListener, singleItem.orderInventoryProducts());
+            holder.inventoryList.setLayoutManager( new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+            holder.inventoryList.setAdapter(inventoryProductAdapter);
+            inventoryProductAdapter.notifyDataSetChanged();
+        }
+
+        if(singleItem.orderReadyToEatProducts().size() == 0){
+            holder.readyToEatLayout.setVisibility(View.GONE);
+        }
+        else {
+            holder.readyToEatLayout.setVisibility(View.VISIBLE);
+            readyToEatProductAdapter = new ReadyToEatProductAdapter(activity, orderListener, singleItem.orderReadyToEatProducts());
+            holder.readyToEatList.setLayoutManager( new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+            holder.readyToEatList.setAdapter(readyToEatProductAdapter);
+            readyToEatProductAdapter.notifyDataSetChanged();
+        }
+
+        if(singleItem.orderMealKitProducts().size() == 0){
+            holder.mealKitLayout.setVisibility(View.GONE);
+        }
+        else {
+            holder.mealKitLayout.setVisibility(View.VISIBLE);
+            mealKitProductAdapter = new MealKitProductAdapter(activity, orderListener, singleItem.orderMealKitProducts());
+            holder.mealKitList.setLayoutManager( new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+            holder.mealKitList.setAdapter(mealKitProductAdapter);
+            mealKitProductAdapter.notifyDataSetChanged();
+        }
     }
 
     public void updateList() {
@@ -71,15 +90,26 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRo
         return (null != allDetailModelArrayList ? allDetailModelArrayList.size() : 0);
     }
 
-    public class SingleItemRowHolder extends RecyclerView.ViewHolder {
+    static
+    class SingleItemRowHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.order_name)
+        TextView orderName;
+        @BindView(R.id.inventory_list)
+        RecyclerView inventoryList;
+        @BindView(R.id.inventory_layout)
+        LinearLayout inventoryLayout;
+        @BindView(R.id.ready_to_eat_list)
+        RecyclerView readyToEatList;
+        @BindView(R.id.ready_to_eat_layout)
+        LinearLayout readyToEatLayout;
+        @BindView(R.id.meal_kit_list)
+        RecyclerView mealKitList;
+        @BindView(R.id.meal_kit_layout)
+        LinearLayout mealKitLayout;
 
-        protected RecyclerView orderList;
-        protected TextView orderName;
-
-        public SingleItemRowHolder(View itemView) {
-            super(itemView);
-            this.orderList = (RecyclerView) itemView.findViewById(R.id.order_internal_list);
-            this.orderName = (TextView) itemView.findViewById(R.id.order_name);
+        SingleItemRowHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
     }
 }

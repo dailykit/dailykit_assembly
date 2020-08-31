@@ -34,6 +34,7 @@ object Constants {
     const val REALM_NAME = "REALM_NAME"
     const val CLIENT_ID = "CLIENT_ID"
     const val USER_ACCESS_MODEL = "USER_ACCESS_MODEL"
+    const val ORDER_LIST = "ORDER_LIST"
 
 }
 

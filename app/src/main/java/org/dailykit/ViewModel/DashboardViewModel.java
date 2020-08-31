@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import org.dailykit.OrderListSubscription;
 import org.dailykit.listener.DashboardListener;
 import org.dailykit.model.IngredientDetailModel;
 import org.dailykit.model.IngredientModel;
@@ -26,6 +29,9 @@ import org.dailykit.room.entity.OrderEntity;
 import org.dailykit.util.AppUtil;
 import org.dailykit.util.Constants;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,56 +59,6 @@ public class DashboardViewModel extends AndroidViewModel {
         groctaurantDatabase = Room.databaseBuilder(application, GroctaurantDatabase.class, "Development").allowMainThreadQueries().build();
         apiInterface = RetrofitClient.getClient().getApi();
 
-    }
-
-    public void fetchOrderList(final DashboardListener dashboardListener){
-        /*if(groctaurantDatabase.orderDao().countOrder()>0){
-            dashboardListener.updateList();
-        }*/
-        apiInterface.fetchOrderList().enqueue(
-                new Callback<OrderResponseModel>() {
-                    @Override
-                    public void onResponse(@NotNull Call<OrderResponseModel> call, @NotNull Response<OrderResponseModel> response) {
-                        if (response.isSuccessful() && response.code() < 300) {
-                            if (response.body() != null) {
-                                Timber.e("fetchOrderList Response :"+response.body().toString());
-                                OrderResponseModel orderResponseModel=response.body();
-                                for(OrderModel orderModel:orderResponseModel.getAllOrders()){
-                                    OrderEntity orderEntity=new OrderEntity(orderModel);
-                                    ArrayList<ItemEntity> itemEntityArrayList=new ArrayList<>();
-                                    for(ItemModel itemModel:orderModel.getItems()){
-                                        ItemEntity itemEntity=new ItemEntity(itemModel);
-                                        ArrayList<IngredientEntity> ingredientModelArrayList=new ArrayList<>();
-                                        for(IngredientModel ingredientModel:itemModel.getIngredients()){
-                                            IngredientEntity ingredientEntity=new IngredientEntity(ingredientModel);
-                                            ArrayList<IngredientDetailEntity> ingredientDetailModelArrayList=new ArrayList<>();
-                                            for(IngredientDetailModel ingredientDetailModel:ingredientModel.getIngredientDetails()){
-                                                IngredientDetailEntity ingredientDetailEntity=new IngredientDetailEntity(ingredientDetailModel);
-                                                groctaurantDatabase.ingredientDetailDao().insert(ingredientDetailEntity);
-                                                ingredientDetailModelArrayList.add(ingredientDetailEntity);
-                                            }
-                                            ingredientEntity.setIngredientEntity(ingredientDetailModelArrayList);
-                                            groctaurantDatabase.ingredientDao().insert(ingredientEntity);
-                                            ingredientModelArrayList.add(ingredientEntity);
-                                        }
-                                        itemEntity.setItemIngredient(ingredientModelArrayList);
-                                        groctaurantDatabase.itemDao().insert(itemEntity);
-                                        itemEntityArrayList.add(itemEntity);
-                                    }
-                                    orderEntity.setOrderItems(itemEntityArrayList);
-                                    groctaurantDatabase.orderDao().insert(orderEntity);
-                                }
-                            }
-                            dashboardListener.updateList();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<OrderResponseModel> call, @NotNull Throwable t) {
-                        Timber.e("fetchOrderList Failure : "+t.toString());
-                    }
-                }
-        );
     }
 
     public void count(){
@@ -168,6 +124,29 @@ public class DashboardViewModel extends AndroidViewModel {
                     }
                 }
         );
+    }
+
+    public void convertOrderResponseToPOJO(DashboardListener dashboardListener,OrderListSubscription.Order orders){
+        Gson gson = new Gson();
+
+
+        /*try {
+            JSONArray jsonEvents = new JSONObject(body).getJSONObject("data").getJSONObject("allEvents").getJSONArray("edges");
+            for (int i = 0; i < jsonEvents.length(); ++i) {
+                JSONObject event = jsonEvents.getJSONObject(i).getJSONObject("node");
+                Log.v("TAG", gson.fromJson(event.toString(), Event.class).toString());
+            }
+
+
+
+
+
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
     }
 
 }

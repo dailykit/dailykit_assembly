@@ -32,4 +32,8 @@
     <string name="client_id">Client ID</string>
     <string name="continue_">Continue</string>
     <string name="please_wait">Please Wait</string>
+    <string name="mealkit_product">Mealkit Product</string>
+    <string name="ready_to_eat_product">Ready to Eat Product</string>
+    <string name="inventory_product">Inventory Product</string>
+    <string name="dummy_name">dummy_name</string>
 </resources>
