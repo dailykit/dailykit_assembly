@@ -1,7 +1,9 @@
 subscription OrderList {
-    orders{
+    orders(where: {keycloakId: {_is_null: false}}){
         id
         orderStatus
+        amountPaid
+        customer: deliveryInfo(path: "dropoff.dropoffInfo")
         orderInventoryProducts{
             id
             quantity
@@ -65,6 +67,7 @@ subscription OrderList {
         }
         orderReadyToEatProducts {
             id
+            quantity
             assemblyStatus
             isAssembled
             comboProductId
@@ -88,11 +91,13 @@ subscription OrderList {
                 id
                 simpleRecipeYield {
                     id
+                    yield
                 }
             }
         }
         orderMealKitProducts {
             id
+            quantity
             assemblyStatus
             assemblyStationId
             isAssembled
@@ -107,6 +112,7 @@ subscription OrderList {
                 id
                 simpleRecipeYield {
                     id
+                    yield
                 }
             }
             assemblyStation {

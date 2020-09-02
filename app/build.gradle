@@ -1,11 +1,14 @@
+plugins {
+    id("com.apollographql.apollo")
+}
 apply plugin: 'com.android.application'
-apply plugin: 'com.apollographql.android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
     defaultConfig {
+        multiDexEnabled true
         applicationId "org.dailykit"
         minSdkVersion 17
         targetSdkVersion 28
@@ -55,8 +58,10 @@ dependencies {
 
     // Apollo
     implementation "com.apollographql.apollo:apollo-runtime:$apolloVersion"
-    implementation "com.apollographql.apollo:apollo-android-support:$apolloVersion"
-    implementation "com.apollographql.apollo:apollo-rx2-support:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-normalized-cache-sqlite:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-coroutines-support:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-rx3-support:$apolloVersion"
+
 
     implementation "com.squareup.okhttp3:okhttp:3.13.1"
     implementation "com.squareup.okhttp3:logging-interceptor:3.13.1"

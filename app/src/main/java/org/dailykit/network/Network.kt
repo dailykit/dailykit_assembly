@@ -2,6 +2,8 @@ package org.dailykit.network
 
 import android.content.Context
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.CustomTypeAdapter
+import com.apollographql.apollo.api.CustomTypeValue
 import com.apollographql.apollo.api.Operation
 import com.apollographql.apollo.api.ResponseField
 import com.apollographql.apollo.cache.normalized.CacheKey
@@ -10,8 +12,7 @@ import com.apollographql.apollo.cache.normalized.lru.EvictionPolicy
 import com.apollographql.apollo.cache.normalized.lru.LruNormalizedCacheFactory
 import com.apollographql.apollo.cache.normalized.sql.ApolloSqlHelper
 import com.apollographql.apollo.cache.normalized.sql.SqlNormalizedCacheFactory
-import com.apollographql.apollo.response.CustomTypeAdapter
-import com.apollographql.apollo.response.CustomTypeValue
+
 import com.apollographql.apollo.subscription.WebSocketSubscriptionTransport
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -97,7 +98,7 @@ class Network {
                 .normalizedCache(normalizedCacheFactory, cacheKeyResolver)
                 .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory(GRAPHQL_WEBSOCKET_ENDPOINT, okHttpClient))
                 .addCustomTypeAdapter(CustomType.OID, stringTypeAdapter)
-                //.addCustomTypeAdapter(CustomType.JSONB, stringTypeAdapter)
+                .addCustomTypeAdapter(CustomType.JSONB, stringTypeAdapter)
                 .addCustomTypeAdapter(CustomType.NUMERIC, numericTypeAdapter)
                 .build()
     }
