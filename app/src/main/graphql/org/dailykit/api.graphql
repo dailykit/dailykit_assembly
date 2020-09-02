@@ -1,10 +1,11 @@
 subscription OrderList {
-    orders {
+    orders{
         id
         orderStatus
         orderInventoryProducts{
             id
             quantity
+            isAssembled
             assemblyStatus
             inventoryProduct {
                 id
@@ -43,6 +44,7 @@ subscription OrderList {
                     }
                 }
             }
+            comboProductId
             comboProduct {
                 id
                 name
@@ -55,10 +57,17 @@ subscription OrderList {
                 id
                 name
             }
+            inventoryProductOption {
+                id
+                quantity
+                label
+            }
         }
         orderReadyToEatProducts {
             id
             assemblyStatus
+            isAssembled
+            comboProductId
             comboProduct {
                 id
                 name
@@ -86,11 +95,31 @@ subscription OrderList {
             id
             assemblyStatus
             assemblyStationId
+            isAssembled
             simpleRecipeProduct {
                 id
+                name
                 simpleRecipe {
                     id
                 }
+            }
+            simpleRecipeProductOption {
+                id
+                simpleRecipeYield {
+                    id
+                }
+            }
+            assemblyStation {
+                name
+            }
+            comboProductId
+            comboProduct {
+                id
+                name
+            }
+            comboProductComponent {
+                id
+                label
             }
             orderSachets {
                 id
