@@ -39,6 +39,7 @@ class Network {
             .addInterceptor { chain ->
                 val original = chain.request()
                 val builder = original.newBuilder().method(original.method(), original.body())
+                builder.header("X-Hasura-Admin-Secret","60ea76ab-5ab6-4f09-ad44-efeb00f978ce")
                 chain.proceed(builder.build())
             }
             .build()

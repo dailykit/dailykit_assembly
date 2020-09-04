@@ -2,7 +2,6 @@ subscription OrderList {
     orders(where: {keycloakId: {_is_null: false}}){
         id
         orderStatus
-        amountPaid
         customer: deliveryInfo(path: "dropoff.dropoffInfo")
         orderInventoryProducts{
             id

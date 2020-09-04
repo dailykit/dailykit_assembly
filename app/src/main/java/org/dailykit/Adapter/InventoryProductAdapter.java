@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,13 +41,20 @@ public class InventoryProductAdapter extends RecyclerView.Adapter<InventoryProdu
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final OrderListSubscription.OrderInventoryProduct singleItem = orderInventoryProductList.get(position);
-        holder.name.setText(singleItem.inventoryProduct().name());
-        if (null == singleItem.inventoryProduct().supplierItem()) {
-            holder.quantity.setText("");
-        } else {
-            int unitSize = (null == singleItem.inventoryProduct().supplierItem().unitSize()) ? 0 : singleItem.inventoryProduct().supplierItem().unitSize();
-            String unit = (null == singleItem.inventoryProduct().supplierItem().unit()) ? "" : singleItem.inventoryProduct().supplierItem().unit();
-            holder.quantity.setText(unitSize + " " + unit);
+        String comboName = "";
+        if(null != singleItem.comboProductId() && null != singleItem.comboProduct()){
+            comboName = " - "+singleItem.comboProduct().name();
+            if(null != singleItem.comboProductComponent()){
+                comboName = comboName+" ("+singleItem.comboProductComponent().label()+")";
+            }
+        }
+        holder.name.setText(singleItem.inventoryProduct().name()+comboName);
+        holder.quantity.setText(singleItem.quantity()+" nos");
+        if(singleItem.isAssembled()){
+            holder.available.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_check_green));
+        }
+        else{
+            holder.available.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_check_grey));
         }
     }
 
@@ -63,8 +71,12 @@ public class InventoryProductAdapter extends RecyclerView.Adapter<InventoryProdu
 
     static
     class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.available)
+        ImageView available;
         @BindView(R.id.name)
         TextView name;
+        @BindView(R.id.serving)
+        TextView serving;
         @BindView(R.id.quantity)
         TextView quantity;
         @BindView(R.id.layout)
