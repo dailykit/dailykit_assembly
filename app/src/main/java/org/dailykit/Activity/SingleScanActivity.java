@@ -3,8 +3,6 @@ package org.dailykit.activity;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,7 +22,7 @@ import org.dailykit.model.ScanIngredientDataModel;
 import org.dailykit.R;
 import org.dailykit.room.entity.ItemEntity;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
+import org.dailykit.constants.Constants;
 import org.dailykit.viewmodel.ContinuousScanViewModel;
 import org.dailykit.viewmodel.DashboardViewModel;
 
@@ -88,7 +86,7 @@ public class SingleScanActivity extends CustomAppCompatActivity implements Conti
         continuousScanViewModel= ViewModelProviders.of(this).get(ContinuousScanViewModel.class);
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         packingStatus=findViewById(R.id.ingredient_packing_status);
-        itemName=findViewById(R.id.ingredient_item_name);
+        itemName=findViewById(R.id.order_id);
         serving=findViewById(R.id.ingredient_serving);
         ingredientName=findViewById(R.id.ingredient_name);
         ingredientWeight=findViewById(R.id.ingredient_weight);
@@ -115,7 +113,7 @@ public class SingleScanActivity extends CustomAppCompatActivity implements Conti
     }
 
     public void updateUI(){
-        itemEntity=dashboardViewModel.getCurrentItemEntity();
+
         scanIngredientDataModel=continuousScanViewModel.getScanIngredient();
         packingStatus.setText(continuousScanViewModel.getItemPackStatus(itemEntity));
         serving.setText(itemEntity.getItemServing());

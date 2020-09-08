@@ -2,7 +2,6 @@ package org.dailykit.viewmodel;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,8 +16,8 @@ import org.dailykit.retrofit.APIInterface;
 import org.dailykit.retrofit.RetrofitClient;
 import org.dailykit.room.database.GroctaurantDatabase;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
-import org.dailykit.util.ErrorConstants;
+import org.dailykit.constants.Constants;
+import org.dailykit.constants.ErrorConstants;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

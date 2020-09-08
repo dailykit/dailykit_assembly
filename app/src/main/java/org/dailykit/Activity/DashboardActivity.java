@@ -11,7 +11,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -27,11 +26,9 @@ import org.dailykit.fragment.OrderFragment;
 import org.dailykit.fragment.ScanFragment;
 import org.dailykit.R;
 import org.dailykit.network.Network;
-import org.dailykit.util.FragmentConstants;
+import org.dailykit.constants.FragmentConstants;
 import org.dailykit.viewmodel.DashboardViewModel;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 import timber.log.Timber;
 
@@ -119,7 +116,7 @@ public class DashboardActivity extends CustomAppCompatActivity implements Dashbo
 
     @Override
     public void updateIngredientList() {
-        ingredientFragment.updateIngredientList();
+
     }
 
     public void switchToIngredientFragment(){

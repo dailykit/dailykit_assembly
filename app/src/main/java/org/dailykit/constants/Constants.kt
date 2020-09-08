@@ -1,0 +1,19 @@
+package org.dailykit.constants
+
+object Constants {
+
+    const val SETTINGS_APP_SETTINGS = "GROCTAURANT"
+    const val USER_NAME = "USER_NAME"
+    const val IS_USER_LOGGED = "IS_USER_LOGGED"
+    const val ACTIVE_POSITION = "ACTIVE_POSITION"
+    const val SELECTED_ORDER_ID = "SELECTED_ORDER_ID"
+    const val SELECTED_INGREDIENT_ENTITY = "SELECTED_INGREDIENT_ENTITY"
+    const val SCANNED_INGREDIENT_ENTITY = "SCANNED_INGREDIENT_ENTITY"
+    const val SELECTED_ITEM_ID = "SELECTED_ITEM_ID"
+    const val INGREDIENT_FOUND = "INGREDIENT_FOUND"
+    const val REALM_NAME = "REALM_NAME"
+    const val CLIENT_ID = "CLIENT_ID"
+    const val USER_ACCESS_MODEL = "USER_ACCESS_MODEL"
+    const val SELECTED_ORDER = "SELECTED_ORDER"
+}
+

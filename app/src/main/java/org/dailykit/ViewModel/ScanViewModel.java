@@ -18,7 +18,7 @@ import org.dailykit.room.database.GroctaurantDatabase;
 import org.dailykit.room.entity.IngredientEntity;
 import org.dailykit.room.entity.ItemEntity;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
+import org.dailykit.constants.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import retrofit2.Call;

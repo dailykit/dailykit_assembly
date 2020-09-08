@@ -1,4 +1,4 @@
-package org.dailykit.util
+package org.dailykit.constants
 
 /**
  * Created by Danish Rafique on 29-01-2019.

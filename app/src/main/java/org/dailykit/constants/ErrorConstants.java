@@ -1,4 +1,4 @@
-package org.dailykit.util;
+package org.dailykit.constants;
 
 public class ErrorConstants {
 

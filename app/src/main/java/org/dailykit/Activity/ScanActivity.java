@@ -9,14 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
 
 import com.google.zxing.Result;
 
 import org.dailykit.listener.ScanListener;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
+import org.dailykit.constants.Constants;
 import org.dailykit.viewmodel.ScanViewModel;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;

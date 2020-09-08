@@ -2,6 +2,8 @@ package org.dailykit.fragment;
 
 
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.dailykit.OrderListSubscription;
+import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.activity.DashboardActivity;
 import org.dailykit.adapter.OrderAdapter;
 import org.dailykit.R;
@@ -75,5 +78,11 @@ public class OrderFragment extends Fragment implements OrderListener {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void moveToContinuousScanActivity(OrderListSubscription.Order order) {
+        dashboardViewModel.setSelectedOrder(order);
+        startActivity(new Intent(dashboardActivity, ContinuousScanActivity.class));
     }
 }

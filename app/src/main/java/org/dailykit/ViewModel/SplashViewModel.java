@@ -2,7 +2,6 @@ package org.dailykit.viewmodel;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -22,7 +21,7 @@ import org.dailykit.room.entity.IngredientEntity;
 import org.dailykit.room.entity.ItemEntity;
 import org.dailykit.room.entity.OrderEntity;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
+import org.dailykit.constants.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

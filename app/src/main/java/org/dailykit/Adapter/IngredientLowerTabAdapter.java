@@ -4,7 +4,7 @@ import android.app.Activity;
 import androidx.room.Room;
 import android.content.SharedPreferences;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,7 @@ import org.dailykit.room.database.GroctaurantDatabase;
 import org.dailykit.room.database.GroctaurantExecutor;
 import org.dailykit.room.entity.ItemEntity;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
+import org.dailykit.constants.Constants;
 
 import java.util.List;
 

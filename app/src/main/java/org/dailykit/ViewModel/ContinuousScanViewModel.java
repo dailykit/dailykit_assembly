@@ -21,7 +21,7 @@ import org.dailykit.room.database.GroctaurantDatabase;
 import org.dailykit.room.entity.IngredientEntity;
 import org.dailykit.room.entity.ItemEntity;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
+import org.dailykit.constants.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
@@ -36,7 +36,6 @@ public class ContinuousScanViewModel extends AndroidViewModel {
     private static final String TAG = "ContinuousScanViewModel";
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
-    GroctaurantDatabase groctaurantDatabase;
     private APIInterface apiInterface;
     Type type;
     ScanIngredientDataModel scanIngredientDataModel;
@@ -45,14 +44,11 @@ public class ContinuousScanViewModel extends AndroidViewModel {
         super(application);
         sharedpreferences = AppUtil.getAppPreferences(application);
         editor = sharedpreferences.edit();
-        groctaurantDatabase = Room.databaseBuilder(application, GroctaurantDatabase.class, "Development").allowMainThreadQueries().build();
         apiInterface = RetrofitClient.getClient().getApi();
     }
 
     public String getItemPackStatus(ItemEntity itemEntity){
-        return groctaurantDatabase.ingredientDao().countIngredientScannedDao(sharedpreferences.getString(Constants.SELECTED_ITEM_ID,""), true)+"/"
-                +groctaurantDatabase.ingredientDao().countIngredientPacked(sharedpreferences.getString(Constants.SELECTED_ITEM_ID,""), true)+"/"
-                +itemEntity.getItemNoOfIngredient();
+        return null;
     }
 
     public String getIngredientSlipName(ContinuousScanListener continuousScanListener, String scanResult){
@@ -61,8 +57,7 @@ public class ContinuousScanViewModel extends AndroidViewModel {
         if(ingredientItemId.equals(getCurrentItemEntity().getItemOrderId())){
             continuousScanListener.setScannedIngredientDetail();
             updateScan(continuousScanListener,ingredientId);
-            return groctaurantDatabase.ingredientDao().getSlipNameFromIngredientId(ingredientId);
-        }
+            return null;       }
         else{
             return "Ingredient not in this order";
         }
@@ -79,7 +74,7 @@ public class ContinuousScanViewModel extends AndroidViewModel {
                             if (response.body() != null) {
                                 Log.i(TAG,"scanUpdate Response :"+response.body().toString());
                             }
-                            groctaurantDatabase.ingredientDao().setScanned(ingredientId,true);
+                            //groctaurantDatabase.ingredientDao().setScanned(ingredientId,true);
                             setIngredientDetailByItemEntity(continuousScanListener);
                         }
                     }
@@ -104,7 +99,7 @@ public class ContinuousScanViewModel extends AndroidViewModel {
         }
 
         Timber.e("Ingredient Entity Under Consideration at setIngredientDetailByItemEntity :"+ingredientEntity.toString());
-        if(ingredientEntity.isScanned()){
+        /*if(ingredientEntity.isScanned()){
             int leftToPack=groctaurantDatabase.ingredientDao().countIngredientScannedDao(itemEntity.getItemOrderId(),false);
             int nextIndex=0;
             if(leftToPack>0) {
@@ -125,16 +120,16 @@ public class ContinuousScanViewModel extends AndroidViewModel {
         }
         else{
             continuousScanListener.updateIngredientList();
-        }
+        }*/
     }
 
     public IngredientEntity getIngredientById(String ingredientId){
-        return groctaurantDatabase.ingredientDao().getIngredientById(ingredientId);
+        return null;
     }
 
     public ItemEntity getCurrentItemEntity(){
         Timber.e(sharedpreferences.getString(Constants.SELECTED_ITEM_ID, ""));
-        return groctaurantDatabase.itemDao().loadItem(sharedpreferences.getString(Constants.SELECTED_ITEM_ID, ""));
+        return null;
     }
 
     public ScanIngredientDataModel getScanIngredient(){

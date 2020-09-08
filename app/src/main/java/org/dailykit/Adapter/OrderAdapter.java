@@ -10,14 +10,22 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
+import org.dailykit.constants.Constants;
 import org.dailykit.listener.OrderListener;
+import org.dailykit.model.Customer;
+import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRowHolder> {
 
@@ -46,6 +54,32 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRo
         final OrderListSubscription.Order singleItem = allDetailModelArrayList.get(position);
 
         holder.orderName.setText((String) singleItem.id());
+
+        try {
+            Timber.e(singleItem.customer().toString());
+            JSONObject customer = new JSONObject(String.valueOf(singleItem.customer()).trim());
+            Timber.e(customer.toString());
+            Timber.e(customer.getString("customerFirstName"));
+            Timber.e(customer.getString("customerLastName"));
+            Timber.e(customer.getString("customerPhone"));
+            if(null != customer.getString("customerFirstName") && null != customer.getString("customerLastName") && !customer.getString("customerFirstName").isEmpty() && !customer.getString("customerLastName").isEmpty()) {
+                holder.customerName.setVisibility(View.VISIBLE);
+                holder.customerName.setText(customer.getString("customerFirstName") + " " + customer.getString("customerLastName"));
+            }
+            else{
+                holder.customerName.setVisibility(View.GONE);
+            }
+            if(null != customer.getString("customerPhone") && !customer.getString("customerPhone").isEmpty()) {
+                holder.customerNumber.setVisibility(View.VISIBLE);
+                holder.customerNumber.setText(customer.getString("customerPhone"));
+            }
+            else{
+                holder.customerNumber.setVisibility(View.GONE);
+            }
+        } catch (Throwable t) {
+            Timber.e(t.getMessage());
+        }
+
         if(singleItem.orderInventoryProducts().size() == 0){
             holder.inventoryLayout.setVisibility(View.GONE);
         }
@@ -78,6 +112,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRo
             holder.mealKitList.setAdapter(mealKitProductAdapter);
             mealKitProductAdapter.notifyDataSetChanged();
         }
+        holder.amount.setText(activity.getResources().getString(R.string.dollar)+" 0.00");
+        holder.layout.setOnClickListener(v->{
+                orderListener.moveToContinuousScanActivity(singleItem);
+        });
+
     }
 
     public void updateList() {
@@ -94,6 +133,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRo
     class SingleItemRowHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.order_name)
         TextView orderName;
+        @BindView(R.id.customer_name)
+        TextView customerName;
+        @BindView(R.id.customer_number)
+        TextView customerNumber;
         @BindView(R.id.inventory_list)
         RecyclerView inventoryList;
         @BindView(R.id.inventory_layout)
@@ -106,6 +149,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRo
         RecyclerView mealKitList;
         @BindView(R.id.meal_kit_layout)
         LinearLayout mealKitLayout;
+        @BindView(R.id.amount)
+        TextView amount;
+        @BindView(R.id.layout)
+        LinearLayout layout;
 
         SingleItemRowHolder(View view) {
             super(view);

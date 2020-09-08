@@ -11,7 +11,7 @@ import org.dailykit.retrofit.APIInterface;
 import org.dailykit.retrofit.RetrofitClient;
 import org.dailykit.room.database.GroctaurantDatabase;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
+import org.dailykit.constants.Constants;
 
 public class RealmViewModel extends AndroidViewModel {
 

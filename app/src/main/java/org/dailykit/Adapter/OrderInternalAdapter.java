@@ -21,7 +21,7 @@ import org.dailykit.room.entity.IngredientDetailEntity;
 import org.dailykit.room.entity.ItemEntity;
 import org.dailykit.room.entity.TabEntity;
 import org.dailykit.util.AppUtil;
-import org.dailykit.util.Constants;
+import org.dailykit.constants.Constants;
 
 import java.util.List;
 

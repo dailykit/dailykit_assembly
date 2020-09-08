@@ -65,44 +65,20 @@ public class IngredientFragment extends Fragment {
         return view;
     }
 
-    public void updateTabList(){
-        ingredientTabList.setHasFixedSize(true);
-        ingredientLowerTabAdapter = new IngredientLowerTabAdapter(getActivity(), dashboardViewModel.fetchItemList());
-        ingredientTabList.setLayoutManager(new GridLayoutManager(getActivity(), 1, GridLayoutManager.HORIZONTAL, false));
-        ingredientTabList.setAdapter(ingredientLowerTabAdapter);
-        ingredientLowerTabAdapter.notifyDataSetChanged();
-    }
 
-    public void updateIngredientList(){
-        itemEntity = dashboardViewModel.getCurrentItemEntity();
-        ingredientDetailList.invalidate();
-        ingredientAdapter = new IngredientAdapter(getActivity(),this, dashboardViewModel.getIngredientEntityList(), itemEntity,dashboardViewModel.getNumberOfIngredientsPacked());
-        ingredientDetailList.setLayoutManager(null);
-        ingredientDetailList.setAdapter(null);
-        ingredientDetailList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        ingredientDetailList.setAdapter(ingredientAdapter);
-        ingredientAdapter.notifyDataSetChanged();
-        if(itemEntity.getSelectedPosition()!=-1) {
-            smoothScroller.setTargetPosition(itemEntity.getSelectedPosition());
-            ingredientDetailList.getLayoutManager().startSmoothScroll(smoothScroller);
-        }
-    }
 
     public void updateUI(){
-        orderName.setText(dashboardViewModel.getSelectedOrderNumber());
-        updateTabList();
-        updateIngredientList();
+        orderName.setText("");
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateIngredientList();
-        updateTabList();
     }
 
     public void updatePackingStatus(String ingredientId){
-        dashboardViewModel.updatePacking(ingredientId);
+        //dashboardViewModel.updatePacking(ingredientId);
     }
 
 
