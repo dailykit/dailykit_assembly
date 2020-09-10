@@ -5,12 +5,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
 import com.google.zxing.client.android.BeepManager;
@@ -22,9 +26,9 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
 import org.dailykit.adapter.ContinuousScanIngredientAdapter;
+import org.dailykit.adapter.ContinuousScanViewPager;
 import org.dailykit.constants.Constants;
 import org.dailykit.listener.ContinuousScanListener;
-import org.dailykit.room.entity.ItemEntity;
 import org.dailykit.viewmodel.ContinuousScanViewModel;
 import org.dailykit.viewmodel.DashboardViewModel;
 
@@ -48,6 +52,10 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
     Button resumeScan;
     @BindView(R.id.barcodePreview)
     ImageView barcodePreview;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.view_pager)
+    ViewPager viewPager;
     private BeepManager beepManager;
     private String lastText;
     DashboardViewModel dashboardViewModel;
@@ -57,6 +65,7 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
     ContinuousScanActivity continuousScanActivity;
     String slipName;
     private OrderListSubscription.Order order;
+    private ContinuousScanViewPager continuousScanViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +89,9 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
     public void setView() {
         order = dashboardViewModel.getSelectedOrder();
         orderId.setText((String) order.id());
+        continuousScanViewPager = new ContinuousScanViewPager(getSupportFragmentManager(), continuousScanActivity);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setAdapter(continuousScanViewPager);
         updateIngredientList();
     }
 
@@ -92,6 +104,23 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
     @Override
     public void setScannedIngredientDetail() {
 
+    }
+
+    @Override
+    public int getPageCount() {
+        int count = 0;
+        if(order.orderMealKitProducts().size()>0)
+            count++;
+        if(order.orderReadyToEatProducts().size()>0)
+            count++;
+        if(order.orderInventoryProducts().size()>0)
+            count++;
+        return count;
+    }
+
+    @Override
+    public OrderListSubscription.Order getOrder() {
+        return order;
     }
 
 
@@ -135,19 +164,15 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
         @Override
         public void barcodeResult(BarcodeResult result) {
             if (result.getText() == null || result.getText().equals(lastText)) {
-                // Prevent duplicate scans
                 return;
             }
             lastText = result.getText();
+            Toast.makeText(continuousScanActivity, lastText, Toast.LENGTH_SHORT).show();
             Timber.e(lastText);
-            slipName = continuousScanViewModel.getIngredientSlipName(continuousScanActivity, lastText);
-            editor.putString(Constants.INGREDIENT_FOUND, continuousScanViewModel.getIngredientSlipName(continuousScanActivity, lastText));
-            editor.commit();
-            barcodeScanner.setStatusText(slipName);
+            barcodeScanner.setStatusText(lastText);
 
             beepManager.playBeepSoundAndVibrate();
 
-            //Added preview of scanned barcode
             ImageView imageView = (ImageView) findViewById(R.id.barcodePreview);
             imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
 

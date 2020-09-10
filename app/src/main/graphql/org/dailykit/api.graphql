@@ -95,6 +95,7 @@ subscription OrderList {
             }
         }
         orderMealKitProducts {
+
             id
             quantity
             assemblyStatus

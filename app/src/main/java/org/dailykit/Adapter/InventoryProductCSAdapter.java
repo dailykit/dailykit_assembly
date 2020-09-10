@@ -12,37 +12,36 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
+import org.dailykit.listener.InventoryProductListener;
 import org.dailykit.listener.OrderListener;
-import org.json.JSONObject;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
-public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatProductAdapter.ViewHolder> {
+public class InventoryProductCSAdapter extends RecyclerView.Adapter<InventoryProductCSAdapter.ViewHolder> {
 
-    private List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProductList;
+    private List<OrderListSubscription.OrderInventoryProduct> orderInventoryProductList;
     private Activity activity;
-    private OrderListener orderListener;
+    private InventoryProductListener inventoryProductListener;
 
-    public ReadyToEatProductAdapter(Activity activity, OrderListener orderListener, List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProductList) {
-        this.orderReadyToEatProductList = orderReadyToEatProductList;
-        this.orderListener = orderListener;
+    public InventoryProductCSAdapter(Activity activity, InventoryProductListener inventoryProductListener, List<OrderListSubscription.OrderInventoryProduct> orderInventoryProductList) {
+        this.orderInventoryProductList = orderInventoryProductList;
+        this.inventoryProductListener = inventoryProductListener;
         this.activity = activity;
     }
 
     @Override
-    public ReadyToEatProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ready_to_eat_cs_product, parent, false);
-        ReadyToEatProductAdapter.ViewHolder rowHolder = new ReadyToEatProductAdapter.ViewHolder(v);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inventory_cs_product, parent, false);
+        ViewHolder rowHolder = new ViewHolder(v);
         return rowHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ReadyToEatProductAdapter.ViewHolder holder, final int position) {
-        final OrderListSubscription.OrderReadyToEatProduct singleItem = orderReadyToEatProductList.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final OrderListSubscription.OrderInventoryProduct singleItem = orderInventoryProductList.get(position);
         String comboName = "";
         if(null != singleItem.comboProductId() && null != singleItem.comboProduct()){
             comboName = " - "+singleItem.comboProduct().name();
@@ -50,14 +49,15 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
                 comboName = comboName+" ("+singleItem.comboProductComponent().label()+")";
             }
         }
-        try {
-            JSONObject yield = new JSONObject(singleItem.simpleRecipeProductOption().simpleRecipeYield().yield().toString());
-            holder.serving.setText(yield.get("serving")+"");
-        } catch (Throwable t) {
-            Timber.e(t.getMessage());
-        }
-        holder.name.setText(singleItem.simpleRecipeProduct().name()+comboName);
+        holder.name.setText(singleItem.inventoryProduct().name()+comboName);
         holder.quantity.setText(singleItem.quantity()+" nos");
+        if(null != singleItem.inventoryProduct().supplierItem().bulkItemAsShipped()){
+            holder.processing.setText(singleItem.inventoryProduct().supplierItem().bulkItemAsShipped().processingName());
+            holder.processing.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.processing.setVisibility(View.GONE);
+        }
         if(singleItem.isAssembled()){
             holder.available.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_check_green));
         }
@@ -73,7 +73,7 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
 
     @Override
     public int getItemCount() {
-        return (null != orderReadyToEatProductList ? orderReadyToEatProductList.size() : 0);
+        return (null != orderInventoryProductList ? orderInventoryProductList.size() : 0);
     }
 
 
@@ -83,8 +83,8 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
         ImageView available;
         @BindView(R.id.name)
         TextView name;
-        @BindView(R.id.serving)
-        TextView serving;
+        @BindView(R.id.processing)
+        TextView processing;
         @BindView(R.id.quantity)
         TextView quantity;
         @BindView(R.id.layout)

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
+import org.dailykit.listener.MealKitProductListener;
 import org.dailykit.listener.OrderListener;
 
 import java.util.List;
@@ -22,11 +23,11 @@ public class MealKitSachetAdapter extends RecyclerView.Adapter<MealKitSachetAdap
 
     private List<OrderListSubscription.OrderSachet> orderSachetList;
     private Activity activity;
-    private OrderListener orderListener;
+    private MealKitProductListener mealKitProductListener;
 
-    public MealKitSachetAdapter(Activity activity, OrderListener orderListener, List<OrderListSubscription.OrderSachet> orderSachetList) {
+    public MealKitSachetAdapter(Activity activity, MealKitProductListener mealKitProductListener, List<OrderListSubscription.OrderSachet> orderSachetList) {
         this.orderSachetList = orderSachetList;
-        this.orderListener = orderListener;
+        this.mealKitProductListener = mealKitProductListener;
         this.activity = activity;
     }
 
@@ -41,7 +42,7 @@ public class MealKitSachetAdapter extends RecyclerView.Adapter<MealKitSachetAdap
     public void onBindViewHolder(final MealKitSachetAdapter.ViewHolder holder, final int position) {
         final OrderListSubscription.OrderSachet singleItem = orderSachetList.get(position);
         holder.name.setText(singleItem.ingredientName());
-        int unitSize = (null == singleItem.quantity())?0:(int)singleItem.quantity();
+        double unitSize = (null == singleItem.quantity())?0L:(double)singleItem.quantity();
         String unit = (null == singleItem.unit())?"":singleItem.unit();
         holder.quantity.setText(unitSize+" "+unit);
     }

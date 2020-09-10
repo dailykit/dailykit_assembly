@@ -8,10 +8,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
+import org.dailykit.listener.MealKitProductListener;
 import org.dailykit.listener.OrderListener;
 import org.json.JSONObject;
 
@@ -21,28 +23,29 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatProductAdapter.ViewHolder> {
+public class MealKitProductCSAdapter extends RecyclerView.Adapter<MealKitProductCSAdapter.ViewHolder> {
 
-    private List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProductList;
+    private List<OrderListSubscription.OrderMealKitProduct> orderMealKitProductList;
     private Activity activity;
-    private OrderListener orderListener;
+    private MealKitProductListener mealKitProductListener;
+    private MealKitSachetAdapter mealKitSachetAdapter;
 
-    public ReadyToEatProductAdapter(Activity activity, OrderListener orderListener, List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProductList) {
-        this.orderReadyToEatProductList = orderReadyToEatProductList;
-        this.orderListener = orderListener;
+    public MealKitProductCSAdapter(Activity activity, MealKitProductListener mealKitProductListener, List<OrderListSubscription.OrderMealKitProduct> orderMealKitProductList) {
+        this.orderMealKitProductList = orderMealKitProductList;
+        this.mealKitProductListener = mealKitProductListener;
         this.activity = activity;
     }
 
     @Override
-    public ReadyToEatProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ready_to_eat_cs_product, parent, false);
-        ReadyToEatProductAdapter.ViewHolder rowHolder = new ReadyToEatProductAdapter.ViewHolder(v);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_meal_kit_cs_product, parent, false);
+        ViewHolder rowHolder = new ViewHolder(v);
         return rowHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ReadyToEatProductAdapter.ViewHolder holder, final int position) {
-        final OrderListSubscription.OrderReadyToEatProduct singleItem = orderReadyToEatProductList.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final OrderListSubscription.OrderMealKitProduct singleItem = orderMealKitProductList.get(position);
         String comboName = "";
         if(null != singleItem.comboProductId() && null != singleItem.comboProduct()){
             comboName = " - "+singleItem.comboProduct().name();
@@ -64,6 +67,17 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
         else{
             holder.available.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_check_grey));
         }
+
+        if(singleItem.orderSachets().size() == 0){
+            holder.mealKitSachetList.setVisibility(View.GONE);
+        }
+        else {
+            holder.mealKitSachetList.setVisibility(View.VISIBLE);
+            mealKitSachetAdapter = new MealKitSachetAdapter(activity, mealKitProductListener, singleItem.orderSachets());
+            holder.mealKitSachetList.setLayoutManager( new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+            holder.mealKitSachetList.setAdapter(mealKitSachetAdapter);
+            mealKitSachetAdapter.notifyDataSetChanged();
+        }
     }
 
     public void updateList() {
@@ -73,12 +87,10 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
 
     @Override
     public int getItemCount() {
-        return (null != orderReadyToEatProductList ? orderReadyToEatProductList.size() : 0);
+        return (null != orderMealKitProductList ? orderMealKitProductList.size() : 0);
     }
 
-
-    static
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.available)
         ImageView available;
         @BindView(R.id.name)
@@ -89,12 +101,13 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
         TextView quantity;
         @BindView(R.id.layout)
         LinearLayout layout;
+        @BindView(R.id.meal_kit_sachet_list)
+        RecyclerView mealKitSachetList;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
-
 }
 

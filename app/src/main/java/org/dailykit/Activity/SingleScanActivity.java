@@ -17,6 +17,7 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 
+import org.dailykit.OrderListSubscription;
 import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.model.ScanIngredientDataModel;
 import org.dailykit.R;
@@ -128,6 +129,16 @@ public class SingleScanActivity extends CustomAppCompatActivity implements Conti
         scannedSuccessfully.setVisibility(View.VISIBLE);
         scanningInProgress.setVisibility(View.GONE);
         backLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public int getPageCount() {
+        return 0;
+    }
+
+    @Override
+    public OrderListSubscription.Order getOrder() {
+        return null;
     }
 
     @Override

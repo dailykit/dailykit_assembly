@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
 import org.dailykit.listener.OrderListener;
+import org.dailykit.listener.ReadyToEatProductListener;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -21,27 +22,27 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatProductAdapter.ViewHolder> {
+public class ReadyToEatProductCSAdapter extends RecyclerView.Adapter<ReadyToEatProductCSAdapter.ViewHolder> {
 
     private List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProductList;
     private Activity activity;
-    private OrderListener orderListener;
+    private ReadyToEatProductListener readyToEatProductListener;
 
-    public ReadyToEatProductAdapter(Activity activity, OrderListener orderListener, List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProductList) {
+    public ReadyToEatProductCSAdapter(Activity activity, ReadyToEatProductListener readyToEatProductListener, List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProductList) {
         this.orderReadyToEatProductList = orderReadyToEatProductList;
-        this.orderListener = orderListener;
+        this.readyToEatProductListener = readyToEatProductListener;
         this.activity = activity;
     }
 
     @Override
-    public ReadyToEatProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ready_to_eat_cs_product, parent, false);
-        ReadyToEatProductAdapter.ViewHolder rowHolder = new ReadyToEatProductAdapter.ViewHolder(v);
+    public ReadyToEatProductCSAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ready_to_eat_product, parent, false);
+        ReadyToEatProductCSAdapter.ViewHolder rowHolder = new ReadyToEatProductCSAdapter.ViewHolder(v);
         return rowHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ReadyToEatProductAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ReadyToEatProductCSAdapter.ViewHolder holder, final int position) {
         final OrderListSubscription.OrderReadyToEatProduct singleItem = orderReadyToEatProductList.get(position);
         String comboName = "";
         if(null != singleItem.comboProductId() && null != singleItem.comboProduct()){
