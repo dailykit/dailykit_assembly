@@ -25,10 +25,6 @@ import org.dailykit.constants.Constants;
 
 import java.util.List;
 
-
-/**
- * Created by Danish Rafique on 06-10-2018.
- */
 public class OrderInternalAdapter extends RecyclerView.Adapter<OrderInternalAdapter.SingleItemRowHolder> {
 
     public static final String TAG = "OrderInternalAdapter";

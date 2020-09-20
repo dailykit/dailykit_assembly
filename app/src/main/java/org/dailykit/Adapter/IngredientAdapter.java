@@ -38,10 +38,6 @@ import java.util.List;
 
 import timber.log.Timber;
 
-
-/**
- * Created by Danish Rafique on 15-10-2018.
- */
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.SingleItemRowHolder> {
 
     public static final String TAG = "IngredientAdapter";

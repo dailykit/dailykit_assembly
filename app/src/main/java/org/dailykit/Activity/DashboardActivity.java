@@ -132,44 +132,50 @@ public class DashboardActivity extends CustomAppCompatActivity implements Dashbo
     public void subscribeOrders(){
         showDialog();
         orderListSubscription = OrderListSubscription.builder().build();
-        apolloSubscriptionCall = Network.apolloClient.subscribe(orderListSubscription);
-        Timber.e("subscribeOrders");
-        apolloSubscriptionCall.execute(new ApolloSubscriptionCall.Callback<OrderListSubscription.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<OrderListSubscription.Data> response) {
-                dismissDialog();
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        orderFragment.updateList(response.data().orders());
-                    }
-                });
-            }
+        if(null != Network.apolloClient) {
+            apolloSubscriptionCall = Network.apolloClient.subscribe(orderListSubscription);
+            Timber.e("subscribeOrders");
+            apolloSubscriptionCall.execute(new ApolloSubscriptionCall.Callback<OrderListSubscription.Data>() {
+                @Override
+                public void onResponse(@NotNull Response<OrderListSubscription.Data> response) {
+                    dismissDialog();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            dashboardViewModel.setOrderList(response.getData().orders());
+                            orderFragment.updateList(response.data().orders());
+                        }
+                    });
+                }
 
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                Timber.e("onFailure : "+e.getLocalizedMessage());
-                Timber.e("onFailure : "+e.toString());
-                dismissDialog();
-                e.printStackTrace();
-            }
+                @Override
+                public void onFailure(@NotNull ApolloException e) {
+                    Timber.e("onFailure : " + e.getLocalizedMessage());
+                    Timber.e("onFailure : " + e.toString());
+                    dismissDialog();
+                    e.printStackTrace();
+                }
 
-            @Override
-            public void onCompleted() {
-                Timber.e("onCompleted");
-                dismissDialog();
-            }
+                @Override
+                public void onCompleted() {
+                    Timber.e("onCompleted");
+                    dismissDialog();
+                }
 
-            @Override
-            public void onTerminated() {
-                Timber.e("onTerminated");
-                dismissDialog();
-            }
+                @Override
+                public void onTerminated() {
+                    Timber.e("onTerminated");
+                    dismissDialog();
+                }
 
-            @Override
-            public void onConnected() {
-                Timber.e("onConnected");
-            }
-        });
+                @Override
+                public void onConnected() {
+                    Timber.e("onConnected");
+                }
+            });
+        }
+        else{
+            dismissDialog();
+        }
     }
 
 

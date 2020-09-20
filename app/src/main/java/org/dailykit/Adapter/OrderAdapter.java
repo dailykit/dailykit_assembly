@@ -10,17 +10,11 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
-import org.dailykit.constants.Constants;
 import org.dailykit.listener.OrderListener;
-import org.dailykit.model.Customer;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.BindView;
@@ -115,6 +109,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRo
         holder.amount.setText(activity.getResources().getString(R.string.dollar)+" 0.00");
         holder.layout.setOnClickListener(v->{
                 orderListener.moveToContinuousScanActivity(singleItem);
+        });
+        holder.readyToEatLayout.setOnClickListener(v->{
+            orderListener.moveToContinuousScanActivity(singleItem);
+        });
+        holder.mealKitLayout.setOnClickListener(v->{
+            orderListener.moveToContinuousScanActivity(singleItem);
+        });
+        holder.inventoryLayout.setOnClickListener(v->{
+            orderListener.moveToContinuousScanActivity(singleItem);
         });
 
     }
