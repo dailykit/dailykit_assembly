@@ -1,7 +1,6 @@
 package org.dailykit.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
-import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.listener.ReadyToEatProductListener;
 import org.json.JSONObject;
 
@@ -46,30 +44,37 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final OrderListSubscription.OrderReadyToEatProduct singleItem = orderReadyToEatProducts.get(position);
         String comboName = "";
-        if(null != singleItem.comboProductId() && null != singleItem.comboProduct()){
-            comboName = " - "+singleItem.comboProduct().name();
-            if(null != singleItem.comboProductComponent()){
-                comboName = comboName+" ("+singleItem.comboProductComponent().label()+")";
+        if (null != singleItem.comboProductId() && null != singleItem.comboProduct()) {
+            comboName = " - " + singleItem.comboProduct().name();
+            if (null != singleItem.comboProductComponent()) {
+                comboName = comboName + " (" + singleItem.comboProductComponent().label() + ")";
             }
         }
         try {
             JSONObject yield = new JSONObject(singleItem.simpleRecipeProductOption().simpleRecipeYield().yield().toString());
-            holder.serving.setText(yield.get("serving")+"");
+            holder.serving.setText(yield.get("serving") + " Servings");
         } catch (Throwable t) {
             Timber.e(t.getMessage());
         }
-        holder.name.setText(singleItem.simpleRecipeProduct().name()+comboName);
-        holder.weight.setText(singleItem.quantity()+" nos");
-        if (singleItem.isAssembled()) {
-            holder.enableImage.setVisibility(View.VISIBLE);
-            holder.disableImage.setVisibility(View.GONE);
-        } else {
-            holder.enableImage.setVisibility(View.GONE);
-            holder.disableImage.setVisibility(View.VISIBLE);
+        holder.name.setText(singleItem.simpleRecipeProduct().name() + comboName);
+        if ("PENDING".equals(singleItem.assemblyStatus())) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
+            holder.status.setText("0/0/1");
+        } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && !singleItem.isAssembled()) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
+            holder.status.setText("0/1/1");
+        } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled()) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
+            holder.status.setText("0/1/1");
         }
-        holder.layout.setOnClickListener(v -> {
-            Intent intent=new Intent(activity, ContinuousScanActivity.class);
-            activity.startActivity(intent);
+        holder.toggle.setOnClickListener(v -> {
+            if (holder.optionsLayout.getVisibility() == View.GONE) {
+                holder.toggle.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_arrow_up_grey));
+                holder.optionsLayout.setVisibility(View.VISIBLE);
+            } else {
+                holder.toggle.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_arrow_down_grey));
+                holder.optionsLayout.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -83,21 +88,22 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
         return (null != orderReadyToEatProducts ? orderReadyToEatProducts.size() : 0);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.enable_image)
-        ImageView enableImage;
-        @BindView(R.id.disable_image)
-        ImageView disableImage;
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.name)
         TextView name;
-        @BindView(R.id.processing)
-        TextView processing;
         @BindView(R.id.serving)
         TextView serving;
-        @BindView(R.id.weight)
-        TextView weight;
-        @BindView(R.id.inner_layout)
-        LinearLayout innerLayout;
+        @BindView(R.id.quantity)
+        TextView quantity;
+        @BindView(R.id.status)
+        TextView status;
+        @BindView(R.id.toggle)
+        ImageView toggle;
+        @BindView(R.id.mark_as_assembled)
+        LinearLayout markAsAssembled;
+        @BindView(R.id.options_layout)
+        LinearLayout optionsLayout;
         @BindView(R.id.layout)
         LinearLayout layout;
 

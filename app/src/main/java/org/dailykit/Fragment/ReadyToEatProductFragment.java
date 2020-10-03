@@ -15,6 +15,7 @@ import org.dailykit.R;
 import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.adapter.InventoryProductCSAdapter;
 import org.dailykit.adapter.ReadyToEatProductCSAdapter;
+import org.dailykit.adapter.ReadyToEatProductODAdapter;
 import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.listener.ReadyToEatProductListener;
 import org.dailykit.viewmodel.ContinuousScanViewModel;
@@ -32,7 +33,7 @@ public class ReadyToEatProductFragment extends Fragment implements ReadyToEatPro
     ContinuousScanViewModel continuousScanViewModel;
     ContinuousScanActivity continuousScanActivity;
     private OrderListSubscription.Order order;
-    private ReadyToEatProductCSAdapter readyToEatProductCSAdapter;
+    private ReadyToEatProductODAdapter readyToEatProductCSAdapter;
     private ReadyToEatProductFragment readyToEatProductFragment;
 
     public ReadyToEatProductFragment() {
@@ -58,7 +59,7 @@ public class ReadyToEatProductFragment extends Fragment implements ReadyToEatPro
 
     public void setView(){
         order = dashboardViewModel.getSelectedOrder();
-        readyToEatProductCSAdapter = new ReadyToEatProductCSAdapter(continuousScanActivity, readyToEatProductFragment, order.orderReadyToEatProducts());
+        readyToEatProductCSAdapter = new ReadyToEatProductODAdapter(continuousScanActivity, readyToEatProductFragment, order.orderReadyToEatProducts());
         readyToEatList.setLayoutManager( new LinearLayoutManager(continuousScanActivity, LinearLayoutManager.VERTICAL, false));
         readyToEatList.setAdapter(readyToEatProductCSAdapter);
         readyToEatProductCSAdapter.notifyDataSetChanged();

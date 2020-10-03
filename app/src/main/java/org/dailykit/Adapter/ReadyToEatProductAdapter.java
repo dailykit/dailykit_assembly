@@ -34,35 +34,41 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
     }
 
     @Override
-    public ReadyToEatProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ready_to_eat_cs_product, parent, false);
-        ReadyToEatProductAdapter.ViewHolder rowHolder = new ReadyToEatProductAdapter.ViewHolder(v);
+        ViewHolder rowHolder = new ViewHolder(v);
         return rowHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ReadyToEatProductAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final OrderListSubscription.OrderReadyToEatProduct singleItem = orderReadyToEatProductList.get(position);
         String comboName = "";
-        if(null != singleItem.comboProductId() && null != singleItem.comboProduct()){
-            comboName = " - "+singleItem.comboProduct().name();
-            if(null != singleItem.comboProductComponent()){
-                comboName = comboName+" ("+singleItem.comboProductComponent().label()+")";
+        if (null != singleItem.comboProductId() && null != singleItem.comboProduct()) {
+            comboName = " - " + singleItem.comboProduct().name();
+            if (null != singleItem.comboProductComponent()) {
+                comboName = comboName + " (" + singleItem.comboProductComponent().label() + ")";
             }
         }
         try {
             JSONObject yield = new JSONObject(singleItem.simpleRecipeProductOption().simpleRecipeYield().yield().toString());
-            holder.serving.setText(yield.get("serving")+"");
+            holder.serving.setText(yield.get("serving") + " Servings");
         } catch (Throwable t) {
             Timber.e(t.getMessage());
         }
-        holder.name.setText(singleItem.simpleRecipeProduct().name()+comboName);
-        holder.quantity.setText(singleItem.quantity()+" nos");
-        if(singleItem.isAssembled()){
-            holder.available.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_check_green));
+        holder.name.setText(singleItem.simpleRecipeProduct().name() + comboName);
+
+        if("PENDING".equals(singleItem.assemblyStatus())){
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
+            holder.status.setText("0/0/1");
         }
-        else{
-            holder.available.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_check_grey));
+        else if("COMPLETED".equals(singleItem.assemblyStatus()) && !singleItem.isAssembled()){
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
+            holder.status.setText("0/1/1");
+        }
+        else if("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled()){
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
+            holder.status.setText("0/1/1");
         }
     }
 
@@ -77,16 +83,15 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
     }
 
 
-    static
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.available)
-        ImageView available;
         @BindView(R.id.name)
         TextView name;
         @BindView(R.id.serving)
         TextView serving;
         @BindView(R.id.quantity)
         TextView quantity;
+        @BindView(R.id.status)
+        TextView status;
         @BindView(R.id.layout)
         LinearLayout layout;
 
@@ -95,6 +100,5 @@ public class ReadyToEatProductAdapter extends RecyclerView.Adapter<ReadyToEatPro
             ButterKnife.bind(this, view);
         }
     }
-
 }
 

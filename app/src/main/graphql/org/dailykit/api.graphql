@@ -1,6 +1,9 @@
 subscription OrderList {
     orders(where: {keycloakId: {_is_null: false}}){
         id
+        created_at
+        fulfillmentTimestamp
+        readyByTimestamp
         orderStatus
         customer: deliveryInfo(path: "dropoff.dropoffInfo")
         orderInventoryProducts{

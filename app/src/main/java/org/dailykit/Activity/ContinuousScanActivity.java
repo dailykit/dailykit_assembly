@@ -29,6 +29,8 @@ import org.dailykit.adapter.ContinuousScanIngredientAdapter;
 import org.dailykit.adapter.ContinuousScanViewPager;
 import org.dailykit.constants.Constants;
 import org.dailykit.listener.ContinuousScanListener;
+import org.dailykit.listener.MealKitProductListener;
+import org.dailykit.listener.OrderDetailListener;
 import org.dailykit.viewmodel.ContinuousScanViewModel;
 import org.dailykit.viewmodel.DashboardViewModel;
 
@@ -40,7 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class ContinuousScanActivity extends CustomAppCompatActivity implements ContinuousScanListener {
+public class ContinuousScanActivity extends CustomAppCompatActivity implements ContinuousScanListener, OrderDetailListener {
 
     @BindView(R.id.barcode_scanner)
     DecoratedBarcodeView barcodeScanner;

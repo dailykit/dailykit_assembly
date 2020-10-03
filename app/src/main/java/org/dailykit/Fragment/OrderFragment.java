@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -17,7 +18,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
-import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.activity.DashboardActivity;
 import org.dailykit.activity.OrderDetailActivity;
 import org.dailykit.adapter.OrderAdapter;
@@ -48,6 +48,8 @@ public class OrderFragment extends Fragment implements OrderListener {
     RecyclerView orderRecyclerView;
     @BindView(R.id.order_swipe_refresh)
     SwipeRefreshLayout orderSwipeRefresh;
+    @BindView(R.id.all_text)
+    TextView allText;
 
     public OrderFragment() {
 
@@ -59,7 +61,7 @@ public class OrderFragment extends Fragment implements OrderListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         dashboardActivity = (DashboardActivity) getActivity();
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         orderFragment = this;
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         orderRecyclerView = view.findViewById(R.id.order_recycler_view);
@@ -75,7 +77,6 @@ public class OrderFragment extends Fragment implements OrderListener {
         });
 
 
-
         return view;
     }
 
@@ -86,6 +87,7 @@ public class OrderFragment extends Fragment implements OrderListener {
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         orderRecyclerView.setAdapter(orderScreenAdapter);
         orderScreenAdapter.notifyDataSetChanged();
+        allText.setText("All ("+orderEntityList.size()+")");
     }
 
     @Override
@@ -109,22 +111,24 @@ public class OrderFragment extends Fragment implements OrderListener {
         super.onResume();
         dashboardViewModel.removeSelectedOrder();
         updateTabList(dashboardViewModel.getTabList());
+        updateList(dashboardViewModel.getOrderList());
     }
 
     @Override
     public void moveToContinuousScanActivity(OrderListSubscription.Order order) {
         dashboardViewModel.setSelectedOrder(order);
-        dashboardViewModel.addToTabList((String)order.id());
+        dashboardViewModel.addToTabList((String) order.id());
         startActivity(new Intent(dashboardActivity, OrderDetailActivity.class));
     }
 
     @Override
     public void removeOrderFromList(String orderId) {
-        dashboardViewModel.removeFromTabList(orderFragment,orderId);
+        dashboardViewModel.removeFromTabList(orderFragment, orderId);
     }
 
     @Override
-    public OrderListSubscription.Order getSelectedOrder(){
+    public OrderListSubscription.Order getSelectedOrder() {
         return dashboardViewModel.getSelectedOrder();
     }
+
 }

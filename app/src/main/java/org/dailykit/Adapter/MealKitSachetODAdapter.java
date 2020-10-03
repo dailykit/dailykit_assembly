@@ -46,11 +46,26 @@ public class MealKitSachetODAdapter extends RecyclerView.Adapter<MealKitSachetOD
         holder.name.setText(singleItem.ingredientName());
         double unitSize = (null == singleItem.quantity()) ? 0L : (double) singleItem.quantity();
         String unit = (null == singleItem.unit()) ? "" : singleItem.unit();
-        holder.weight.setText(unitSize + " " + unit);
+        holder.serving.setText(unitSize + " " + unit);
         holder.processing.setText(singleItem.processingName());
-        holder.layout.setOnClickListener(v -> {
-            Intent intent=new Intent(activity, ContinuousScanActivity.class);
-            activity.startActivity(intent);
+        if ("PENDING".equals(singleItem.status())) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
+            holder.status.setText("0/0/1");
+        } else if ("PACKED".equals(singleItem.status()) && !singleItem.isAssembled()) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
+            holder.status.setText("0/1/1");
+        } else if ("PACKED".equals(singleItem.status()) && singleItem.isAssembled()) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
+            holder.status.setText("1/1/1");
+        }
+        holder.toggle.setOnClickListener(v -> {
+            if (holder.optionsLayout.getVisibility() == View.GONE) {
+                holder.toggle.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_arrow_up_grey));
+                holder.optionsLayout.setVisibility(View.VISIBLE);
+            } else {
+                holder.toggle.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_arrow_down_grey));
+                holder.optionsLayout.setVisibility(View.GONE);
+            }
         });
     }
 
@@ -64,21 +79,22 @@ public class MealKitSachetODAdapter extends RecyclerView.Adapter<MealKitSachetOD
         return (null != orderSachetList ? orderSachetList.size() : 0);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.enable_image)
-        ImageView enableImage;
-        @BindView(R.id.disable_image)
-        ImageView disableImage;
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.name)
         TextView name;
-        @BindView(R.id.processing)
-        TextView processing;
         @BindView(R.id.serving)
         TextView serving;
-        @BindView(R.id.weight)
-        TextView weight;
-        @BindView(R.id.inner_layout)
-        LinearLayout innerLayout;
+        @BindView(R.id.processing)
+        TextView processing;
+        @BindView(R.id.status)
+        TextView status;
+        @BindView(R.id.toggle)
+        ImageView toggle;
+        @BindView(R.id.mark_as_assembled)
+        LinearLayout markAsAssembled;
+        @BindView(R.id.options_layout)
+        LinearLayout optionsLayout;
         @BindView(R.id.layout)
         LinearLayout layout;
 

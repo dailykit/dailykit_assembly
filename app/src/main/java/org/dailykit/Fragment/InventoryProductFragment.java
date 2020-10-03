@@ -20,6 +20,7 @@ import org.dailykit.adapter.ContinuousScanIngredientAdapter;
 import org.dailykit.adapter.ContinuousScanViewPager;
 import org.dailykit.adapter.InventoryProductAdapter;
 import org.dailykit.adapter.InventoryProductCSAdapter;
+import org.dailykit.adapter.InventoryProductODAdapter;
 import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.listener.InventoryProductListener;
 import org.dailykit.viewmodel.ContinuousScanViewModel;
@@ -37,7 +38,7 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
     ContinuousScanViewModel continuousScanViewModel;
     ContinuousScanActivity continuousScanActivity;
     private OrderListSubscription.Order order;
-    private InventoryProductCSAdapter inventoryProductCSAdapter;
+    private InventoryProductODAdapter inventoryProductCSAdapter;
     private InventoryProductFragment inventoryProductFragment;
 
     public InventoryProductFragment() {
@@ -62,7 +63,7 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
 
     public void setView(){
         order = dashboardViewModel.getSelectedOrder();
-        inventoryProductCSAdapter = new InventoryProductCSAdapter(continuousScanActivity, inventoryProductFragment, order.orderInventoryProducts());
+        inventoryProductCSAdapter = new InventoryProductODAdapter(continuousScanActivity, inventoryProductFragment, order.orderInventoryProducts());
         inventoryList.setLayoutManager( new LinearLayoutManager(continuousScanActivity, LinearLayoutManager.VERTICAL, false));
         inventoryList.setAdapter(inventoryProductCSAdapter);
         inventoryProductCSAdapter.notifyDataSetChanged();

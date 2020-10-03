@@ -4,8 +4,8 @@
     <corners android:radius="50dp" />
     <gradient
         android:angle="270"
-        android:endColor="@color/hint_grey"
-        android:startColor="@color/hint_grey" />
+        android:endColor="@color/button_blue"
+        android:startColor="@color/button_blue" />
     <padding
         android:bottom="0dp"
         android:left="0dp"

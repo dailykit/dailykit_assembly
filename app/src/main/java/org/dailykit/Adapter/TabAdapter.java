@@ -54,11 +54,11 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.SingleItemRowHol
 
         if(null != order && singleItem.equals((String)order.id())){
             holder.text.setTextColor(activity.getResources().getColor(R.color.white));
-            holder.layout.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.round_button_grey));
+            holder.layout.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
             holder.close.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_close));
         }
         else {
-            holder.text.setTextColor(activity.getResources().getColor(R.color.main_grey));
+            holder.text.setTextColor(activity.getResources().getColor(R.color.primary_blue));
             holder.layout.setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.round_border_grey));
             holder.close.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_close_grey));
         }

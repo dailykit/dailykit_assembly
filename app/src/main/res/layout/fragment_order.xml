@@ -26,8 +26,9 @@
                     android:layout_height="35dp"
                     android:layout_gravity="center|start"
                     android:layout_marginStart="10dp"
-                    android:background="@drawable/round_button_grey">
+                    android:background="@drawable/round_button_light_blue">
                     <TextView
+                        android:id="@+id/all_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/all"

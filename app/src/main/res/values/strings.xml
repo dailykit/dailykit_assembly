@@ -41,5 +41,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="all">All</string>
+    <string name="ordered_on">Ordered On</string>
+    <string name="ready_by">Ready By</string>
+    <string name="pick_up">Pick Up</string>
 
 </resources>

@@ -1,7 +1,6 @@
 package org.dailykit.adapter;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.dailykit.OrderListSubscription;
@@ -47,26 +45,45 @@ public class MealKitProductAdapter extends RecyclerView.Adapter<MealKitProductAd
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final OrderListSubscription.OrderMealKitProduct singleItem = orderMealKitProductList.get(position);
         String comboName = "";
-        if(null != singleItem.comboProductId() && null != singleItem.comboProduct()){
-            comboName = " - "+singleItem.comboProduct().name();
-            if(null != singleItem.comboProductComponent()){
-                comboName = comboName+" ("+singleItem.comboProductComponent().label()+")";
+        if (null != singleItem.comboProductId() && null != singleItem.comboProduct()) {
+            comboName = " - " + singleItem.comboProduct().name();
+            if (null != singleItem.comboProductComponent()) {
+                comboName = comboName + " (" + singleItem.comboProductComponent().label() + ")";
             }
         }
         try {
             JSONObject yield = new JSONObject(singleItem.simpleRecipeProductOption().simpleRecipeYield().yield().toString());
-            holder.serving.setText(yield.get("serving")+"");
+            holder.serving.setText(yield.get("serving") + " Servings");
         } catch (Throwable t) {
             Timber.e(t.getMessage());
         }
-        holder.name.setText(singleItem.simpleRecipeProduct().name()+comboName);
-        holder.quantity.setText(singleItem.quantity()+" nos");
-        if(singleItem.isAssembled()){
-            holder.available.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_check_green));
+        holder.name.setText(singleItem.simpleRecipeProduct().name() + comboName);
+        holder.quantity.setText(singleItem.quantity() + " nos");
+        if("PENDING".equals(singleItem.assemblyStatus())){
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
         }
-        else{
-            holder.available.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_check_grey));
+        else if("COMPLETED".equals(singleItem.assemblyStatus()) && !singleItem.isAssembled()){
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
         }
+        else if("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled()){
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
+        }
+
+        int countPacking = 0;
+        int countCompleted = 0;
+        for(OrderListSubscription.OrderSachet orderSachet:singleItem.orderSachets()){
+            if("PACKED".equals(orderSachet.status()) && !orderSachet.isAssembled()){
+                countPacking++;
+            }
+            else if("PACKED".equals(orderSachet.status()) && orderSachet.isAssembled()){
+                countPacking++;
+                countCompleted++;
+            }
+        }
+
+        holder.status.setText(countCompleted+"/"+countPacking+"/"+singleItem.orderSachets().size());
+
+
     }
 
     public void updateList() {
@@ -80,14 +97,14 @@ public class MealKitProductAdapter extends RecyclerView.Adapter<MealKitProductAd
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.available)
-        ImageView available;
         @BindView(R.id.name)
         TextView name;
         @BindView(R.id.serving)
         TextView serving;
         @BindView(R.id.quantity)
         TextView quantity;
+        @BindView(R.id.status)
+        TextView status;
         @BindView(R.id.layout)
         LinearLayout layout;
 

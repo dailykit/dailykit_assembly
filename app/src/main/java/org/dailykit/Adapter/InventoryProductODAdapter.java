@@ -1,7 +1,6 @@
 package org.dailykit.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
-import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.listener.InventoryProductListener;
 
 import java.util.List;
@@ -51,25 +49,35 @@ public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryPro
             }
         }
         holder.name.setText(singleItem.inventoryProduct().name() + comboName);
-        holder.weight.setText(singleItem.quantity() + " nos");
         if (null != singleItem.inventoryProduct().supplierItem().bulkItemAsShipped()) {
             holder.processing.setText(singleItem.inventoryProduct().supplierItem().bulkItemAsShipped().processingName());
             holder.processing.setVisibility(View.VISIBLE);
         } else {
-            holder.processing.setVisibility(View.GONE);
-        }
-        if (singleItem.isAssembled()) {
-            holder.enableImage.setVisibility(View.VISIBLE);
-            holder.disableImage.setVisibility(View.GONE);
-        } else {
-            holder.enableImage.setVisibility(View.GONE);
-            holder.disableImage.setVisibility(View.VISIBLE);
+            holder.processing.setVisibility(View.INVISIBLE);
         }
 
-        holder.layout.setOnClickListener(v -> {
-            Intent intent=new Intent(activity, ContinuousScanActivity.class);
-            activity.startActivity(intent);
+        if ("PENDING".equals(singleItem.assemblyStatus())) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
+            holder.status.setText("0/0/1");
+        } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && !singleItem.isAssembled()) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
+            holder.status.setText("0/1/1");
+        } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled()) {
+            holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
+            holder.status.setText("0/1/1");
+        }
+        holder.serving.setText(singleItem.inventoryProductOption().quantity() + " - " + singleItem.inventoryProductOption().label());
+
+        holder.toggle.setOnClickListener(v -> {
+            if (holder.optionsLayout.getVisibility() == View.GONE) {
+                holder.toggle.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_arrow_up_grey));
+                holder.optionsLayout.setVisibility(View.VISIBLE);
+            } else {
+                holder.toggle.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_arrow_down_grey));
+                holder.optionsLayout.setVisibility(View.GONE);
+            }
         });
+
     }
 
     public void updateList() {
@@ -82,21 +90,22 @@ public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryPro
         return (null != orderInventoryProductList ? orderInventoryProductList.size() : 0);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.enable_image)
-        ImageView enableImage;
-        @BindView(R.id.disable_image)
-        ImageView disableImage;
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.name)
         TextView name;
-        @BindView(R.id.processing)
-        TextView processing;
         @BindView(R.id.serving)
         TextView serving;
-        @BindView(R.id.weight)
-        TextView weight;
-        @BindView(R.id.inner_layout)
-        LinearLayout innerLayout;
+        @BindView(R.id.processing)
+        TextView processing;
+        @BindView(R.id.status)
+        TextView status;
+        @BindView(R.id.toggle)
+        ImageView toggle;
+        @BindView(R.id.mark_as_assembled)
+        LinearLayout markAsAssembled;
+        @BindView(R.id.options_layout)
+        LinearLayout optionsLayout;
         @BindView(R.id.layout)
         LinearLayout layout;
 

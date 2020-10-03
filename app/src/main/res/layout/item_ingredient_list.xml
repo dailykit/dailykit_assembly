@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:minHeight="40dp"
-                    android:weightSum="6">
+                    android:weightSum="10">
 
                     <LinearLayout
                         android:id="@+id/ll_ingredient_name"
@@ -128,7 +128,6 @@
                                 android:id="@+id/ll_option_right"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:visibility="gone"
                                 android:weightSum="4">
 
                                 <ImageView

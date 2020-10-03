@@ -1,5 +1,6 @@
 package org.dailykit.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -34,7 +35,7 @@ public class MealKitProductDetailFragment extends Fragment implements MealKitPro
     private MealKitSachetODAdapter mealKitSachetODAdapter;
     private OrderListSubscription.Order order;
     private MealKitProductDetailFragment mealKitProductDetailFragment;
-    private OrderDetailActivity orderDetailActivity;
+    private Activity orderDetailActivity;
 
     public MealKitProductDetailFragment() {
     }
@@ -51,16 +52,18 @@ public class MealKitProductDetailFragment extends Fragment implements MealKitPro
         ButterKnife.bind(this,view);
         mealKitProductDetailFragment = this;
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
-        orderDetailActivity = (OrderDetailActivity)getActivity();
+        orderDetailActivity = (Activity)getActivity();
         setView();
         return view;
     }
 
     public void setView(){
-        order = dashboardViewModel.getSelectedOrder();
-        mealKitSachetODAdapter = new MealKitSachetODAdapter(orderDetailActivity, mealKitProductDetailFragment, orderMealKitProduct.orderSachets());
-        list.setLayoutManager( new LinearLayoutManager(orderDetailActivity, LinearLayoutManager.VERTICAL, false));
-        list.setAdapter(mealKitSachetODAdapter);
-        mealKitSachetODAdapter.notifyDataSetChanged();
+        if(null !=  orderMealKitProduct && null !=  orderMealKitProduct.orderSachets()) {
+            order = dashboardViewModel.getSelectedOrder();
+            mealKitSachetODAdapter = new MealKitSachetODAdapter(orderDetailActivity, mealKitProductDetailFragment, orderMealKitProduct.orderSachets());
+            list.setLayoutManager(new LinearLayoutManager(orderDetailActivity, LinearLayoutManager.VERTICAL, false));
+            list.setAdapter(mealKitSachetODAdapter);
+            mealKitSachetODAdapter.notifyDataSetChanged();
+        }
     }
 }
