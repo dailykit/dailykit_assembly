@@ -81,13 +81,15 @@ public class OrderFragment extends Fragment implements OrderListener {
     }
 
     public void updateList(List<OrderListSubscription.Order> orderEntityList) {
-        Timber.e("Order List Count : " + orderEntityList.size());
-        orderRecyclerView.setHasFixedSize(true);
-        orderScreenAdapter = new OrderAdapter(dashboardActivity, orderFragment, orderEntityList);
-        orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        orderRecyclerView.setAdapter(orderScreenAdapter);
-        orderScreenAdapter.notifyDataSetChanged();
-        allText.setText("All ("+orderEntityList.size()+")");
+        if(null != orderEntityList && orderEntityList.size()>0) {
+            Timber.e("Order List Count : " + orderEntityList.size());
+            orderRecyclerView.setHasFixedSize(true);
+            orderScreenAdapter = new OrderAdapter(dashboardActivity, orderFragment, orderEntityList);
+            orderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+            orderRecyclerView.setAdapter(orderScreenAdapter);
+            orderScreenAdapter.notifyDataSetChanged();
+            allText.setText("All (" + orderEntityList.size() + ")");
+        }
     }
 
     @Override
