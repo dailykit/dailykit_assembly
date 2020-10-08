@@ -144,3 +144,175 @@ subscription OrderList {
         }
     }
 }
+
+
+mutation updateOrderInventoryProduct($pk_columns: order_orderInventoryProduct_pk_columns_input!, $_set: order_orderInventoryProduct_set_input!) {
+    updateOrderInventoryProduct(pk_columns: $pk_columns, _set: $_set) {
+        id
+    }
+}
+
+mutation updateOrderMealKitProduct($pk_columns: order_orderMealKitProduct_pk_columns_input!, $_set: order_orderMealKitProduct_set_input!) {
+    updateOrderMealKitProduct(pk_columns: $pk_columns, _set: $_set) {
+        id
+    }
+}
+
+mutation updateOrderReadyToEatProduct($pk_columns: order_orderReadyToEatProduct_pk_columns_input!, $_set: order_orderReadyToEatProduct_set_input!) {
+    updateOrderReadyToEatProduct(pk_columns: $pk_columns, _set: $_set) {
+        id
+    }
+}
+
+
+subscription OrderListDetail($id: oid!) {
+    order(id: $id) {
+        id
+        created_at
+        fulfillmentTimestamp
+        readyByTimestamp
+        orderStatus
+        customer: deliveryInfo(path: "dropoff.dropoffInfo")
+        orderInventoryProducts {
+            id
+            quantity
+            isAssembled
+            assemblyStatus
+            inventoryProduct {
+                id
+                name
+                sachetItem {
+                    id
+                    unit
+                    unitSize
+                    onHand
+                    bulkItem {
+                        id
+                        processingName
+                        supplierItem {
+                            id
+                            name
+                            supplier {
+                                id
+                                name
+                            }
+                        }
+                    }
+                }
+                supplierItem {
+                    id
+                    name
+                    unit
+                    unitSize
+                    supplier {
+                        id
+                        name
+                    }
+                    bulkItemAsShipped {
+                        id
+                        processingName
+                        onHand
+                    }
+                }
+            }
+            comboProductId
+            comboProduct {
+                id
+                name
+            }
+            comboProductComponent {
+                id
+                label
+            }
+            customizableProduct {
+                id
+                name
+            }
+            inventoryProductOption {
+                id
+                quantity
+                label
+            }
+        }
+        orderReadyToEatProducts {
+            id
+            quantity
+            assemblyStatus
+            isAssembled
+            comboProductId
+            comboProduct {
+                id
+                name
+            }
+            comboProductComponent {
+                id
+                label
+            }
+            customizableProduct {
+                id
+                name
+            }
+            simpleRecipeProduct {
+                id
+                name
+            }
+            simpleRecipeProductOption {
+                id
+                simpleRecipeYield {
+                    id
+                    yield
+                }
+            }
+        }
+        orderMealKitProducts {
+            id
+            quantity
+            assemblyStatus
+            assemblyStationId
+            isAssembled
+            simpleRecipeProduct {
+                id
+                name
+                simpleRecipe {
+                    id
+                }
+            }
+            simpleRecipeProductOption {
+                id
+                simpleRecipeYield {
+                    id
+                    yield
+                }
+            }
+            assemblyStation {
+                name
+            }
+            comboProductId
+            comboProduct {
+                id
+                name
+            }
+            comboProductComponent {
+                id
+                label
+            }
+            orderSachets {
+                id
+                ingredientName
+                isAssembled
+                isLabelled
+                isPortioned
+                processingName
+                quantity
+                status
+                unit
+            }
+        }
+    }
+}
+
+mutation updateOrderMealKitSachet($pk_columns: order_orderSachet_pk_columns_input!, $_set: order_orderSachet_set_input!) {
+    updateOrderSachet(pk_columns: $pk_columns, _set: $_set) {
+        id
+    }
+}

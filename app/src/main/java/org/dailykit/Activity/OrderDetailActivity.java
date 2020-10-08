@@ -220,4 +220,8 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
     public void onViewClicked() {
         moveToContinuousScanActivity(order);
     }
+
+
+
+
 }

@@ -143,7 +143,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRo
 
         int count = singleItem.orderInventoryProducts().size()+singleItem.orderMealKitProducts().size()+singleItem.orderReadyToEatProducts().size();
         holder.itemCount.setText("0/"+count);
-
     }
 
     public void updateList() {

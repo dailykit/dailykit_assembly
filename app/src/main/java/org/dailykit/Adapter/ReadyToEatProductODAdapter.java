@@ -7,12 +7,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
+
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
+import org.dailykit.UpdateOrderMealKitProductMutation;
+import org.dailykit.UpdateOrderReadyToEatProductMutation;
 import org.dailykit.listener.ReadyToEatProductListener;
+import org.dailykit.network.Network;
+import org.dailykit.type.Order_orderMealKitProduct_pk_columns_input;
+import org.dailykit.type.Order_orderMealKitProduct_set_input;
+import org.dailykit.type.Order_orderReadyToEatProduct_pk_columns_input;
+import org.dailykit.type.Order_orderReadyToEatProduct_set_input;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -60,12 +73,15 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
         if ("PENDING".equals(singleItem.assemblyStatus())) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
             holder.status.setText("0/0/1");
+            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
         } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && !singleItem.isAssembled()) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
             holder.status.setText("0/1/1");
+            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
         } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled()) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
             holder.status.setText("0/1/1");
+            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
         }
         holder.toggle.setOnClickListener(v -> {
             if (holder.optionsLayout.getVisibility() == View.GONE) {
@@ -75,6 +91,37 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
                 holder.toggle.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_arrow_down_grey));
                 holder.optionsLayout.setVisibility(View.GONE);
             }
+        });
+
+        holder.markAsAssembled.setOnClickListener(v -> {
+            if ("PENDING".equals(singleItem.assemblyStatus())) {
+                Toast.makeText(activity, "Please pack this item before assembling", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                UpdateOrderReadyToEatProductMutation updateOrderReadyToEatProductMutation = new UpdateOrderReadyToEatProductMutation(
+                        Order_orderReadyToEatProduct_pk_columns_input
+                                .builder()
+                                .id(singleItem.id())
+                                .build(),
+
+                        Order_orderReadyToEatProduct_set_input
+                                .builder()
+                                .isAssembled(true)
+                                .build());
+
+                Network.apolloClient.mutate(updateOrderReadyToEatProductMutation).enqueue(new ApolloCall.Callback<UpdateOrderReadyToEatProductMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateOrderReadyToEatProductMutation.Data> response) {
+                        Timber.e("onResponse : " + response.toString());
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Timber.e("onFailure : " + e.getMessage());
+                    }
+                });
+            }
+
         });
     }
 

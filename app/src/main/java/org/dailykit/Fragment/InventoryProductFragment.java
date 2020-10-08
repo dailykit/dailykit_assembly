@@ -68,4 +68,9 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
         inventoryList.setAdapter(inventoryProductCSAdapter);
         inventoryProductCSAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void markAssemble(OrderListSubscription.OrderInventoryProduct orderInventoryProduct) {
+
+    }
 }

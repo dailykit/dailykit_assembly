@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
+import org.dailykit.UpdateOrderInventoryProductMutation;
 import org.dailykit.activity.OrderDetailActivity;
 import org.dailykit.adapter.InventoryProductODAdapter;
 import org.dailykit.listener.InventoryProductListener;
@@ -61,5 +62,10 @@ public class InventoryProductODFragment extends Fragment implements InventoryPro
         list.setLayoutManager( new LinearLayoutManager(orderDetailActivity, LinearLayoutManager.VERTICAL, false));
         list.setAdapter(inventoryProductODAdapter);
         inventoryProductODAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void markAssemble(OrderListSubscription.OrderInventoryProduct orderInventoryProduct) {
+
     }
 }
