@@ -15,7 +15,7 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.UpdateOrderInventoryProductMutation;
 import org.dailykit.listener.InventoryProductListener;
@@ -35,11 +35,11 @@ import timber.log.Timber;
 
 public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryProductODAdapter.ViewHolder> {
 
-    private List<OrderListSubscription.OrderInventoryProduct> orderInventoryProductList;
+    private List<OrderListDetailSubscription.OrderInventoryProduct> orderInventoryProductList;
     private Activity activity;
     private InventoryProductListener inventoryProductListener;
 
-    public InventoryProductODAdapter(Activity activity, InventoryProductListener inventoryProductListener, List<OrderListSubscription.OrderInventoryProduct> orderInventoryProductList) {
+    public InventoryProductODAdapter(Activity activity, InventoryProductListener inventoryProductListener, List<OrderListDetailSubscription.OrderInventoryProduct> orderInventoryProductList) {
         this.orderInventoryProductList = orderInventoryProductList;
         this.inventoryProductListener = inventoryProductListener;
         this.activity = activity;
@@ -54,7 +54,7 @@ public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryPro
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final OrderListSubscription.OrderInventoryProduct singleItem = orderInventoryProductList.get(position);
+        final OrderListDetailSubscription.OrderInventoryProduct singleItem = orderInventoryProductList.get(position);
         String comboName = "";
         if (null != singleItem.comboProductId() && null != singleItem.comboProduct()) {
             comboName = " - " + singleItem.comboProduct().name();
@@ -114,6 +114,7 @@ public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryPro
                     @Override
                     public void onResponse(@NotNull Response<UpdateOrderInventoryProductMutation.Data> response) {
                         Timber.e("onResponse : " + response.toString());
+                        inventoryProductListener.markAssemble(singleItem);
                     }
 
                     @Override

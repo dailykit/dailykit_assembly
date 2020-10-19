@@ -1,6 +1,7 @@
 package org.dailykit.listener;
 
-import org.dailykit.OrderListSubscription;
+
+import org.dailykit.OrderListDetailSubscription;
 
 public interface ContinuousScanListener {
 
@@ -10,6 +11,6 @@ public interface ContinuousScanListener {
 
     int getPageCount();
 
-    OrderListSubscription.Order getOrder();
+    OrderListDetailSubscription.Order getOrder();
 
 }

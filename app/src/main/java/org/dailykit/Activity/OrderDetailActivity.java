@@ -7,23 +7,28 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.apollographql.apollo.ApolloSubscriptionCall;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.material.tabs.TabLayout;
 
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
 import org.dailykit.adapter.OrderDetailViewPager;
 import org.dailykit.adapter.TabAdapter;
 import org.dailykit.listener.OrderDetailListener;
 import org.dailykit.listener.OrderListener;
+import org.dailykit.network.Network;
 import org.dailykit.util.AppUtil;
 import org.dailykit.util.SoftwareConfig;
 import org.dailykit.viewmodel.DashboardViewModel;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -72,9 +77,11 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
     LinearLayout customerDetail;
     private OrderDetailActivity orderDetailActivity;
     DashboardViewModel dashboardViewModel;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
     private OrderDetailViewPager orderDetailViewPager;
     private SoftwareConfig softwareConfig;
+    private ApolloSubscriptionCall<OrderListDetailSubscription.Data> apolloSubscriptionCall= null;
+    private OrderListDetailSubscription orderListDetailSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +94,68 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
         all.setOnClickListener(v -> {
             finish();
         });
-        setView();
+        subscribeOrderDetail();
     }
 
+    public void subscribeOrderDetail(){
+        showDialog();
+        orderListDetailSubscription = OrderListDetailSubscription.builder().id(dashboardViewModel.getSelectedOrder().id()).build();
+        if(null != Network.apolloClient) {
+            apolloSubscriptionCall = Network.apolloClient.subscribe(orderListDetailSubscription);
+            Timber.e("subscribeOrders");
+            apolloSubscriptionCall.execute(new ApolloSubscriptionCall.Callback<OrderListDetailSubscription.Data>() {
+                @Override
+                public void onResponse(@NotNull Response<OrderListDetailSubscription.Data> response) {
+                    dismissDialog();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Timber.e(response.getData().toString());
+                            dashboardViewModel.setSelectedOrderDetail(response.getData().order());
+                            setView();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(@NotNull ApolloException e) {
+                    Timber.e("onFailure : " + e.getLocalizedMessage());
+                    Timber.e("onFailure : " + e.toString());
+                    dismissDialog();
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onCompleted() {
+                    Timber.e("onCompleted");
+                    dismissDialog();
+                }
+
+                @Override
+                public void onTerminated() {
+                    Timber.e("onTerminated");
+                    dismissDialog();
+                }
+
+                @Override
+                public void onConnected() {
+                    Timber.e("onConnected");
+                }
+            });
+        }
+        else{
+            dismissDialog();
+        }
+    }
+
+
+
     public void setView() {
-        order = dashboardViewModel.getSelectedOrder();
+        order = dashboardViewModel.getSelectedOrderDetail();
         orderDetailViewPager = new OrderDetailViewPager(getSupportFragmentManager(), orderDetailActivity);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(orderDetailViewPager);
         viewPager.setOffscreenPageLimit(3);
+        viewPager.setCurrentItem(dashboardViewModel.getActiveProductTab());
         orderedOn.setText(AppUtil.getISTTime("yyyy-MM-dd'T'hh:mm:ss", "dd MMM hh:mm aa", ((String) order.created_at()).substring(0, 18)));
         readyBy.setText(AppUtil.getISTTime("yyyy-MM-dd'T'hh:mm:ss", "dd MMM hh:mm aa", (String) order.readyByTimestamp()));
         pickUp.setText(AppUtil.getISTTime("yyyy-MM-dd'T'hh:mm:ss", "dd MMM hh:mm aa", (String) order.fulfillmentTimestamp()));
@@ -166,8 +226,8 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
     }
 
     @Override
-    public void moveToContinuousScanActivity(OrderListSubscription.Order order) {
-        dashboardViewModel.setSelectedOrder(order);
+    public void moveToContinuousScanActivity(OrderListDetailSubscription.Order order) {
+        dashboardViewModel.setSelectedOrderDetail(order);
         dashboardViewModel.addToTabList((String) order.id());
         startActivity(new Intent(orderDetailActivity, ContinuousScanActivity.class));
     }
@@ -195,8 +255,8 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
     }
 
     @Override
-    public OrderListSubscription.Order getSelectedOrder() {
-        return dashboardViewModel.getSelectedOrder();
+    public OrderListDetailSubscription.Order getSelectedOrder() {
+        return dashboardViewModel.getSelectedOrderDetail();
     }
 
     @Override
@@ -212,7 +272,7 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
     }
 
     @Override
-    public OrderListSubscription.Order getOrder() {
+    public OrderListDetailSubscription.Order getOrder() {
         return order;
     }
 
@@ -221,7 +281,13 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
         moveToContinuousScanActivity(order);
     }
 
+    @Override
+    public void moveToOrderDetailActivity(OrderListSubscription.Order order) {
 
+    }
 
-
+    @Override
+    public OrderListSubscription.Order getSelectedOrderIndividual() {
+        return dashboardViewModel.getSelectedOrder();
+    }
 }

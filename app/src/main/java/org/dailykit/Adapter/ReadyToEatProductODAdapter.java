@@ -15,7 +15,7 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.UpdateOrderMealKitProductMutation;
 import org.dailykit.UpdateOrderReadyToEatProductMutation;
@@ -36,11 +36,11 @@ import timber.log.Timber;
 
 public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatProductODAdapter.ViewHolder> {
 
-    private List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProducts;
+    private List<OrderListDetailSubscription.OrderReadyToEatProduct> orderReadyToEatProducts;
     private Activity activity;
     private ReadyToEatProductListener readyToEatProductListener;
 
-    public ReadyToEatProductODAdapter(Activity activity, ReadyToEatProductListener readyToEatProductListener, List<OrderListSubscription.OrderReadyToEatProduct> orderReadyToEatProducts) {
+    public ReadyToEatProductODAdapter(Activity activity, ReadyToEatProductListener readyToEatProductListener, List<OrderListDetailSubscription.OrderReadyToEatProduct> orderReadyToEatProducts) {
         this.orderReadyToEatProducts = orderReadyToEatProducts;
         this.readyToEatProductListener = readyToEatProductListener;
         this.activity = activity;
@@ -55,7 +55,7 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final OrderListSubscription.OrderReadyToEatProduct singleItem = orderReadyToEatProducts.get(position);
+        final OrderListDetailSubscription.OrderReadyToEatProduct singleItem = orderReadyToEatProducts.get(position);
         String comboName = "";
         if (null != singleItem.comboProductId() && null != singleItem.comboProduct()) {
             comboName = " - " + singleItem.comboProduct().name();
@@ -113,6 +113,7 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
                     @Override
                     public void onResponse(@NotNull Response<UpdateOrderReadyToEatProductMutation.Data> response) {
                         Timber.e("onResponse : " + response.toString());
+                        readyToEatProductListener.markAssemble(singleItem);
                     }
 
                     @Override

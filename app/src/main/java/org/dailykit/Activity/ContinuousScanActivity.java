@@ -14,6 +14,9 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.apollographql.apollo.ApolloSubscriptionCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.material.tabs.TabLayout;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
@@ -23,7 +26,7 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.adapter.ContinuousScanIngredientAdapter;
 import org.dailykit.adapter.ContinuousScanViewPager;
@@ -31,8 +34,10 @@ import org.dailykit.constants.Constants;
 import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.listener.MealKitProductListener;
 import org.dailykit.listener.OrderDetailListener;
+import org.dailykit.network.Network;
 import org.dailykit.viewmodel.ContinuousScanViewModel;
 import org.dailykit.viewmodel.DashboardViewModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -66,8 +71,10 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
     SharedPreferences.Editor editor;
     ContinuousScanActivity continuousScanActivity;
     String slipName;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
     private ContinuousScanViewPager continuousScanViewPager;
+    private ApolloSubscriptionCall<OrderListDetailSubscription.Data> apolloSubscriptionCall= null;
+    private OrderListDetailSubscription orderListDetailSubscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,15 +92,67 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
         pauseScan.setVisibility(View.VISIBLE);
 
         beepManager = new BeepManager(this);
-        setView();
+        subscribeOrderDetail();
+    }
+
+    public void subscribeOrderDetail(){
+        showDialog();
+        orderListDetailSubscription = OrderListDetailSubscription.builder().id(dashboardViewModel.getSelectedOrder().id()).build();
+        if(null != Network.apolloClient) {
+            apolloSubscriptionCall = Network.apolloClient.subscribe(orderListDetailSubscription);
+            Timber.e("subscribeOrders");
+            apolloSubscriptionCall.execute(new ApolloSubscriptionCall.Callback<OrderListDetailSubscription.Data>() {
+                @Override
+                public void onResponse(@NotNull Response<OrderListDetailSubscription.Data> response) {
+                    dismissDialog();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Timber.e(response.getData().toString());
+                            dashboardViewModel.setSelectedOrderDetail(response.getData().order());
+                            setView();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(@NotNull ApolloException e) {
+                    Timber.e("onFailure : " + e.getLocalizedMessage());
+                    Timber.e("onFailure : " + e.toString());
+                    dismissDialog();
+                    e.printStackTrace();
+                }
+
+                @Override
+                public void onCompleted() {
+                    Timber.e("onCompleted");
+                    dismissDialog();
+                }
+
+                @Override
+                public void onTerminated() {
+                    Timber.e("onTerminated");
+                    dismissDialog();
+                }
+
+                @Override
+                public void onConnected() {
+                    Timber.e("onConnected");
+                }
+            });
+        }
+        else{
+            dismissDialog();
+        }
     }
 
     public void setView() {
-        order = dashboardViewModel.getSelectedOrder();
+        order = dashboardViewModel.getSelectedOrderDetail();
         orderId.setText((String) order.id());
         continuousScanViewPager = new ContinuousScanViewPager(getSupportFragmentManager(), continuousScanActivity);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(continuousScanViewPager);
+        viewPager.setOffscreenPageLimit(3);
+        viewPager.setCurrentItem(dashboardViewModel.getActiveProductTab());
         updateIngredientList();
     }
 
@@ -121,7 +180,7 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
     }
 
     @Override
-    public OrderListSubscription.Order getOrder() {
+    public OrderListDetailSubscription.Order getOrder() {
         return order;
     }
 

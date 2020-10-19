@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.adapter.InventoryProductCSAdapter;
@@ -32,7 +32,7 @@ public class ReadyToEatProductFragment extends Fragment implements ReadyToEatPro
     DashboardViewModel dashboardViewModel;
     ContinuousScanViewModel continuousScanViewModel;
     ContinuousScanActivity continuousScanActivity;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
     private ReadyToEatProductODAdapter readyToEatProductCSAdapter;
     private ReadyToEatProductFragment readyToEatProductFragment;
 
@@ -58,10 +58,16 @@ public class ReadyToEatProductFragment extends Fragment implements ReadyToEatPro
     }
 
     public void setView(){
-        order = dashboardViewModel.getSelectedOrder();
+        order = dashboardViewModel.getSelectedOrderDetail();
         readyToEatProductCSAdapter = new ReadyToEatProductODAdapter(continuousScanActivity, readyToEatProductFragment, order.orderReadyToEatProducts());
         readyToEatList.setLayoutManager( new LinearLayoutManager(continuousScanActivity, LinearLayoutManager.VERTICAL, false));
         readyToEatList.setAdapter(readyToEatProductCSAdapter);
         readyToEatProductCSAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void markAssemble(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct) {
+        dashboardViewModel.setActiveProductTab(1);
+        dashboardViewModel.setActiveMealkitTab(0);
     }
 }

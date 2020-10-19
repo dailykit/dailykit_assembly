@@ -50,7 +50,7 @@ public class TabAdapter extends RecyclerView.Adapter<TabAdapter.SingleItemRowHol
             orderListener.getOrder(singleItem);
         });
 
-        OrderListSubscription.Order order = orderListener.getSelectedOrder();
+        OrderListSubscription.Order order = orderListener.getSelectedOrderIndividual();
 
         if(null != order && singleItem.equals((String)order.id())){
             holder.text.setTextColor(activity.getResources().getColor(R.color.white));

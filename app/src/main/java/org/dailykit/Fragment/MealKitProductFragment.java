@@ -13,7 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.adapter.MealKitProductCSAdapter;
@@ -39,7 +39,7 @@ public class MealKitProductFragment extends Fragment implements MealKitProductLi
     DashboardViewModel dashboardViewModel;
     ContinuousScanViewModel continuousScanViewModel;
     ContinuousScanActivity continuousScanActivity;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
     private MealKitProductCSAdapter mealKitProductCSAdapter;
     private MealKitProductFragment mealKitProductFragment;
 
@@ -59,14 +59,14 @@ public class MealKitProductFragment extends Fragment implements MealKitProductLi
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         continuousScanViewModel = ViewModelProviders.of(this).get(ContinuousScanViewModel.class);
         continuousScanActivity = (ContinuousScanActivity)getActivity();
-        order = dashboardViewModel.getSelectedOrder();
+        order = dashboardViewModel.getSelectedOrderDetail();
         setTabs(order.orderMealKitProducts());
         return view;
     }
 
 
-    public void setTabs(List<OrderListSubscription.OrderMealKitProduct> orderMealKitProductList) {
-        for (OrderListSubscription.OrderMealKitProduct orderMealKitProduct : orderMealKitProductList) {
+    public void setTabs(List<OrderListDetailSubscription.OrderMealKitProduct> orderMealKitProductList) {
+        for (OrderListDetailSubscription.OrderMealKitProduct orderMealKitProduct : orderMealKitProductList) {
             tabLayout.addTab(tabLayout.newTab().setText(orderMealKitProduct.simpleRecipeProduct().name()));
         }
         tabLayout.setTabMode(tabLayout.MODE_SCROLLABLE);

@@ -11,7 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.UpdateOrderInventoryProductMutation;
 import org.dailykit.activity.OrderDetailActivity;
@@ -31,7 +32,7 @@ public class InventoryProductODFragment extends Fragment implements InventoryPro
     DashboardViewModel dashboardViewModel;
     private OrderDetailListener orderDetailListener;
     private InventoryProductODAdapter inventoryProductODAdapter;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
     private InventoryProductODFragment inventoryProductODFragment;
     private OrderDetailActivity orderDetailActivity;
 
@@ -57,7 +58,7 @@ public class InventoryProductODFragment extends Fragment implements InventoryPro
     }
 
     public void setView(){
-        order = dashboardViewModel.getSelectedOrder();
+        order = dashboardViewModel.getSelectedOrderDetail();
         inventoryProductODAdapter = new InventoryProductODAdapter(orderDetailActivity, inventoryProductODFragment, order.orderInventoryProducts());
         list.setLayoutManager( new LinearLayoutManager(orderDetailActivity, LinearLayoutManager.VERTICAL, false));
         list.setAdapter(inventoryProductODAdapter);
@@ -65,7 +66,8 @@ public class InventoryProductODFragment extends Fragment implements InventoryPro
     }
 
     @Override
-    public void markAssemble(OrderListSubscription.OrderInventoryProduct orderInventoryProduct) {
-
+    public void markAssemble(OrderListDetailSubscription.OrderInventoryProduct orderInventoryProduct) {
+        dashboardViewModel.setActiveProductTab(0);
+        dashboardViewModel.setActiveMealkitTab(0);
     }
 }

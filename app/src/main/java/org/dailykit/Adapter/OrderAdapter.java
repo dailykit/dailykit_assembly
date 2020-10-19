@@ -115,16 +115,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.SingleItemRo
         }
         holder.amount.setText(activity.getResources().getString(R.string.dollar) + " 0.00");
         holder.layout.setOnClickListener(v -> {
-            orderListener.moveToContinuousScanActivity(singleItem);
+            orderListener.moveToOrderDetailActivity(singleItem);
         });
         holder.readyToEatLayout.setOnClickListener(v -> {
-            orderListener.moveToContinuousScanActivity(singleItem);
+            orderListener.moveToOrderDetailActivity(singleItem);
         });
         holder.mealKitLayout.setOnClickListener(v -> {
-            orderListener.moveToContinuousScanActivity(singleItem);
+            orderListener.moveToOrderDetailActivity(singleItem);
         });
         holder.inventoryLayout.setOnClickListener(v -> {
-            orderListener.moveToContinuousScanActivity(singleItem);
+            orderListener.moveToOrderDetailActivity(singleItem);
         });
 
         holder.orderedOn.setText(AppUtil.getISTTime("yyyy-MM-dd'T'hh:mm:ss", "dd MMM hh:mm aa", ((String) singleItem.created_at()).substring(0, 18)));

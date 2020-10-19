@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.zxing.client.android.BeepManager;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.adapter.ContinuousScanIngredientAdapter;
@@ -37,7 +37,7 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
     DashboardViewModel dashboardViewModel;
     ContinuousScanViewModel continuousScanViewModel;
     ContinuousScanActivity continuousScanActivity;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
     private InventoryProductODAdapter inventoryProductCSAdapter;
     private InventoryProductFragment inventoryProductFragment;
 
@@ -62,7 +62,7 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
     }
 
     public void setView(){
-        order = dashboardViewModel.getSelectedOrder();
+        order = dashboardViewModel.getSelectedOrderDetail();
         inventoryProductCSAdapter = new InventoryProductODAdapter(continuousScanActivity, inventoryProductFragment, order.orderInventoryProducts());
         inventoryList.setLayoutManager( new LinearLayoutManager(continuousScanActivity, LinearLayoutManager.VERTICAL, false));
         inventoryList.setAdapter(inventoryProductCSAdapter);
@@ -70,7 +70,8 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
     }
 
     @Override
-    public void markAssemble(OrderListSubscription.OrderInventoryProduct orderInventoryProduct) {
-
+    public void markAssemble(OrderListDetailSubscription.OrderInventoryProduct orderInventoryProduct) {
+        dashboardViewModel.setActiveProductTab(0);
+        dashboardViewModel.setActiveMealkitTab(0);
     }
 }

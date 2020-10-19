@@ -15,7 +15,10 @@ object Constants {
     const val CLIENT_ID = "CLIENT_ID"
     const val USER_ACCESS_MODEL = "USER_ACCESS_MODEL"
     const val SELECTED_ORDER = "SELECTED_ORDER"
+    const val SELECTED_ORDER_DETAIL = "SELECTED_ORDER_DETAIL"
     const val TAB_LIST = "TAB_LIST"
     const val ORDER_LIST = "ORDER_LIST"
+    const val ACTIVE_PRODUCT_TAB = "ACTIVE_PRODUCT_TAB"
+    const val ACTIVE_MEALKIT_TAB = "ACTIVE_MEALKIT_TAB"
 }
 

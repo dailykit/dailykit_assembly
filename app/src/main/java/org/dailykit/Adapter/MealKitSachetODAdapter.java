@@ -16,7 +16,7 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.UpdateOrderInventoryProductMutation;
 import org.dailykit.UpdateOrderMealKitProductMutation;
@@ -40,11 +40,11 @@ import timber.log.Timber;
 
 public class MealKitSachetODAdapter extends RecyclerView.Adapter<MealKitSachetODAdapter.ViewHolder> {
 
-    private List<OrderListSubscription.OrderSachet> orderSachetList;
+    private List<OrderListDetailSubscription.OrderSachet> orderSachetList;
     private Activity activity;
     private MealKitProductListener mealKitProductListener;
 
-    public MealKitSachetODAdapter(Activity activity, MealKitProductListener mealKitProductListener, List<OrderListSubscription.OrderSachet> orderSachetList) {
+    public MealKitSachetODAdapter(Activity activity, MealKitProductListener mealKitProductListener, List<OrderListDetailSubscription.OrderSachet> orderSachetList) {
         this.orderSachetList = orderSachetList;
         this.mealKitProductListener = mealKitProductListener;
         this.activity = activity;
@@ -59,7 +59,7 @@ public class MealKitSachetODAdapter extends RecyclerView.Adapter<MealKitSachetOD
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final OrderListSubscription.OrderSachet singleItem = orderSachetList.get(position);
+        final OrderListDetailSubscription.OrderSachet singleItem = orderSachetList.get(position);
         holder.name.setText(singleItem.ingredientName());
         double unitSize = (null == singleItem.quantity()) ? 0L : (double) singleItem.quantity();
         String unit = (null == singleItem.unit()) ? "" : singleItem.unit();

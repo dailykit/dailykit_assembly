@@ -1,9 +1,8 @@
 package org.dailykit.listener;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 
 public interface InventoryProductListener {
 
-    void markAssemble(OrderListSubscription.OrderInventoryProduct orderInventoryProduct);
-
+    void markAssemble(OrderListDetailSubscription.OrderInventoryProduct orderInventoryProduct);
 }

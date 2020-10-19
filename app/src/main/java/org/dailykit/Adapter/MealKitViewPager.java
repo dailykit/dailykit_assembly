@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.fragment.MealKitProductDetailFragment;
 import org.dailykit.listener.OrderDetailListener;
 
@@ -17,9 +17,9 @@ public class MealKitViewPager extends FragmentStatePagerAdapter {
 
     Context context;
     OrderDetailListener orderDetailListener;
-    List<OrderListSubscription.OrderMealKitProduct> orderMealKitProductArrayList;
+    List<OrderListDetailSubscription.OrderMealKitProduct> orderMealKitProductArrayList;
 
-    public MealKitViewPager(Context context, FragmentManager fm,OrderDetailListener orderDetailListener, List<OrderListSubscription.OrderMealKitProduct> orderMealKitProductArrayList) {
+    public MealKitViewPager(Context context, FragmentManager fm,OrderDetailListener orderDetailListener, List<OrderListDetailSubscription.OrderMealKitProduct> orderMealKitProductArrayList) {
         super(fm);
         this.context = context;
         this.orderDetailListener = orderDetailListener;

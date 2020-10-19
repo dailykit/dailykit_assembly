@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.fragment.InventoryProductFragment;
 import org.dailykit.fragment.MealKitProductFragment;
 import org.dailykit.fragment.ReadyToEatProductFragment;
@@ -27,7 +27,7 @@ public class ContinuousScanViewPager extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        OrderListSubscription.Order order = continuousScanListener.getOrder();
+        OrderListDetailSubscription.Order order = continuousScanListener.getOrder();
         if(position == 0 && order.orderInventoryProducts().size()>0){
             inventoryProductFragment = new InventoryProductFragment(continuousScanListener);
             return inventoryProductFragment;
@@ -52,7 +52,7 @@ public class ContinuousScanViewPager extends FragmentStatePagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        OrderListSubscription.Order order = continuousScanListener.getOrder();
+        OrderListDetailSubscription.Order order = continuousScanListener.getOrder();
         if(position == 0 && order.orderInventoryProducts().size()>0) {
             return "Inventory";
         }

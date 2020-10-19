@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.OrderDetailActivity;
 import org.dailykit.adapter.InventoryProductODAdapter;
@@ -28,19 +28,19 @@ import butterknife.ButterKnife;
 public class MealKitProductDetailFragment extends Fragment implements MealKitProductListener {
 
     private OrderDetailListener orderDetailListener;
-    private OrderListSubscription.OrderMealKitProduct orderMealKitProduct;
+    private OrderListDetailSubscription.OrderMealKitProduct orderMealKitProduct;
     @BindView(R.id.list)
     RecyclerView list;
     DashboardViewModel dashboardViewModel;
     private MealKitSachetODAdapter mealKitSachetODAdapter;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
     private MealKitProductDetailFragment mealKitProductDetailFragment;
     private Activity orderDetailActivity;
 
     public MealKitProductDetailFragment() {
     }
 
-    public MealKitProductDetailFragment(OrderListSubscription.OrderMealKitProduct orderMealKitProduct,OrderDetailListener orderDetailListener) {
+    public MealKitProductDetailFragment(OrderListDetailSubscription.OrderMealKitProduct orderMealKitProduct,OrderDetailListener orderDetailListener) {
         this.orderMealKitProduct = orderMealKitProduct;
         this.orderDetailListener = orderDetailListener;
     }
@@ -59,7 +59,7 @@ public class MealKitProductDetailFragment extends Fragment implements MealKitPro
 
     public void setView(){
         if(null !=  orderMealKitProduct && null !=  orderMealKitProduct.orderSachets()) {
-            order = dashboardViewModel.getSelectedOrder();
+            order = dashboardViewModel.getSelectedOrderDetail();
             mealKitSachetODAdapter = new MealKitSachetODAdapter(orderDetailActivity, mealKitProductDetailFragment, orderMealKitProduct.orderSachets());
             list.setLayoutManager(new LinearLayoutManager(orderDetailActivity, LinearLayoutManager.VERTICAL, false));
             list.setAdapter(mealKitSachetODAdapter);

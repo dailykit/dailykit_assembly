@@ -17,7 +17,7 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.model.ScanIngredientDataModel;
 import org.dailykit.R;
@@ -137,7 +137,7 @@ public class SingleScanActivity extends CustomAppCompatActivity implements Conti
     }
 
     @Override
-    public OrderListSubscription.Order getOrder() {
+    public OrderListDetailSubscription.Order getOrder() {
         return null;
     }
 

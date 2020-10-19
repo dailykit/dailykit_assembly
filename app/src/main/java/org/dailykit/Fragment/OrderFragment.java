@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.DashboardActivity;
@@ -109,6 +111,11 @@ public class OrderFragment extends Fragment implements OrderListener {
     }
 
     @Override
+    public OrderListDetailSubscription.Order getSelectedOrder() {
+        return dashboardViewModel.getSelectedOrderDetail();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         dashboardViewModel.removeSelectedOrder();
@@ -116,11 +123,10 @@ public class OrderFragment extends Fragment implements OrderListener {
         updateList(dashboardViewModel.getOrderList());
     }
 
+
     @Override
-    public void moveToContinuousScanActivity(OrderListSubscription.Order order) {
-        dashboardViewModel.setSelectedOrder(order);
-        dashboardViewModel.addToTabList((String) order.id());
-        startActivity(new Intent(dashboardActivity, OrderDetailActivity.class));
+    public void moveToContinuousScanActivity(OrderListDetailSubscription.Order order) {
+
     }
 
     @Override
@@ -128,9 +134,16 @@ public class OrderFragment extends Fragment implements OrderListener {
         dashboardViewModel.removeFromTabList(orderFragment, orderId);
     }
 
+
     @Override
-    public OrderListSubscription.Order getSelectedOrder() {
+    public OrderListSubscription.Order getSelectedOrderIndividual() {
         return dashboardViewModel.getSelectedOrder();
     }
 
+    @Override
+    public void moveToOrderDetailActivity(OrderListSubscription.Order order) {
+        dashboardViewModel.setSelectedOrder(order);
+        dashboardViewModel.addToTabList((String) order.id());
+        startActivity(new Intent(dashboardActivity, OrderDetailActivity.class));
+    }
 }

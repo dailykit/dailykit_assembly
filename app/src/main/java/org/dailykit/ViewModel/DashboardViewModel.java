@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.OrderListSubscription;
 import org.dailykit.constants.Constants;
 import org.dailykit.listener.OrderListener;
@@ -66,10 +67,22 @@ public class DashboardViewModel extends AndroidViewModel {
         editor.commit();
     }
 
+    public void setSelectedOrderDetail(OrderListDetailSubscription.Order order) {
+        editor.putString(Constants.SELECTED_ORDER_DETAIL, new Gson().toJson(order));
+        editor.commit();
+    }
+
     public OrderListSubscription.Order getSelectedOrder() {
         type = new TypeToken<OrderListSubscription.Order>() {
         }.getType();
         OrderListSubscription.Order order = new Gson().fromJson(sharedpreferences.getString(Constants.SELECTED_ORDER, ""), type);
+        return order;
+    }
+
+    public OrderListDetailSubscription.Order getSelectedOrderDetail() {
+        type = new TypeToken<OrderListDetailSubscription.Order>() {
+        }.getType();
+        OrderListDetailSubscription.Order order = new Gson().fromJson(sharedpreferences.getString(Constants.SELECTED_ORDER_DETAIL, ""), type);
         return order;
     }
 
@@ -111,5 +124,27 @@ public class DashboardViewModel extends AndroidViewModel {
             }
         }
     }
+
+
+    public void setActiveProductTab(int position) {
+        editor.putInt(Constants.ACTIVE_PRODUCT_TAB, position);
+        editor.commit();
+    }
+
+    public int getActiveMealkitTab(){
+        int position = sharedpreferences.getInt(Constants.ACTIVE_MEALKIT_TAB, 0);
+        return position;
+    }
+
+    public void setActiveMealkitTab(int position) {
+        editor.putInt(Constants.ACTIVE_MEALKIT_TAB, position);
+        editor.commit();
+    }
+
+    public int getActiveProductTab(){
+        int position = sharedpreferences.getInt(Constants.ACTIVE_PRODUCT_TAB, 0);
+        return position;
+    }
+
 
 }

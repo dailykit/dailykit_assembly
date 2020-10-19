@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.fragment.InventoryProductODFragment;
 import org.dailykit.fragment.MealKitProductODFragment;
 import org.dailykit.fragment.ReadyToEatProductODFragment;
@@ -28,7 +28,7 @@ public class OrderDetailViewPager extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        OrderListSubscription.Order order = orderDetailListener.getOrder();
+        OrderListDetailSubscription.Order order = orderDetailListener.getOrder();
         if(position == 0 && order.orderInventoryProducts().size()>0){
             inventoryProductODFragment = new InventoryProductODFragment(orderDetailListener);
             return inventoryProductODFragment;
@@ -53,7 +53,7 @@ public class OrderDetailViewPager extends FragmentStatePagerAdapter {
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        OrderListSubscription.Order order = orderDetailListener.getOrder();
+        OrderListDetailSubscription.Order order = orderDetailListener.getOrder();
         if(position == 0 && order.orderInventoryProducts().size()>0) {
             return "Inventory";
         }

@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.activity.OrderDetailActivity;
@@ -32,7 +32,7 @@ public class ReadyToEatProductODFragment extends Fragment implements ReadyToEatP
     DashboardViewModel dashboardViewModel;
     private OrderDetailListener orderDetailListener;
     private ReadyToEatProductODAdapter readyToEatProductODAdapter;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
     private ReadyToEatProductODFragment readyToEatProductODFragment;
     private OrderDetailActivity orderDetailActivity;
 
@@ -58,10 +58,16 @@ public class ReadyToEatProductODFragment extends Fragment implements ReadyToEatP
     }
 
     public void setView(){
-        order = dashboardViewModel.getSelectedOrder();
+        order = dashboardViewModel.getSelectedOrderDetail();
         readyToEatProductODAdapter = new ReadyToEatProductODAdapter(orderDetailActivity, readyToEatProductODFragment, order.orderReadyToEatProducts());
         list.setLayoutManager( new LinearLayoutManager(orderDetailActivity, LinearLayoutManager.VERTICAL, false));
         list.setAdapter(readyToEatProductODAdapter);
         readyToEatProductODAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void markAssemble(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct) {
+        dashboardViewModel.setActiveProductTab(1);
+        dashboardViewModel.setActiveMealkitTab(0);
     }
 }

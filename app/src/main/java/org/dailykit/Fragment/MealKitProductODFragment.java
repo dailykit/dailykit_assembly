@@ -11,7 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import org.dailykit.OrderListSubscription;
+import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.OrderDetailActivity;
 import org.dailykit.adapter.MealKitViewPager;
@@ -34,7 +34,7 @@ public class MealKitProductODFragment extends Fragment {
     private OrderDetailListener orderDetailListener;
     private OrderDetailActivity orderDetailActivity;
     DashboardViewModel dashboardViewModel;
-    private OrderListSubscription.Order order;
+    private OrderListDetailSubscription.Order order;
 
     public MealKitProductODFragment() {
 
@@ -51,13 +51,13 @@ public class MealKitProductODFragment extends Fragment {
         ButterKnife.bind(this,view);
         orderDetailActivity = (OrderDetailActivity)getActivity();
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
-        order = dashboardViewModel.getSelectedOrder();
+        order = dashboardViewModel.getSelectedOrderDetail();
         setTabs(order.orderMealKitProducts());
         return view;
     }
 
-    public void setTabs(List<OrderListSubscription.OrderMealKitProduct> orderMealKitProductList) {
-        for (OrderListSubscription.OrderMealKitProduct orderMealKitProduct : orderMealKitProductList) {
+    public void setTabs(List<OrderListDetailSubscription.OrderMealKitProduct> orderMealKitProductList) {
+        for (OrderListDetailSubscription.OrderMealKitProduct orderMealKitProduct : orderMealKitProductList) {
             tabLayout.addTab(tabLayout.newTab().setText(orderMealKitProduct.simpleRecipeProduct().name()));
         }
         tabLayout.setTabMode(tabLayout.MODE_SCROLLABLE);
