@@ -1,27 +1,44 @@
 package org.dailykit.viewmodel;
 
+
 import android.app.Application;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.room.Room;
 import android.content.SharedPreferences;
-import androidx.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.exception.ApolloException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.dailykit.OrderListDetailSubscription;
+import org.dailykit.UpdateOrderInventoryProductMutation;
+import org.dailykit.UpdateOrderMealKitProductMutation;
+import org.dailykit.UpdateOrderMealKitSachetMutation;
+import org.dailykit.UpdateOrderReadyToEatProductMutation;
+import org.dailykit.constants.Constants;
 import org.dailykit.listener.ContinuousScanListener;
+import org.dailykit.model.BarCodeModel;
 import org.dailykit.model.ScanIngredientDataModel;
 import org.dailykit.model.ScanRequestModel;
 import org.dailykit.model.StatusResponseModel;
+import org.dailykit.network.Network;
 import org.dailykit.retrofit.APIInterface;
 import org.dailykit.retrofit.RetrofitClient;
-import org.dailykit.room.database.GroctaurantDatabase;
 import org.dailykit.room.entity.IngredientEntity;
 import org.dailykit.room.entity.ItemEntity;
+import org.dailykit.type.Order_orderInventoryProduct_pk_columns_input;
+import org.dailykit.type.Order_orderInventoryProduct_set_input;
+import org.dailykit.type.Order_orderMealKitProduct_pk_columns_input;
+import org.dailykit.type.Order_orderMealKitProduct_set_input;
+import org.dailykit.type.Order_orderReadyToEatProduct_pk_columns_input;
+import org.dailykit.type.Order_orderReadyToEatProduct_set_input;
+import org.dailykit.type.Order_orderSachet_pk_columns_input;
+import org.dailykit.type.Order_orderSachet_set_input;
 import org.dailykit.util.AppUtil;
-import org.dailykit.constants.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
@@ -88,6 +105,13 @@ public class ContinuousScanViewModel extends AndroidViewModel {
         );
     }
 
+    public OrderListDetailSubscription.Order getSelectedOrderDetail() {
+        type = new TypeToken<OrderListDetailSubscription.Order>() {
+        }.getType();
+        OrderListDetailSubscription.Order order = new Gson().fromJson(sharedpreferences.getString(Constants.SELECTED_ORDER_DETAIL, ""), type);
+        return order;
+    }
+
     public void setIngredientDetailByItemEntity(ContinuousScanListener continuousScanListener){
         ItemEntity itemEntity=getCurrentItemEntity();
         IngredientEntity ingredientEntity;
@@ -137,4 +161,140 @@ public class ContinuousScanViewModel extends AndroidViewModel {
         scanIngredientDataModel = new Gson().fromJson(sharedpreferences.getString(Constants.SCANNED_INGREDIENT_ENTITY, null), type);
         return scanIngredientDataModel;
     }
+
+
+    public BarCodeModel getBarCodeModel(String qr){
+        type = new TypeToken<BarCodeModel>() {}.getType();
+        BarCodeModel barCodeModel = new Gson().fromJson(qr, type);
+        return barCodeModel;
+    }
+
+    public void scanInventory(BarCodeModel barCodeModel){
+        Timber.e("scanInventory");
+        if (!getSelectedOrderDetail().id().equals(barCodeModel.getOrderId())) {
+            Toast.makeText(getApplication(), "Product-Order Mismatch", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            UpdateOrderInventoryProductMutation updateOrderInventoryProductMutation = new UpdateOrderInventoryProductMutation(
+                    Order_orderInventoryProduct_pk_columns_input
+                            .builder()
+                            .id(Integer.parseInt(barCodeModel.getProductId()))
+                            .build(),
+                    Order_orderInventoryProduct_set_input
+                            .builder()
+                            .isAssembled(true)
+                            .build());
+
+            Network.apolloClient.mutate(updateOrderInventoryProductMutation).enqueue(new ApolloCall.Callback<UpdateOrderInventoryProductMutation.Data>() {
+                @Override
+                public void onResponse(@NotNull com.apollographql.apollo.api.Response<UpdateOrderInventoryProductMutation.Data> response) {
+                    Timber.e("onResponse : " + response.toString());
+
+                }
+
+                @Override
+                public void onFailure(@NotNull ApolloException e) {
+                    Timber.e("onFailure : " + e.getMessage());
+                }
+            });
+        }
+    }
+
+
+    public void scanReadyToEat(BarCodeModel barCodeModel){
+        Timber.e("scanReadyToEat");
+        if (!getSelectedOrderDetail().id().equals(barCodeModel.getOrderId())) {
+            Toast.makeText(getApplication(), "Product-Order Mismatch", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            UpdateOrderReadyToEatProductMutation updateOrderReadyToEatProductMutation = new UpdateOrderReadyToEatProductMutation(
+                    Order_orderReadyToEatProduct_pk_columns_input
+                            .builder()
+                            .id(Integer.parseInt(barCodeModel.getProductId()))
+                            .build(),
+
+                    Order_orderReadyToEatProduct_set_input
+                            .builder()
+                            .isAssembled(true)
+                            .build());
+
+            Network.apolloClient.mutate(updateOrderReadyToEatProductMutation).enqueue(new ApolloCall.Callback<UpdateOrderReadyToEatProductMutation.Data>() {
+                @Override
+                public void onResponse(@NotNull com.apollographql.apollo.api.Response<UpdateOrderReadyToEatProductMutation.Data> response) {
+                    Timber.e("onResponse : " + response.toString());
+
+                }
+
+                @Override
+                public void onFailure(@NotNull ApolloException e) {
+                    Timber.e("onFailure : " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    public void scanMealKit(BarCodeModel barCodeModel){
+        Timber.e("scanMealKit");
+        if (!getSelectedOrderDetail().id().equals(barCodeModel.getOrderId())) {
+            Toast.makeText(getApplication(), "Product-Order Mismatch", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            UpdateOrderMealKitProductMutation updateOrderMealKitProductMutation = new UpdateOrderMealKitProductMutation(
+                    Order_orderMealKitProduct_pk_columns_input
+                            .builder()
+                            .id(Integer.parseInt(barCodeModel.getProductId()))
+                            .build(),
+                    Order_orderMealKitProduct_set_input
+                            .builder()
+                            .isAssembled(true)
+                            .build());
+
+            Network.apolloClient.mutate(updateOrderMealKitProductMutation).enqueue(new ApolloCall.Callback<UpdateOrderMealKitProductMutation.Data>() {
+                @Override
+                public void onResponse(@NotNull com.apollographql.apollo.api.Response<UpdateOrderMealKitProductMutation.Data> response) {
+                    Timber.e("onResponse : " + response.toString());
+                }
+
+                @Override
+                public void onFailure(@NotNull ApolloException e) {
+                    Timber.e("onFailure : " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    public void scanMealKitSachet(BarCodeModel barCodeModel){
+        Timber.e("scanMealKitSachet");
+        if (!getSelectedOrderDetail().id().equals(barCodeModel.getOrderId())) {
+            Toast.makeText(getApplication(), "Product-Order Mismatch", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            UpdateOrderMealKitSachetMutation updateOrderMealKitSachetMutation = new UpdateOrderMealKitSachetMutation(
+                    Order_orderSachet_pk_columns_input
+                            .builder()
+                            .id(Integer.parseInt(barCodeModel.getSachetId()))
+                            .build(),
+                    Order_orderSachet_set_input
+                            .builder()
+                            .isAssembled(true)
+                            .build());
+
+            Network.apolloClient.mutate(updateOrderMealKitSachetMutation).enqueue(new ApolloCall.Callback<UpdateOrderMealKitSachetMutation.Data>() {
+                @Override
+                public void onResponse(@NotNull com.apollographql.apollo.api.Response<UpdateOrderMealKitSachetMutation.Data> response) {
+                    Timber.e("onResponse : " + response.toString());
+                }
+
+                @Override
+                public void onFailure(@NotNull ApolloException e) {
+                    Timber.e("onFailure : " + e.getMessage());
+                }
+            });
+        }
+    }
+
+
+
+
+
 }

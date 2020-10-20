@@ -1,32 +1,31 @@
 package org.dailykit.activity;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.apollographql.apollo.ApolloSubscriptionCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.view.MenuItem;
-import android.widget.TextView;
-
 
 import org.dailykit.OrderListSubscription;
-import org.dailykit.listener.DashboardListener;
+import org.dailykit.R;
+import org.dailykit.constants.FragmentConstants;
 import org.dailykit.fragment.IngredientFragment;
 import org.dailykit.fragment.LabelFragment;
 import org.dailykit.fragment.MenuFragment;
 import org.dailykit.fragment.NotificationFragment;
 import org.dailykit.fragment.OrderFragment;
 import org.dailykit.fragment.ScanFragment;
-import org.dailykit.R;
+import org.dailykit.listener.DashboardListener;
 import org.dailykit.network.Network;
-import org.dailykit.constants.FragmentConstants;
 import org.dailykit.viewmodel.DashboardViewModel;
 import org.jetbrains.annotations.NotNull;
 
@@ -107,6 +106,8 @@ public class DashboardActivity extends CustomAppCompatActivity implements Dashbo
     protected void onResume() {
         super.onResume();
         dashboardViewModel.showScanToast();
+        dashboardViewModel.setActiveMealkitTab(0);
+        dashboardViewModel.setActiveProductTab(0);
     }
 
     @Override

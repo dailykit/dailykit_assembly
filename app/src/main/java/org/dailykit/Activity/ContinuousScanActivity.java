@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,10 +29,9 @@ import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.adapter.ContinuousScanIngredientAdapter;
 import org.dailykit.adapter.ContinuousScanViewPager;
-import org.dailykit.constants.Constants;
 import org.dailykit.listener.ContinuousScanListener;
-import org.dailykit.listener.MealKitProductListener;
 import org.dailykit.listener.OrderDetailListener;
+import org.dailykit.model.BarCodeModel;
 import org.dailykit.network.Network;
 import org.dailykit.viewmodel.ContinuousScanViewModel;
 import org.dailykit.viewmodel.DashboardViewModel;
@@ -230,10 +228,22 @@ public class ContinuousScanActivity extends CustomAppCompatActivity implements C
             lastText = result.getText();
             Toast.makeText(continuousScanActivity, lastText, Toast.LENGTH_SHORT).show();
             Timber.e(lastText);
-            barcodeScanner.setStatusText(lastText);
 
+            BarCodeModel barCodeModel = continuousScanViewModel.getBarCodeModel(lastText);
+            if("inventory".equals(barCodeModel.getType())){
+                continuousScanViewModel.scanInventory(barCodeModel);
+            }
+            else if("ready_to_eat".equals(barCodeModel.getType())){
+                continuousScanViewModel.scanReadyToEat(barCodeModel);
+            }
+            else if("meal_kit".equals(barCodeModel.getType())){
+                continuousScanViewModel.scanMealKit(barCodeModel);
+            }
+            else if("sachet".equals(barCodeModel.getType())){
+                continuousScanViewModel.scanMealKitSachet(barCodeModel);
+            }
+            //barcodeScanner.setStatusText(lastText);
             beepManager.playBeepSoundAndVibrate();
-
             ImageView imageView = (ImageView) findViewById(R.id.barcodePreview);
             imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
 
