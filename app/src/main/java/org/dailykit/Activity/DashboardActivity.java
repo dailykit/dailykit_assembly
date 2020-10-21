@@ -44,6 +44,7 @@ public class DashboardActivity extends CustomAppCompatActivity implements Dashbo
     LabelFragment labelFragment;
     NotificationFragment notificationFragment;
     IngredientFragment ingredientFragment;
+
     private OrderListSubscription orderListSubscription;
     private ApolloSubscriptionCall<OrderListSubscription.Data> apolloSubscriptionCall= null;
 
@@ -99,7 +100,6 @@ public class DashboardActivity extends CustomAppCompatActivity implements Dashbo
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.setSelectedItemId(R.id.navigation_order);
-        subscribeOrders();
     }
 
     @Override
@@ -108,6 +108,7 @@ public class DashboardActivity extends CustomAppCompatActivity implements Dashbo
         dashboardViewModel.showScanToast();
         dashboardViewModel.setActiveMealkitTab(0);
         dashboardViewModel.setActiveProductTab(0);
+        subscribeOrders();
     }
 
     @Override

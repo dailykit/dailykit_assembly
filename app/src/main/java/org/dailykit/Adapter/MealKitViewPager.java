@@ -10,7 +10,6 @@ import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.fragment.MealKitProductDetailFragment;
 import org.dailykit.listener.OrderDetailListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MealKitViewPager extends FragmentStatePagerAdapter {
@@ -33,7 +32,7 @@ public class MealKitViewPager extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
 
-        MealKitProductDetailFragment mealKitProductDetailFragment = new MealKitProductDetailFragment(orderMealKitProductArrayList.get(position),orderDetailListener);
+        MealKitProductDetailFragment mealKitProductDetailFragment = new MealKitProductDetailFragment(position,orderMealKitProductArrayList.get(position),orderDetailListener);
         return mealKitProductDetailFragment;
 
     }

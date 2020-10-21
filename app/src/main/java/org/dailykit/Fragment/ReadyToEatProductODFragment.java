@@ -1,25 +1,21 @@
 package org.dailykit.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
-import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.activity.OrderDetailActivity;
-import org.dailykit.adapter.InventoryProductODAdapter;
 import org.dailykit.adapter.ReadyToEatProductODAdapter;
 import org.dailykit.listener.OrderDetailListener;
 import org.dailykit.listener.ReadyToEatProductListener;
-import org.dailykit.viewmodel.ContinuousScanViewModel;
 import org.dailykit.viewmodel.DashboardViewModel;
 
 import butterknife.BindView;
@@ -67,7 +63,11 @@ public class ReadyToEatProductODFragment extends Fragment implements ReadyToEatP
 
     @Override
     public void markAssemble(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct) {
-        dashboardViewModel.setActiveProductTab(1);
+        int index = 0;
+        if(dashboardViewModel.getSelectedOrderDetail().orderInventoryProducts().size()>0) {
+            index++;
+        }
+        dashboardViewModel.setActiveProductTab(index);
         dashboardViewModel.setActiveMealkitTab(0);
     }
 }

@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -18,7 +16,6 @@ import org.dailykit.R;
 import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.adapter.MealKitProductCSAdapter;
 import org.dailykit.adapter.MealKitViewPager;
-import org.dailykit.adapter.ReadyToEatProductCSAdapter;
 import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.listener.MealKitProductListener;
 import org.dailykit.viewmodel.ContinuousScanViewModel;
@@ -88,6 +85,11 @@ public class MealKitProductFragment extends Fragment implements MealKitProductLi
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+    }
+
+    @Override
+    public void markAssemble(OrderListDetailSubscription.OrderSachet orderSachet) {
 
     }
 }

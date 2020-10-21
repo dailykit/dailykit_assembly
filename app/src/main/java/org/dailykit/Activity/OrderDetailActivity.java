@@ -7,12 +7,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.apollographql.apollo.ApolloSubscriptionCall;
+
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.apollographql.apollo.ApolloSubscriptionCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.material.tabs.TabLayout;
@@ -152,6 +153,7 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
     public void setView() {
         order = dashboardViewModel.getSelectedOrderDetail();
         orderDetailViewPager = new OrderDetailViewPager(getSupportFragmentManager(), orderDetailActivity);
+        if(null != orderDetailViewPager && null != viewPager){
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(orderDetailViewPager);
         viewPager.setOffscreenPageLimit(3);
@@ -202,21 +204,21 @@ public class OrderDetailActivity extends CustomAppCompatActivity implements Orde
             }
         });
 
-        int count = order.orderInventoryProducts().size()+order.orderMealKitProducts().size()+order.orderReadyToEatProducts().size();
-        itemCount.setText("0/"+count);
+        int count = order.orderInventoryProducts().size() + order.orderMealKitProducts().size() + order.orderReadyToEatProducts().size();
+        itemCount.setText("0/" + count);
 
-        if(!softwareConfig.isPartialPackingEnabled() && !"READY_TO_ASSEMBLE".equals(order.orderStatus())){
+        if (!softwareConfig.isPartialPackingEnabled() && !"READY_TO_ASSEMBLE".equals(order.orderStatus())) {
             startAssembling.setOnClickListener(v -> {
                 Toast.makeText(orderDetailActivity, "Please pack all the items before assembling", Toast.LENGTH_SHORT).show();
             });
             startAssembling.setBackground(orderDetailActivity.getResources().getDrawable(R.drawable.round_circle_grey));
-        }
-        else{
+        } else {
             startAssembling.setBackground(orderDetailActivity.getResources().getDrawable(R.drawable.round_circle_blue));
             startAssembling.setOnClickListener(v -> {
                 moveToContinuousScanActivity(order);
             });
         }
+    }
     }
 
     @Override

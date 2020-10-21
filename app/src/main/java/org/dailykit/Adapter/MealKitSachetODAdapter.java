@@ -1,7 +1,6 @@
 package org.dailykit.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +17,9 @@ import com.apollographql.apollo.exception.ApolloException;
 
 import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
-import org.dailykit.UpdateOrderInventoryProductMutation;
-import org.dailykit.UpdateOrderMealKitProductMutation;
 import org.dailykit.UpdateOrderMealKitSachetMutation;
-import org.dailykit.activity.ContinuousScanActivity;
 import org.dailykit.listener.MealKitProductListener;
 import org.dailykit.network.Network;
-import org.dailykit.type.Order_orderInventoryProduct_pk_columns_input;
-import org.dailykit.type.Order_orderInventoryProduct_set_input;
-import org.dailykit.type.Order_orderMealKitProduct_pk_columns_input;
-import org.dailykit.type.Order_orderMealKitProduct_set_input;
 import org.dailykit.type.Order_orderSachet_pk_columns_input;
 import org.dailykit.type.Order_orderSachet_set_input;
 import org.jetbrains.annotations.NotNull;
@@ -108,6 +100,7 @@ public class MealKitSachetODAdapter extends RecyclerView.Adapter<MealKitSachetOD
                     @Override
                     public void onResponse(@NotNull Response<UpdateOrderMealKitSachetMutation.Data> response) {
                         Timber.e("onResponse : " + response.toString());
+                        mealKitProductListener.markAssemble(singleItem);
                     }
 
                     @Override

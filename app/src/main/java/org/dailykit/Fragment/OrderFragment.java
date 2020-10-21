@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
 import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.OrderListSubscription;
 import org.dailykit.R;
@@ -52,7 +51,7 @@ public class OrderFragment extends Fragment implements OrderListener {
     SwipeRefreshLayout orderSwipeRefresh;
     @BindView(R.id.all_text)
     TextView allText;
-
+    private int CAMERA_PERMISSION_REQUEST = 10012;
     public OrderFragment() {
 
     }
@@ -77,7 +76,7 @@ public class OrderFragment extends Fragment implements OrderListener {
                 dashboardActivity.subscribeOrders();
             }
         });
-
+        updateList(dashboardViewModel.getOrderList());
 
         return view;
     }
@@ -92,6 +91,7 @@ public class OrderFragment extends Fragment implements OrderListener {
             orderScreenAdapter.notifyDataSetChanged();
             allText.setText("All (" + orderEntityList.size() + ")");
         }
+
     }
 
     @Override
@@ -120,7 +120,7 @@ public class OrderFragment extends Fragment implements OrderListener {
         super.onResume();
         dashboardViewModel.removeSelectedOrder();
         updateTabList(dashboardViewModel.getTabList());
-        updateList(dashboardViewModel.getOrderList());
+
     }
 
 

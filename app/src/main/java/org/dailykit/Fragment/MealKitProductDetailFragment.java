@@ -2,28 +2,25 @@ package org.dailykit.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
-import org.dailykit.activity.OrderDetailActivity;
-import org.dailykit.adapter.InventoryProductODAdapter;
 import org.dailykit.adapter.MealKitSachetODAdapter;
-import org.dailykit.adapter.ReadyToEatProductODAdapter;
 import org.dailykit.listener.MealKitProductListener;
 import org.dailykit.listener.OrderDetailListener;
 import org.dailykit.viewmodel.DashboardViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MealKitProductDetailFragment extends Fragment implements MealKitProductListener {
 
@@ -36,13 +33,15 @@ public class MealKitProductDetailFragment extends Fragment implements MealKitPro
     private OrderListDetailSubscription.Order order;
     private MealKitProductDetailFragment mealKitProductDetailFragment;
     private Activity orderDetailActivity;
+    private int position;
 
     public MealKitProductDetailFragment() {
     }
 
-    public MealKitProductDetailFragment(OrderListDetailSubscription.OrderMealKitProduct orderMealKitProduct,OrderDetailListener orderDetailListener) {
+    public MealKitProductDetailFragment(int position,OrderListDetailSubscription.OrderMealKitProduct orderMealKitProduct,OrderDetailListener orderDetailListener) {
         this.orderMealKitProduct = orderMealKitProduct;
         this.orderDetailListener = orderDetailListener;
+        this.position = position;
     }
 
     @Override
@@ -65,5 +64,19 @@ public class MealKitProductDetailFragment extends Fragment implements MealKitPro
             list.setAdapter(mealKitSachetODAdapter);
             mealKitSachetODAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void markAssemble(OrderListDetailSubscription.OrderSachet orderSachet) {
+        int index = 0;
+        if(dashboardViewModel.getSelectedOrderDetail().orderInventoryProducts().size()>0) {
+            index++;
+        }
+        if(dashboardViewModel.getSelectedOrderDetail().orderMealKitProducts().size()>0){
+            index++;
+        }
+        Timber.e("Index : "+index);
+        dashboardViewModel.setActiveProductTab(index);
+        dashboardViewModel.setActiveMealkitTab(position);
     }
 }

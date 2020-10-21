@@ -44,5 +44,5 @@
     <string name="ordered_on">Ordered On</string>
     <string name="ready_by">Ready By</string>
     <string name="pick_up">Pick Up</string>
-
+    <string name="camera_setting_alert">Please Allow Camera Permissions from Settings</string>
 </resources>
