@@ -61,15 +61,20 @@ public class MealKitSachetODAdapter extends RecyclerView.Adapter<MealKitSachetOD
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
             holder.status.setText("0/0/1");
             holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
         } else if ("PACKED".equals(singleItem.status()) && !singleItem.isAssembled()) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
             holder.status.setText("0/1/1");
             holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
-
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
         } else if ("PACKED".equals(singleItem.status()) && singleItem.isAssembled()) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
             holder.status.setText("1/1/1");
-            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
         }
         holder.toggle.setOnClickListener(v -> {
             if (holder.optionsLayout.getVisibility() == View.GONE) {
@@ -100,7 +105,67 @@ public class MealKitSachetODAdapter extends RecyclerView.Adapter<MealKitSachetOD
                     @Override
                     public void onResponse(@NotNull Response<UpdateOrderMealKitSachetMutation.Data> response) {
                         Timber.e("onResponse : " + response.toString());
-                        mealKitProductListener.markAssemble(singleItem);
+                        mealKitProductListener.onResponse(singleItem,"Marked Assembled Successfully");
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Timber.e("onFailure : " + e.getMessage());
+                    }
+                });
+            }
+        });
+
+        holder.repack.setOnClickListener(v -> {
+            if ("PENDING".equals(singleItem.status())) {
+                Toast.makeText(activity, "Please pack this item before repacking", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                UpdateOrderMealKitSachetMutation updateOrderMealKitSachetMutation = new UpdateOrderMealKitSachetMutation(
+                        Order_orderSachet_pk_columns_input
+                                .builder()
+                                .id(singleItem.id())
+                                .build(),
+                        Order_orderSachet_set_input
+                                .builder()
+                                .status("PENDING")
+                                .build());
+
+                Network.apolloClient.mutate(updateOrderMealKitSachetMutation).enqueue(new ApolloCall.Callback<UpdateOrderMealKitSachetMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateOrderMealKitSachetMutation.Data> response) {
+                        Timber.e("onResponse : " + response.toString());
+                        mealKitProductListener.onResponse(singleItem,"Repacked Successfully");
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Timber.e("onFailure : " + e.getMessage());
+                    }
+                });
+            }
+        });
+
+        holder.reassemble.setOnClickListener(v -> {
+            if (!("PACKED".equals(singleItem.status()) && singleItem.isAssembled())) {
+                Toast.makeText(activity, "Please assemble this item before reassembling", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                UpdateOrderMealKitSachetMutation updateOrderMealKitSachetMutation = new UpdateOrderMealKitSachetMutation(
+                        Order_orderSachet_pk_columns_input
+                                .builder()
+                                .id(singleItem.id())
+                                .build(),
+                        Order_orderSachet_set_input
+                                .builder()
+                                .isAssembled(false)
+                                .build());
+
+                Network.apolloClient.mutate(updateOrderMealKitSachetMutation).enqueue(new ApolloCall.Callback<UpdateOrderMealKitSachetMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateOrderMealKitSachetMutation.Data> response) {
+                        Timber.e("onResponse : " + response.toString());
+                        mealKitProductListener.onResponse(singleItem,"Reassembled Successfully");
                     }
 
                     @Override
@@ -140,6 +205,10 @@ public class MealKitSachetODAdapter extends RecyclerView.Adapter<MealKitSachetOD
         LinearLayout optionsLayout;
         @BindView(R.id.layout)
         LinearLayout layout;
+        @BindView(R.id.repack)
+        LinearLayout repack;
+        @BindView(R.id.reassemble)
+        LinearLayout reassemble;
 
         ViewHolder(View view) {
             super(view);

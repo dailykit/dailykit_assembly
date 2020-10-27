@@ -4,5 +4,5 @@ import org.dailykit.OrderListDetailSubscription;
 
 public interface InventoryProductListener {
 
-    void markAssemble(OrderListDetailSubscription.OrderInventoryProduct orderInventoryProduct);
+    void onResponse(OrderListDetailSubscription.OrderInventoryProduct orderInventoryProduct,String message);
 }

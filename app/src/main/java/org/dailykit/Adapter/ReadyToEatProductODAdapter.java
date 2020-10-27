@@ -17,12 +17,9 @@ import com.apollographql.apollo.exception.ApolloException;
 
 import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
-import org.dailykit.UpdateOrderMealKitProductMutation;
 import org.dailykit.UpdateOrderReadyToEatProductMutation;
 import org.dailykit.listener.ReadyToEatProductListener;
 import org.dailykit.network.Network;
-import org.dailykit.type.Order_orderMealKitProduct_pk_columns_input;
-import org.dailykit.type.Order_orderMealKitProduct_set_input;
 import org.dailykit.type.Order_orderReadyToEatProduct_pk_columns_input;
 import org.dailykit.type.Order_orderReadyToEatProduct_set_input;
 import org.jetbrains.annotations.NotNull;
@@ -74,14 +71,20 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
             holder.status.setText("0/0/1");
             holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
         } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && !singleItem.isAssembled()) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
             holder.status.setText("0/1/1");
             holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
         } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled()) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
-            holder.status.setText("0/1/1");
-            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.status.setText("1/1/1");
+            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
         }
         holder.toggle.setOnClickListener(v -> {
             if (holder.optionsLayout.getVisibility() == View.GONE) {
@@ -113,7 +116,7 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
                     @Override
                     public void onResponse(@NotNull Response<UpdateOrderReadyToEatProductMutation.Data> response) {
                         Timber.e("onResponse : " + response.toString());
-                        readyToEatProductListener.markAssemble(singleItem);
+                        readyToEatProductListener.onResponse(singleItem,"Marked Assembled Successfully");
                     }
 
                     @Override
@@ -124,6 +127,72 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
             }
 
         });
+
+        holder.repack.setOnClickListener(v -> {
+            if ("PENDING".equals(singleItem.assemblyStatus())) {
+                Toast.makeText(activity, "Please pack this item before repacking", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                UpdateOrderReadyToEatProductMutation updateOrderReadyToEatProductMutation = new UpdateOrderReadyToEatProductMutation(
+                        Order_orderReadyToEatProduct_pk_columns_input
+                                .builder()
+                                .id(singleItem.id())
+                                .build(),
+
+                        Order_orderReadyToEatProduct_set_input
+                                .builder()
+                                .assemblyStatus("PENDING")
+                                .build());
+
+                Network.apolloClient.mutate(updateOrderReadyToEatProductMutation).enqueue(new ApolloCall.Callback<UpdateOrderReadyToEatProductMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateOrderReadyToEatProductMutation.Data> response) {
+                        Timber.e("onResponse : " + response.toString());
+                        readyToEatProductListener.onResponse(singleItem,"Repacked Successfully");
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Timber.e("onFailure : " + e.getMessage());
+                    }
+                });
+            }
+
+        });
+
+        holder.reassemble.setOnClickListener(v -> {
+            if (!("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled())) {
+                Toast.makeText(activity, "Please assemble this item before reassembling", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                UpdateOrderReadyToEatProductMutation updateOrderReadyToEatProductMutation = new UpdateOrderReadyToEatProductMutation(
+                        Order_orderReadyToEatProduct_pk_columns_input
+                                .builder()
+                                .id(singleItem.id())
+                                .build(),
+
+                        Order_orderReadyToEatProduct_set_input
+                                .builder()
+                                .isAssembled(false)
+                                .build());
+
+                Network.apolloClient.mutate(updateOrderReadyToEatProductMutation).enqueue(new ApolloCall.Callback<UpdateOrderReadyToEatProductMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateOrderReadyToEatProductMutation.Data> response) {
+                        Timber.e("onResponse : " + response.toString());
+                        readyToEatProductListener.onResponse(singleItem,"Reassembled Successfully");
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Timber.e("onFailure : " + e.getMessage());
+                    }
+                });
+            }
+
+        });
+
+
     }
 
     public void updateList() {
@@ -154,6 +223,10 @@ public class ReadyToEatProductODAdapter extends RecyclerView.Adapter<ReadyToEatP
         LinearLayout optionsLayout;
         @BindView(R.id.layout)
         LinearLayout layout;
+        @BindView(R.id.repack)
+        LinearLayout repack;
+        @BindView(R.id.reassemble)
+        LinearLayout reassemble;
 
         ViewHolder(View view) {
             super(view);

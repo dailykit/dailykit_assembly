@@ -89,7 +89,7 @@ public class MealKitProductFragment extends Fragment implements MealKitProductLi
     }
 
     @Override
-    public void markAssemble(OrderListDetailSubscription.OrderSachet orderSachet) {
+    public void onResponse(OrderListDetailSubscription.OrderSachet orderSachet,String message) {
 
     }
 }

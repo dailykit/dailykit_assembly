@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -67,7 +68,7 @@ public class MealKitProductDetailFragment extends Fragment implements MealKitPro
     }
 
     @Override
-    public void markAssemble(OrderListDetailSubscription.OrderSachet orderSachet) {
+    public void onResponse(OrderListDetailSubscription.OrderSachet orderSachet,String message) {
         int index = 0;
         if(dashboardViewModel.getSelectedOrderDetail().orderInventoryProducts().size()>0) {
             index++;
@@ -78,5 +79,10 @@ public class MealKitProductDetailFragment extends Fragment implements MealKitPro
         Timber.e("Index : "+index);
         dashboardViewModel.setActiveProductTab(index);
         dashboardViewModel.setActiveMealkitTab(position);
+        orderDetailActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(orderDetailActivity, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -13,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.ContinuousScanActivity;
-import org.dailykit.adapter.InventoryProductCSAdapter;
-import org.dailykit.adapter.ReadyToEatProductCSAdapter;
 import org.dailykit.adapter.ReadyToEatProductODAdapter;
 import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.listener.ReadyToEatProductListener;
@@ -66,8 +65,13 @@ public class ReadyToEatProductFragment extends Fragment implements ReadyToEatPro
     }
 
     @Override
-    public void markAssemble(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct) {
+    public void onResponse(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct,String message) {
         dashboardViewModel.setActiveProductTab(1);
         dashboardViewModel.setActiveMealkitTab(0);
+        continuousScanActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(continuousScanActivity, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

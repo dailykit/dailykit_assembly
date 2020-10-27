@@ -38,11 +38,12 @@
     <string name="dummy_name">dummy_name</string>
     <string name="zero">0</string>
     <string name="dollar">$</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="all">All</string>
     <string name="ordered_on">Ordered On</string>
     <string name="ready_by">Ready By</string>
     <string name="pick_up">Pick Up</string>
     <string name="camera_setting_alert">Please Allow Camera Permissions from Settings</string>
+    <string name="repack">Repack</string>
+    <string name="reassemble">Reassemble</string>
 </resources>

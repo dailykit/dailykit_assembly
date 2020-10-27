@@ -4,6 +4,6 @@ import org.dailykit.OrderListDetailSubscription;
 
 public interface ReadyToEatProductListener {
 
-    void markAssemble(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct);
+    void onResponse(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct,String message);
 
 }

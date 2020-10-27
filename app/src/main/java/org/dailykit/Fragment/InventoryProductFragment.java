@@ -1,25 +1,20 @@
 package org.dailykit.fragment;
 
-import android.content.SharedPreferences;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.zxing.client.android.BeepManager;
-
 import org.dailykit.OrderListDetailSubscription;
 import org.dailykit.R;
 import org.dailykit.activity.ContinuousScanActivity;
-import org.dailykit.adapter.ContinuousScanIngredientAdapter;
-import org.dailykit.adapter.ContinuousScanViewPager;
-import org.dailykit.adapter.InventoryProductAdapter;
-import org.dailykit.adapter.InventoryProductCSAdapter;
 import org.dailykit.adapter.InventoryProductODAdapter;
 import org.dailykit.listener.ContinuousScanListener;
 import org.dailykit.listener.InventoryProductListener;
@@ -40,6 +35,7 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
     private OrderListDetailSubscription.Order order;
     private InventoryProductODAdapter inventoryProductCSAdapter;
     private InventoryProductFragment inventoryProductFragment;
+    private Activity activity;
 
     public InventoryProductFragment() {
     }
@@ -54,6 +50,7 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
         View view = inflater.inflate(R.layout.fragment_inventory_product, container, false);
         ButterKnife.bind(this,view);
         inventoryProductFragment = this;
+        activity = getActivity();
         dashboardViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         continuousScanViewModel = ViewModelProviders.of(this).get(ContinuousScanViewModel.class);
         continuousScanActivity = (ContinuousScanActivity)getActivity();
@@ -70,8 +67,13 @@ public class InventoryProductFragment extends Fragment implements InventoryProdu
     }
 
     @Override
-    public void markAssemble(OrderListDetailSubscription.OrderInventoryProduct orderInventoryProduct) {
+    public void onResponse(OrderListDetailSubscription.OrderInventoryProduct orderInventoryProduct,String message) {
         dashboardViewModel.setActiveProductTab(0);
         dashboardViewModel.setActiveMealkitTab(0);
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

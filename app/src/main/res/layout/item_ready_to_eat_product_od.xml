@@ -108,5 +108,37 @@
                 android:text="Mark as Assembled"
                 android:textColor="@color/white" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/repack"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/round_button_light_blue">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/repack"
+                android:textColor="@color/white" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/reassemble"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/round_button_light_blue">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reassemble"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

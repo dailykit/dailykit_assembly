@@ -23,10 +23,7 @@ import org.dailykit.network.Network;
 import org.dailykit.type.Order_orderInventoryProduct_pk_columns_input;
 import org.dailykit.type.Order_orderInventoryProduct_set_input;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -74,14 +71,20 @@ public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryPro
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_yellow));
             holder.status.setText("0/0/1");
             holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
         } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && !singleItem.isAssembled()) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_blue));
             holder.status.setText("0/1/1");
             holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
         } else if ("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled()) {
             holder.layout.setBackgroundColor(activity.getResources().getColor(R.color.list_green));
-            holder.status.setText("0/1/1");
-            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.status.setText("1/1/1");
+            holder.markAsAssembled.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_grey));
+            holder.repack.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
+            holder.reassemble.setBackground(activity.getResources().getDrawable(R.drawable.round_button_light_blue));
         }
         holder.serving.setText(singleItem.inventoryProductOption().quantity() + " - " + singleItem.inventoryProductOption().label());
 
@@ -98,8 +101,7 @@ public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryPro
         holder.markAsAssembled.setOnClickListener(v -> {
             if ("PENDING".equals(singleItem.assemblyStatus())) {
                 Toast.makeText(activity, "Please pack this item before assembling", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 UpdateOrderInventoryProductMutation updateOrderInventoryProductMutation = new UpdateOrderInventoryProductMutation(
                         Order_orderInventoryProduct_pk_columns_input
                                 .builder()
@@ -114,7 +116,68 @@ public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryPro
                     @Override
                     public void onResponse(@NotNull Response<UpdateOrderInventoryProductMutation.Data> response) {
                         Timber.e("onResponse : " + response.toString());
-                        inventoryProductListener.markAssemble(singleItem);
+                        inventoryProductListener.onResponse(singleItem,"Marked Assembled Successfully");
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Timber.e("onFailure : " + e.getMessage());
+                    }
+                });
+            }
+
+        });
+
+        holder.repack.setOnClickListener(v -> {
+            if ("PENDING".equals(singleItem.assemblyStatus())) {
+                Toast.makeText(activity, "Please pack this item before repacking", Toast.LENGTH_SHORT).show();
+            } else {
+                UpdateOrderInventoryProductMutation updateOrderInventoryProductMutation = new UpdateOrderInventoryProductMutation(
+                        Order_orderInventoryProduct_pk_columns_input
+                                .builder()
+                                .id(singleItem.id())
+                                .build(),
+                        Order_orderInventoryProduct_set_input
+                                .builder()
+                                .assemblyStatus("PENDING")
+                                .build());
+
+                Network.apolloClient.mutate(updateOrderInventoryProductMutation).enqueue(new ApolloCall.Callback<UpdateOrderInventoryProductMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateOrderInventoryProductMutation.Data> response) {
+                        Timber.e("onResponse : " + response.toString());
+                        inventoryProductListener.onResponse(singleItem,"Repacked Successfully");
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        Timber.e("onFailure : " + e.getMessage());
+                    }
+                });
+            }
+
+        });
+
+
+        holder.reassemble.setOnClickListener(v -> {
+            if (!("COMPLETED".equals(singleItem.assemblyStatus()) && singleItem.isAssembled())) {
+                Toast.makeText(activity, "Please assemble this item before reassembling", Toast.LENGTH_SHORT).show();
+            } else {
+                UpdateOrderInventoryProductMutation updateOrderInventoryProductMutation = new UpdateOrderInventoryProductMutation(
+                        Order_orderInventoryProduct_pk_columns_input
+                                .builder()
+                                .id(singleItem.id())
+                                .build(),
+                        Order_orderInventoryProduct_set_input
+                                .builder()
+                                .isAssembled(false)
+                                .build());
+
+                Network.apolloClient.mutate(updateOrderInventoryProductMutation).enqueue(new ApolloCall.Callback<UpdateOrderInventoryProductMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateOrderInventoryProductMutation.Data> response) {
+                        Timber.e("onResponse : " + response.toString());
+                        inventoryProductListener.onResponse(singleItem,"Reassembled Successfully");
                     }
 
                     @Override
@@ -152,6 +215,10 @@ public class InventoryProductODAdapter extends RecyclerView.Adapter<InventoryPro
         ImageView toggle;
         @BindView(R.id.mark_as_assembled)
         LinearLayout markAsAssembled;
+        @BindView(R.id.repack)
+        LinearLayout repack;
+        @BindView(R.id.reassemble)
+        LinearLayout reassemble;
         @BindView(R.id.options_layout)
         LinearLayout optionsLayout;
         @BindView(R.id.layout)

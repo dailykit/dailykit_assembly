@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -62,12 +63,17 @@ public class ReadyToEatProductODFragment extends Fragment implements ReadyToEatP
     }
 
     @Override
-    public void markAssemble(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct) {
+    public void onResponse(OrderListDetailSubscription.OrderReadyToEatProduct orderReadyToEatProduct,String message) {
         int index = 0;
         if(dashboardViewModel.getSelectedOrderDetail().orderInventoryProducts().size()>0) {
             index++;
         }
         dashboardViewModel.setActiveProductTab(index);
         dashboardViewModel.setActiveMealkitTab(0);
+        orderDetailActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(orderDetailActivity, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
