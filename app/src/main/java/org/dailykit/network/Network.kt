@@ -27,19 +27,20 @@ private val SQL_CACHE_NAME = "dailykit_assembly"
 
 
 class Network {
+
     companion object{
         @JvmStatic
         lateinit var apolloClient: ApolloClient
     }
 
-    fun setApolloClient(context: Context){
+    fun setApolloClient(context: Context,baseUrl: String,clientSecret: String){
         val log: HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(log)
             .addInterceptor { chain ->
                 val original = chain.request()
                 val builder = original.newBuilder().method(original.method(), original.body())
-                builder.header("X-Hasura-Admin-Secret","60ea76ab-5ab6-4f09-ad44-efeb00f978ce")
+                builder.header("X-Hasura-Admin-Secret",clientSecret)
                 chain.proceed(builder.build())
             }
             .build()
@@ -94,10 +95,10 @@ class Network {
         }
 
         apolloClient = ApolloClient.builder()
-                .serverUrl(GRAPHQL_ENDPOINT)
+                .serverUrl("https://$baseUrl/datahub/v1/graphql")
                 .okHttpClient(okHttpClient)
                 .normalizedCache(normalizedCacheFactory, cacheKeyResolver)
-                .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory(GRAPHQL_WEBSOCKET_ENDPOINT, okHttpClient))
+                .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory("wss://$baseUrl/datahub/v1/graphql", okHttpClient))
                 .addCustomTypeAdapter(CustomType.OID, stringTypeAdapter)
                 .addCustomTypeAdapter(CustomType.JSONB, stringTypeAdapter)
                 .addCustomTypeAdapter(CustomType.NUMERIC, numericTypeAdapter)

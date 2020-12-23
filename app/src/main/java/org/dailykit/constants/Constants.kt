@@ -20,5 +20,7 @@ object Constants {
     const val ORDER_LIST = "ORDER_LIST"
     const val ACTIVE_PRODUCT_TAB = "ACTIVE_PRODUCT_TAB"
     const val ACTIVE_MEALKIT_TAB = "ACTIVE_MEALKIT_TAB"
+    const val BASE_URL = "BASE_URL"
+    const val CLIENT_SECRET = "CLIENT_SECRET"
 }
 

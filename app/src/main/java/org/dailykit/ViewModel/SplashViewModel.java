@@ -51,6 +51,24 @@ public class SplashViewModel extends AndroidViewModel {
         return sharedpreferences.getBoolean(Constants.IS_USER_LOGGED,false);
     }
 
+    public String getBaseUrl(){
+        return sharedpreferences.getString(Constants.BASE_URL,"");
+    }
+
+    public String getClientSecret(){
+        return sharedpreferences.getString(Constants.CLIENT_SECRET,"");
+    }
+
+    public void setBaseUrl(String url){
+        editor.putString(Constants.BASE_URL,url);
+        editor.commit();
+    }
+
+    public void setClientSecret(String secret){
+        editor.putString(Constants.CLIENT_SECRET,secret);
+        editor.commit();
+    }
+
     public void fetchOrderList(final SplashListener splashListener){
         apiInterface.fetchOrderList().enqueue(
                 new Callback<OrderResponseModel>() {

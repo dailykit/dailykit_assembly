@@ -31,9 +31,11 @@ public class SplashActivity extends CustomAppCompatActivity implements SplashLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        network = new Network();
-        network.setApolloClient(this);
         splashViewModel= ViewModelProviders.of(this).get(SplashViewModel.class);
+        splashViewModel.setBaseUrl("test.dailykit.org");
+        splashViewModel.setClientSecret("60ea76ab-5ab6-4f09-ad44-efeb00f978ce");
+        network = new Network();
+        network.setApolloClient(this,splashViewModel.getBaseUrl(),splashViewModel.getClientSecret());
         if (ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             moveToNextScreen();
         } else {

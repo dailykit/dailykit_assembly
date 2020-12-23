@@ -16,9 +16,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-/**
- * Created by Danish Rafique on 29-01-2019.
- */
 public interface APIInterface {
 
     @POST("getData")
